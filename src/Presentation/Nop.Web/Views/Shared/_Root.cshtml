@@ -7,13 +7,23 @@
 @await Html.PartialAsync("_OldInternetExplorerWarning")
 <div class="master-wrapper-page">
     @await Component.InvokeAsync("AdminHeaderLinks")
-    @await Html.PartialAsync("_Header")
+    @*@await Html.PartialAsync("_Header")*@
     <script asp-location="Footer">
         var localized_data = {
             AjaxCartFailure: "@T("AjaxCart.Failure")"
         };
         AjaxCart.init(false, '.header-links .cart-qty', '.header-links .wishlist-qty', '#flyout-cart', localized_data);
     </script>
+
+    @* QUIMS EDIT *@
+
+    <div class="SmallIntro">
+        <div class="SmallIntroImg"></div>
+        <div class="SmallText" text-center>quims</div>
+    </div>
+
+    @* QUIMS EDIT *@
+
     <div class="header-menu">
         @await Component.InvokeAsync("TopMenu")
     </div>
@@ -22,13 +32,18 @@
 
         @if (IsSectionDefined("Breadcrumb"))
         {
-            @RenderSection("Breadcrumb") 
+            @RenderSection("Breadcrumb")
         }
         <div class="master-column-wrapper">
             @RenderBody()
         </div>
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ContentAfter })
     </div>
+
+    @* QUIMS EDIT *@
+    @await Html.PartialAsync("_Header")
+    @* QUIMS EDIT *@
+
     @await Component.InvokeAsync("Footer")
 </div>
 @await Component.InvokeAsync("EuCookieLaw")
