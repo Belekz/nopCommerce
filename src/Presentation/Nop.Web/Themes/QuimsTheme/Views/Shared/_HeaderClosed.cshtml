@@ -10,15 +10,23 @@
             @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.HeaderSelectors })
         </div>
 
+        @* QUIMS *@
 
-        <div class="header-links-wrapper">
+        @*<div class="header-links-wrapper">
+
 
 
             @await Component.InvokeAsync("HeaderLinks")
 
 
+
+
             @await Component.InvokeAsync("FlyoutShoppingCart")
-        </div>
+        </div>*@
+
+        @* QUIMS *@
+
+
     </div>
     @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.HeaderMiddle })
     <div class="header-lower">

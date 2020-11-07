@@ -1892,7 +1892,7 @@ label, label + * {
 }
 
 .item-box:hover .picture a img {
-  opacity: 0.85;
+  opacity: 0.50;
 }
 
 .item-box .picture a:focus {
@@ -1935,6 +1935,7 @@ label, label + * {
   background: url('../images/rating1.png') repeat-x;
   width: 95px;
   height: 14px;
+  /*visibility: hidden;*/                                                                                                                                                       /* QUIMS EDIT */
 }
 
 .item-box .rating div {
@@ -1999,10 +2000,12 @@ label, label + * {
   text-transform: uppercase;
 }
 
-.item-box .product-box-add-to-cart-button:hover,
-.item-box .product-box-add-to-cart-button:focus {
-  background-color: #248ece;
-}
+  .item-box .product-box-add-to-cart-button:hover,
+  .item-box .product-box-add-to-cart-button:focus {
+    background-color: #fff;                                                                                    /* QUIMS EDIT */
+    color: #28a745;                                                                                             /* QUIMS EDIT */
+    border: 1px solid #28a745;                                                                                             /* QUIMS EDIT */
+  }
 
 .item-box .add-to-compare-list-button,
 .item-box .add-to-wishlist-button {
@@ -2026,7 +2029,8 @@ label, label + * {
 .item-box .add-to-compare-list-button:focus,
 .item-box .add-to-wishlist-button:hover,
 .item-box .add-to-wishlist-button:focus {
-  background-color: #ddd;
+  /*background-color: #ddd;*/                                         /* QUIMS EDIT */
+  background-image: url('../images/wishlist-button-push.png');                        /* QUIMS EDIT */
 }
 
 .home-page-category-grid,
@@ -8089,7 +8093,7 @@ pre {
     width: 980px;
     margin: 0 auto 30px;
     border-top: 0px solid #ddd;                                                                                                                                         /* QUIMS EDIT */
-    border-bottom: 1px solid #ddd;
+    border-bottom: 0px solid #ddd;                                                                                              /* QUIMS EDIT  */
     padding: 25px 0;
     text-align: center;
   }

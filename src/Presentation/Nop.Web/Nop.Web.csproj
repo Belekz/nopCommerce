@@ -37,6 +37,20 @@
     <None Remove="Plugins\**;Themes\**" />
 
     <Content Include="Plugins\bin\placeholder.txt" CopyToPublishDirectory="PreserveNewest" />
+
+    <Content Include="Themes\QuimsTheme\Views\Common\ContactUs.cshtml" />
+
+    <Content Include="Themes\QuimsTheme\Views\Common\ContactVendor.cshtml" />
+
+    <Content Include="Themes\QuimsTheme\Views\Common\PageNotFound.cshtml" />
+
+    <Content Include="Themes\QuimsTheme\Views\Common\Sitemap.cshtml" />
+
+    <Content Include="Themes\QuimsTheme\Views\Common\StoreClosed.cshtml" />
+
+    <Content Include="Themes\QuimsTheme\Views\Shared\_ColumnsClosed.cshtml" />
+
+    <Content Include="Themes\QuimsTheme\Views\Shared\_HeaderClosed.cshtml" />
     <None Include="Plugins\**" CopyToPublishDirectory="PreserveNewest" />
 
     <Content Include="Themes\**" CopyToPublishDirectory="PreserveNewest" Exclude="Themes\**\*.config;Themes\**\*.cshtml;Themes\**\*.json" />
@@ -99,7 +113,15 @@
     <None Remove="Themes\QuimsTheme\Content\images\vote-up-selected.png" />
     <None Remove="Themes\QuimsTheme\Content\images\vote-up.png" />
     <None Remove="Themes\QuimsTheme\Content\images\watch.png" />
+    <None Remove="Themes\QuimsTheme\Content\images\wishlist-button - Copy.png" />
     <None Remove="Themes\QuimsTheme\Content\images\wishlist-button.png" />
+    <None Remove="Themes\QuimsTheme\Views\Common\ContactUs.cshtml" />
+    <None Remove="Themes\QuimsTheme\Views\Common\ContactVendor.cshtml" />
+    <None Remove="Themes\QuimsTheme\Views\Common\PageNotFound.cshtml" />
+    <None Remove="Themes\QuimsTheme\Views\Common\Sitemap.cshtml" />
+    <None Remove="Themes\QuimsTheme\Views\Common\StoreClosed.cshtml" />
+    <None Remove="Themes\QuimsTheme\Views\Shared\_ColumnsClosed.cshtml" />
+    <None Remove="Themes\QuimsTheme\Views\Shared\_HeaderClosed.cshtml" />
     <_ContentIncludedByDefault Remove="Themes\QuimsTheme\Content\images\Capture.PNG" />
     <_ContentIncludedByDefault Remove="Themes\QuimsTheme\Content\images\intro.jpg" />
 
@@ -126,6 +148,34 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Update="Themes\QuimsTheme\Content\images\logo.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsTheme\Views\Common\ContactUs.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsTheme\Views\Common\ContactVendor.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsTheme\Views\Common\PageNotFound.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsTheme\Views\Common\Sitemap.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsTheme\Views\Common\StoreClosed.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsTheme\Views\Shared\_ColumnsClosed.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsTheme\Views\Shared\_HeaderClosed.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
