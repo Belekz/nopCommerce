@@ -885,7 +885,7 @@ label, label + * {
   position: relative;
   z-index: 10;
   width: 95%;
-  height: 50px;                                                                                                                     /* QUIMS EDIT */
+  height: 300px;                                                                                                                     /* QUIMS EDIT */
   margin: auto;
   text-align: center;
 }
@@ -1112,11 +1112,20 @@ label, label + * {
 
 .Intro {
   position: relative;
+  opacity: 0.85;
+}
+
+.IntroHeader{
+    position: fixed; /* Keep header on top */
+}
+
+.IntroEmpty{
+   position: fixed;
 }
 
 .IntroImg {
   background-image: url("../images/intro.jpg");
-  height: 1500px;
+  height: 1100px;
   width: 100%;
   /* Create the parallax scrolling effect */
   background-attachment: fixed;
@@ -1146,8 +1155,22 @@ label, label + * {
   letter-spacing: 25px;
   text-transform: uppercase;
   left: 35%;
-  border-bottom-left-radius: 50px;
-  border-top-right-radius: 50px;
+/*  border-bottom-left-radius: 50px;
+  border-top-right-radius: 50px;*/
+  overflow: hidden;
+}
+
+.IntroStoryImg {
+  background-image: url("../images/IntroStory.jpg");
+  height: 600px;
+  width: 35%;
+  float: left;
+}
+
+.IntroStoryText{
+    float: left;
+    padding: 100px;
+    width: 65%;
 }
 
 .IntroTextFour {
@@ -1163,21 +1186,21 @@ label, label + * {
   letter-spacing: 25px;
   text-transform: uppercase;
   left: 30%;
-  border-bottom-left-radius: 50px;
-  border-top-right-radius: 50px;
+/*  border-bottom-left-radius: 50px;
+  border-top-right-radius: 50px;*/
 }
 
 .IntroTextOne {
   position: absolute;
-  top: 20%;
+  top: 72%;
   width: 99%;
   left: 0.5%;
   min-height: 300px;
   color: #21a745;
   background-color: rgba(250, 255, 255, 0.7);
-  padding: 50px;
+  padding: 2px;
   border-bottom-right-radius: 20px;
-  letter-spacing: 10px;
+  /*letter-spacing: 10px;*/
   text-transform: uppercase;
 }
 
@@ -1217,29 +1240,34 @@ label, label + * {
 .IntroTextFour {
   /*Quims TEXT*/
   position: absolute;
-  top: 95%;
+  top: 500px;
   color: #fff;
-  font: 30px Calligraphic Scripts;
   padding-top: 15px;
-  padding-left: 150px;
-  padding-right: 150px;
+  padding-left: 100px;
+  padding-right: 100px;
   padding-bottom: 15px;
-  background-color: rgba(33, 167, 69, 0.6);
+  font: 30px Calligraphic Scripts;
+  background-color: rgba(255, 255, 255, 0.5);
   letter-spacing: 25px;
   text-transform: uppercase;
-  left: 30%;
-  border-bottom-left-radius: 50px;
-  border-top-right-radius: 50px;
+  left: 35%;
+/*  border-bottom-left-radius: 50px;
+  border-top-right-radius: 50px;*/
+  overflow: hidden;
 }
 
-/*********** FOOTER ***********/
+  .IntroTextFour:hover {
+    opacity: 0.7;
+    color: #fff;
+    letter-spacing: 50px;
+    transition: 1s;
+  }
 
-
-
-.footer { 
-  background-color: transparent;                                                                                                                                               /* Quims edit */
-  text-align: center;
-}
+  /*********** FOOTER ***********/
+  .footer {
+    background-color: transparent; /* Quims edit */
+    text-align: center;
+  }
 
 .footer-upper {
   width: 95%;
@@ -2596,12 +2624,14 @@ label, label + * {
   text-transform: uppercase;
 }
 
-.overview .add-to-cart-button:hover,
-.overview .add-to-cart-button:focus,
-.variant-overview .add-to-cart-button:hover,
-.variant-overview .add-to-cart-button:focus {
-  background-color: #248ece;
-}
+  .overview .add-to-cart-button:hover,
+  .overview .add-to-cart-button:focus,
+  .variant-overview .add-to-cart-button:hover,
+  .variant-overview .add-to-cart-button:focus {
+    background-color: #fff;                                                                                    /* QUIMS EDIT */
+    color: #28a745;                                                                                         /* QUIMS EDIT */
+    border: 1px solid #28a745;                                                                                  /* QUIMS EDIT */
+  }
 
 .product-share-button {
   display: inline-block;
@@ -3272,12 +3302,14 @@ label, label + * {
   text-transform: uppercase;
 }
 
-.wishlist-content .update-wishlist-button:hover,
-.wishlist-content .update-wishlist-button:focus,
-.wishlist-content .wishlist-add-to-cart-button:hover,
-.wishlist-content .wishlist-add-to-cart-button:focus {
-  background-color: #248ece;
-}
+  .wishlist-content .update-wishlist-button:hover,
+  .wishlist-content .update-wishlist-button:focus,
+  .wishlist-content .wishlist-add-to-cart-button:hover,
+  .wishlist-content .wishlist-add-to-cart-button:focus {
+    background-color: #fff;                                                                                           /* QUIMS EDIT  */
+    color: #28a745;                                                                                                      /*  QUIMS EDIT */
+    border: 1px solid #28a745;                                                                                      /* QUIMS EDIT  */
+  }
 
 .wishlist-content .email-a-friend-wishlist-button {
   background-color: #aaa;
@@ -3544,14 +3576,16 @@ label, label + * {
   text-transform: uppercase;
 }
 
-.contact-page .button-1:hover,
-.contact-page .button-1:focus,
-.email-a-friend-page .button-1:hover,
-.email-a-friend-page .button-1:focus,
-.apply-vendor-page .button-1:hover,
-.apply-vendor-page .button-1:focus {
-  background-color: #248ece;
-}
+  .contact-page .button-1:hover,
+  .contact-page .button-1:focus,
+  .email-a-friend-page .button-1:hover,
+  .email-a-friend-page .button-1:focus,
+  .apply-vendor-page .button-1:hover,
+  .apply-vendor-page .button-1:focus {
+    background-color: #fff;                                                                                                            /* QUIMS EDIT */
+    color: #28a745;                                                                                                             /* QUIMS EDIT */
+    border: 1px solid #28a745;                                                                                                      /* QUIMS EDIT */
+  }
 
 .contact-page .topic-block,
 .email-a-friend-page .title,
@@ -3668,20 +3702,22 @@ label, label + * {
   text-transform: uppercase;
 }
 
-.registration-page .button-1:hover,
-.registration-page .button-1:focus,
-.registration-result-page .button-1:hover,
-.registration-result-page .button-1:focus,
-.login-page .button-1:hover,
-.login-page .button-1:focus,
-.password-recovery-page .button-1:hover,
-.password-recovery-page .button-1:focus,
-.account-page .button-1:hover,
-.account-page .button-1:focus,
-.return-request-page .button-1:hover,
-.return-request-page .button-1:focus {
-  background-color: #248ece;
-}
+  .registration-page .button-1:hover,
+  .registration-page .button-1:focus,
+  .registration-result-page .button-1:hover,
+  .registration-result-page .button-1:focus,
+  .login-page .button-1:hover,
+  .login-page .button-1:focus,
+  .password-recovery-page .button-1:hover,
+  .password-recovery-page .button-1:focus,
+  .account-page .button-1:hover,
+  .account-page .button-1:focus,
+  .return-request-page .button-1:hover,
+  .return-request-page .button-1:focus {
+    background-color: #fff;                                                                                        /* QUIMS EDIT */
+    color: #28a745;                                                                                        /* QUIMS EDIT */
+    border: 1px solid #28a745;                                                                                     /* QUIMS EDIT */
+  }
 
 .return-request-page h1 a {
   color: #28a745;
@@ -4222,7 +4258,9 @@ label, label + * {
 
 .shopping-cart-page .common-buttons input:first-child:hover,
 .shopping-cart-page .common-buttons input:first-child:focus {
-  background-color: #248ece;
+  background-color: #fff;                                                                                                      /* QUIMS EDIT  */
+  color: #28a745;                                                                                                                 /*  QUIMS EDIT */
+  border: 1px solid #28a745;                                                                                                      /* QUIMS EDIT  */
 }
 
 .checkout-attributes {
@@ -4377,10 +4415,12 @@ label, label + * {
   text-transform: uppercase;
 }
 
-.cart-footer .checkout-button:hover,
-.cart-footer .checkout-button:focus {
-  background-color: #248ece;
-}
+  .cart-footer .checkout-button:hover,
+  .cart-footer .checkout-button:focus {
+    background-color: #fff;                                                                                            /* QUIMS EDIT  */
+    color: #28a745;                                                                                                /*  QUIMS EDIT */
+    border: 1px solid #28a745;                                                                                       /* QUIMS EDIT  */
+  }
 
 .cart-footer .addon-buttons {
   margin: 20px 0 0;
@@ -4808,10 +4848,12 @@ label, label + * {
   text-transform: uppercase;
 }
 
-.checkout-page .button-1:hover,
-.checkout-page .button-1:focus {
-  background-color: #248ece;
-}
+  .checkout-page .button-1:hover,
+  .checkout-page .button-1:focus {
+    background-color: #fff;                                                                                              /* QUIMS EDIT  */
+    color: #28a745;                                                                                                     /*  QUIMS EDIT */
+    border: 1px solid #28a745;                                                                                              /* QUIMS EDIT  */
+  }
 
 .checkout-page .address-item {
   width: 350px;
@@ -5077,7 +5119,7 @@ label, label + * {
 }
 
 .opc .allow .step-title .number {
-  background-color: #248ece;
+  background-color: #888;                                                                 /*  QUIMS EDIT */
 }
 
 .opc .step {
@@ -6624,6 +6666,10 @@ pre {
 
 
 
+/* MEDIA  */
+
+
+
 @media all and (max-width: 769px) {
 
   .review-rating .name-description {
@@ -6657,11 +6703,71 @@ pre {
 }
 
 
-
-
-
+/* SMART PHONE */
 @media all and (max-width: 1000px) {
 
+  /*** QUIMS CLOSED ***/
+
+  .ClosedImg {
+    background-image: url(../images/intro.jpg);
+    height: 400px;
+    width: 100%;
+    background-position-y: -0px;
+    background-size: cover;
+  }
+
+  /*** QUIMS INTRO ***/
+
+  .SmallIntroImg {
+    background-image: url(../images/intro.jpg);
+    height: 400px;
+    width: 100%;
+    background-position-y: -0px;
+    background-size: cover;
+  }
+
+  .SmallText {
+    left: 15%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .SmallText {
+    left: 15%;
+  }
+
+  .IntroTextFour {
+    left: 0%;
+    top: 400px;
+    padding-top: 15px;
+    padding-left: 70px;
+    padding-bottom: 15px;
+    letter-spacing: 35px;
+    width: 100%;
+  }
+
+  .IntroTextOne {
+    top: 50%;
+  }
+
+  .IntroStoryText {
+    padding: 10px;
+    height: 100%;
+    float: none;
+    width: 100%;
+  }
+
+  .IntroStoryImg {
+    float: none;
+    width: 350px;
+    height: 350px;
+    margin-left: 2%;
+    margin-top: 1%;
+    background-position: bottom;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 
   /*** GLOBAL TABLES ***/
 
@@ -6767,19 +6873,21 @@ pre {
 
 
   .header-menu {
-    position: relative;
+    position: absolute;                                                                                                                      /* QUIMS EDIT */
     z-index: 1;
-    width: 90%;
+    width: 100%;                                                                                                                        /*   QUIMS EDIT */
     max-width: 600px;
     margin: 0 auto 40px;
+    opacity: 0.85;                                                                                                                            /* QUIMS EDIT */
   }
 
+
   .menu-toggle {
-    background: #28a745 url('../images/menu-icon.png') right center no-repeat;
+    background: transparent;                                                          /*   QUIMS EDIT */
     padding: 15px;
     font-size: 15px;
     font-weight: bold;
-    color: #fff;
+    color: #888;
     text-transform: uppercase;
     cursor: pointer;
   }
@@ -6873,10 +6981,59 @@ pre {
 }
 
 
-
-
-
+/* TABLET  */
 @media all and (min-width: 481px) {
+
+
+  /*** QUIMS CLOSED ***/
+
+  .ClosedImg {
+    background-image: url(../images/intro.jpg);
+    height: 800px;
+    width: 100%;
+    background-position-y: -0px;
+    background-size: cover;
+  }
+
+  /*** QUIMS INTRO ***/
+
+  .IntroTextFour {
+    left: 25%;
+    width: auto;
+  }
+
+  .SmallIntroImg {
+    background-image: url(../images/intro.jpg);
+    height: 350px;
+    width: 100%;
+    background-position-y: -150px;
+    background-size: cover;
+  }
+
+  .SmallText{
+      left: 25%;
+  }
+
+  .IntroTextOne{
+      top: 60%;
+  }
+
+  .IntroStoryText {
+      padding: 10px;
+      height: 100%;
+      float: none;
+      width: 100%;
+  }
+
+  .IntroStoryImg {
+    float: none;
+    width: 500px;
+    height: 500px;
+    margin-left: 125px;
+    margin-top: 1%;
+    background-attachment: inherit;
+  }
+
 
 
   /*** GLOBAL ***/
@@ -7088,9 +7245,18 @@ pre {
   }
 }
 
-
+/* SMART PHONE LANDSCAPE */
 @media all and (min-width: 769px) {
 
+  /*** QUIMS CLOSED ***/
+
+  .ClosedImg {
+    background-image: url(../images/intro.jpg);
+    height: 300px;
+    width: 100%;
+    background-position-y: -20px;
+    background-size: cover;
+  }
 
   /**** GLOBAL ***/
 
@@ -7781,12 +7947,44 @@ pre {
   }
 }
 
-
-
-
-
+/* DESKTOP 1 */
 @media all and (min-width: 1001px) {
 
+  /*** QUIMS CLOSED ***/
+
+  .ClosedImg {
+    background-image: url(../images/intro.jpg);
+    height: 800px;
+    width: 100%;
+    background-position-y: -0px;
+    background-size: cover;
+  }
+
+  /*** QUIMS INTRO ***/
+
+  .SmallText {
+    left: 35%;
+  }
+
+  .IntroTextFour {
+    left: 35%;
+  }
+
+  .IntroTextOne {
+    top: 60%;
+  }
+
+  .IntroStoryImg {
+    height: 600px;
+    width: 35%;
+    float: left;
+  }
+
+  .IntroStoryText {
+    float: left;
+    padding: 100px;
+    width: 65%;
+  }
 
   /*** GLOBAL STYLES ***/
 
@@ -8088,7 +8286,7 @@ pre {
 
 
   .header-menu {
-    position: relative;
+    /*position: relative;*/                                                                                                   /* QUIMS EDIT */
     z-index: 5;
     width: 980px;
     margin: 0 auto 30px;
@@ -8717,12 +8915,51 @@ pre {
   }
 }
 
-
-
-
-
+/* DESKTOP 2 */
 @media all and (min-width: 1367px) {
 
+
+  /*** QUIMS CLOSED ***/
+
+  .ClosedImg {
+    background-image: url(../images/intro.jpg);
+    height: 800px;
+    width: 100%;
+    background-position-y: -0px;
+    background-size: cover;
+  }
+
+  /*** QUIMS INTRO ***/
+
+  .SmallText {
+    left: 35%;
+  }
+
+  .IntroTextFour {
+    left: 35%;
+  }
+
+  .IntroTextFour {
+    left: 35%;
+  }
+
+  .IntroTextOne {
+    top: 60%;
+  }
+
+  .IntroStoryImg {
+    height: 600px;
+    width: 35%;
+    float: left;
+    margin-left: 0px;
+    margin-top: 0%;
+  }
+
+  .IntroStoryText {
+    float: left;
+    padding: 100px;
+    width: 65%;
+  }
 
   /*** GLOBAL STYLES ***/
 
@@ -8756,7 +8993,8 @@ pre {
 
 
   .header-menu {
-    width: 1200px;
+    width: 100%;                                                                                  /* QUIMS EDIT */
+    /*position: fixed;*/                                                                              /* QUIMS EDIT */
   }
 
   .header-menu > ul > li {
