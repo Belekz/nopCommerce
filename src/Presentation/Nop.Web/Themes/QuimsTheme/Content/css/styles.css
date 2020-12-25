@@ -805,17 +805,38 @@ label, label + * {
 
 .eu-cookie-bar-notification {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 92.5%;                                                                                                                                    /* QUIMS EDIT */
+  left: 0;                                                                                                                                   /* QUIMS EDIT */
   z-index: 1050;
-  width: 320px;
-  height: 180px;
-  margin: -90px 0 0 -160px;
-  border: 1px solid #ccc;
+  width: 100%;                                                                                                                                   /* QUIMS EDIT */
+  height: 80px;                                                                                                                                  /* QUIMS EDIT */
+  margin: 0px 0 0 0px;                                                                                                                                   /* QUIMS EDIT */
+  /*border: 1px solid #ccc;*/
   box-shadow: 0 0 2px rgba(0,0,0,0.15);
   background-color: #fff;
-  padding: 20px;
+  padding: 5px;                                                                                                                                   /* QUIMS EDIT */
   text-align: center;
+}
+
+/* QUIMS EDIT */
+.cookieButton{
+    float: left;                                                                                                                                
+    width: 10%;
+    padding: 15px;
+}
+
+/* QUIMS EDIT */
+.cookieLink {
+  float: left;
+  width: 10%;
+  padding: 30px;
+}
+
+/* QUIMS EDIT */
+.cookieText {
+  float: left;
+  width: 80%;
+  padding: 28px;
 }
 
 .eu-cookie-bar-notification .text {
@@ -833,10 +854,13 @@ label, label + * {
   color: #fff;
 }
 
-.eu-cookie-bar-notification button:hover,
-.eu-cookie-bar-notification button:focus {
-  background-color: #248ece;
-}
+  .eu-cookie-bar-notification button:hover,
+  .eu-cookie-bar-notification button:focus {
+    /*background-color: #248ece;*/
+    background-color: #fff;                                                                                                               /* QUIMS EDIT */
+    color: #28a745;                                                                                                                      /* QUIMS EDIT */
+    border: 1px solid #28a745;                                                                                                            /* QUIMS EDIT */
+  }
 
 .eu-cookie-bar-notification a {
   display: block;
@@ -1140,6 +1164,7 @@ label, label + * {
   width: 100%;
   background-position-y: -230px;
   background-size: cover;
+  opacity: 0.7;
 }
 
 .SmallText {
@@ -6978,6 +7003,35 @@ pre {
     margin: 0 5px 0 0;
     text-align: center;
   }
+
+  /*** MOBILE COOKIE BANNER ***/
+
+  .eu-cookie-bar-notification{
+      top: 80%;
+  }
+
+
+  /* QUIMS EDIT */
+  .cookieButton {
+    float: inherit;
+    width: auto;
+    padding: 5px;
+  }
+
+  /* QUIMS EDIT */
+  .cookieLink {
+    float: inherit;
+    width: auto;
+    padding: 5px;
+  }
+
+  /* QUIMS EDIT */
+  .cookieText {
+    float: inherit;
+    width: auto;
+    padding: 5px;
+  }
+
 }
 
 

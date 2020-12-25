@@ -18,12 +18,33 @@
         });
     });
 </script>
+
 <div id="eu-cookie-bar-notification" class="eu-cookie-bar-notification">
     <div class="content">
-        <div class="text">@T("EUCookieLaw.Description2")</div>
+
+        
+
+
         <div class="buttons-more">
-            <button type="button" class="ok-button button-1" id="eu-cookie-ok">@T("Common.OK")</button>
-            <a class="learn-more" href="@Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("privacyinfo") })">@T("EUCookieLaw.LearnMore")</a>
+
+            <div class="cookieButton">
+                <button type="button" class="ok-button button-1" id="eu-cookie-ok">@T("Common.OK")</button>
+            </div>
+
+            @*<div class="text cookieText">@T("EUCookieLaw.Description2")</div>*@
+
+            <div class="cookieText">
+                <i class="fas fa-cookie-bite"></i>
+                Cookie?
+                @T("EUCookieLaw.Description2")
+            </div>
+
+            <div class="cookieLink">
+                <a href="@Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("privacyinfo") })">@T("EUCookieLaw.LearnMore")</a>
+            </div>
+
         </div>
+
+
     </div>
 </div>
