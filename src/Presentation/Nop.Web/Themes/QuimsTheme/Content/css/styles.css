@@ -34,7 +34,7 @@ a:active {
 }
 
 *:focus {
-  outline: 3px dotted #333;
+  outline: 0px solid #28a745;                                                                                                                                   /* Quims edit */                                                                                          
 }
 
 input[type="button"]::-moz-focus-inner,
