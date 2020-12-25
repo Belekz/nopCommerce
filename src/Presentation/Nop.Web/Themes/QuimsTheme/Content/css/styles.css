@@ -816,6 +816,7 @@ label, label + * {
   background-color: #fff;
   padding: 5px;                                                                                                                                   /* QUIMS EDIT */
   text-align: center;
+  opacity: 0.9;
 }
 
 /* QUIMS EDIT */
@@ -837,6 +838,11 @@ label, label + * {
   float: left;
   width: 80%;
   padding: 28px;
+}
+
+/* QUIMS EDIT*/
+.cookieIcon {
+  color: #4A2C29;
 }
 
 .eu-cookie-bar-notification .text {
@@ -1265,7 +1271,7 @@ label, label + * {
 .IntroTextFour {
   /*Quims TEXT*/
   position: absolute;
-  top: 500px;
+  top: 25%;
   color: #fff;
   padding-top: 15px;
   padding-left: 100px;
@@ -1912,6 +1918,11 @@ label, label + * {
   text-align: left;
 }
 
+/* QUIMS EDIT */
+.item-box :hover {
+    opacity: 0.95;
+}
+
 .item-box .picture {
   z-index: 1;
   overflow: hidden;
@@ -1954,7 +1965,7 @@ label, label + * {
 }
 
 .item-box .details {
-  padding: 0 10px;
+  padding: 0 0px;                                                                                                                                                      /* QUIMS EDIT */
 }
 
 .item-box .product-title {
@@ -1968,12 +1979,13 @@ label, label + * {
 
 .item-box .product-title a {
   display: block;
+  float: left;                                                                                                                                                  /* QUIMS EDIT */
 }
 
-.item-box .product-title a:hover,
-.item-box .product-title a:focus {
-  color: #248ece;
-}
+  .item-box .product-title a:hover,
+  .item-box .product-title a:focus {
+    color: #28a745;                                                                                                                                                      /* QUIMS EDIT */
+  }
 
 .item-box .sku {
   margin: 0 0 15px;
@@ -2005,10 +2017,11 @@ label, label + * {
   overflow: hidden;
 }
 
-.item-box .prices {
-  margin: 0 0 10px;
-  overflow: hidden;
-}
+  .item-box .prices {
+    margin: 0 0 10px;
+    overflow: hidden;
+    text-align: right;                                                                                                                                                      /* QUIMS EDIT */
+  }
 
 .item-box .old-price {
   margin: 0 5px 0 0;
@@ -2045,7 +2058,7 @@ label, label + * {
 }
 
 .item-box .product-box-add-to-cart-button {
-  width: 60%;
+  width: 80%;                                                                                /* QUIMS EDIT */
   background-color: #28a745;
   text-align: center;
   font-size: 15px;
@@ -6901,7 +6914,7 @@ pre {
     position: absolute;                                                                                                                      /* QUIMS EDIT */
     z-index: 1;
     width: 100%;                                                                                                                        /*   QUIMS EDIT */
-    max-width: 600px;
+    max-width: 100%;
     margin: 0 auto 40px;
     opacity: 0.85;                                                                                                                            /* QUIMS EDIT */
   }
@@ -7006,8 +7019,9 @@ pre {
 
   /*** MOBILE COOKIE BANNER ***/
 
-  .eu-cookie-bar-notification{
-      top: 80%;
+  .eu-cookie-bar-notification {
+    top: 80%;
+    height: 150px;
   }
 
 
@@ -7095,7 +7109,7 @@ pre {
 
   .master-wrapper-content,
   .header-menu {
-    width: 92.5%;
+    width: 100%                                                                         /* QUIMS EDIT */                                              
   }
 
 
@@ -7297,6 +7311,12 @@ pre {
   .estimate-shipping-popup {
     padding: 25px;
   }
+
+  /*** COOKIE BANNER ***/
+  .eu-cookie-bar-notification{
+      height: 150px;
+  }
+
 }
 
 /* SMART PHONE LANDSCAPE */
