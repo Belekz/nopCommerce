@@ -1798,7 +1798,7 @@ label, label + * {
   display: table;
   width: 100%;
   margin: -20px 0 20px;
-  border-bottom: 1px solid #ddd;
+  /*border-bottom: 1px solid #ddd;*/                                                                       /* QUIMS EDIT */
 }
 
 .product-filter {
@@ -7425,6 +7425,7 @@ pre {
 
   .product-selectors {
     text-align: left;
+    display: none;                                                                                       /* QUIMS EDIT */
   }
 
   .product-selectors .product-viewmode {
