@@ -39,6 +39,14 @@ namespace Nop.Web.Models.Catalog
                        && !(DisplayForumsMenuItem && ForumEnabled)
                        && !DisplayContactUsMenuItem;
 
+        // QUIMS EDIT 
+
+        public bool IsAuthenticated { get; set; }
+        public bool ShoppingCartEnabled { get; set; }
+        public int ShoppingCartItems { get; set; }
+
+        // QUIMS EDIT
+
         #region Nested classes
 
         public class TopicModel : BaseNopEntityModel

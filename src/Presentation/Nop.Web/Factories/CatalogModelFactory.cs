@@ -34,6 +34,15 @@ using Nop.Web.Infrastructure.Cache;
 using Nop.Web.Models.Catalog;
 using Nop.Web.Models.Media;
 
+// QUIMS EDIT
+
+using Nop.Services.Security;
+using Nop.Services.Orders;
+using Nop.Core.Domain.Orders;
+
+// QUIMS EDIT
+
+
 namespace Nop.Web.Factories
 {
     public partial class CatalogModelFactory : ICatalogModelFactory
@@ -57,6 +66,14 @@ namespace Nop.Web.Factories
         private readonly IPictureService _pictureService;
         private readonly IPriceFormatter _priceFormatter;
         private readonly IProductModelFactory _productModelFactory;
+
+        // QUIMS EDIT // 
+
+        private readonly IPermissionService _permissionService;
+        private readonly IShoppingCartService _shoppingCartService;
+
+        // QUIMS EDIT
+
         private readonly IProductService _productService;
         private readonly IProductTagService _productTagService;
         private readonly ISearchTermService _searchTermService;
@@ -93,6 +110,14 @@ namespace Nop.Web.Factories
             IPictureService pictureService,
             IPriceFormatter priceFormatter,
             IProductModelFactory productModelFactory,
+
+            // QUIMS EDIT // 
+
+            IPermissionService permissionService,
+            IShoppingCartService shoppingCartService,
+
+            // QUIMS EDIT //
+
             IProductService productService,
             IProductTagService productTagService,
             ISearchTermService searchTermService,
@@ -118,6 +143,14 @@ namespace Nop.Web.Factories
             _currencyService = currencyService;
             _customerService = customerService;
             _eventPublisher = eventPublisher;
+
+            // QUIMS EDIT
+
+            _permissionService = permissionService;
+            _shoppingCartService = shoppingCartService;
+
+            // QUIMS EDIT
+
             _httpContextAccessor = httpContextAccessor;
             _localizationService = localizationService;
             _manufacturerService = manufacturerService;
@@ -543,6 +576,16 @@ namespace Nop.Web.Factories
         /// <returns>Top menu model</returns>
         public virtual TopMenuModel PrepareTopMenuModel()
         {
+            // QUIMS EDIT //
+
+            var customer = _workContext.CurrentCustomer;
+
+            // QUIMS EDIT // 
+
+
+
+
+
             var cachedCategoriesModel = new List<CategorySimpleModel>();
             //categories
             if (!_catalogSettings.UseAjaxLoadMenu)
@@ -571,8 +614,24 @@ namespace Nop.Web.Factories
                 DisplayBlogMenuItem = _displayDefaultMenuItemSettings.DisplayBlogMenuItem,
                 DisplayForumsMenuItem = _displayDefaultMenuItemSettings.DisplayForumsMenuItem,
                 DisplayContactUsMenuItem = _displayDefaultMenuItemSettings.DisplayContactUsMenuItem,
-                UseAjaxMenu = _catalogSettings.UseAjaxLoadMenu
+                UseAjaxMenu = _catalogSettings.UseAjaxLoadMenu,
+                // QUIMS EDIT //
+                IsAuthenticated = _customerService.IsRegistered(customer),
+                ShoppingCartEnabled = _permissionService.Authorize(StandardPermissionProvider.EnableShoppingCart),
+
+                // QUIMS EDIT // 
             };
+
+            // QUIMS EDIT // 
+
+            if (customer.HasShoppingCartItems)
+            {
+                model.ShoppingCartItems = _shoppingCartService.GetShoppingCart(customer, ShoppingCartType.ShoppingCart, _storeContext.CurrentStore.Id)
+                    .Sum(item => item.Quantity);
+
+            }
+
+            // QUIMS EDIT
 
             return model;
         }

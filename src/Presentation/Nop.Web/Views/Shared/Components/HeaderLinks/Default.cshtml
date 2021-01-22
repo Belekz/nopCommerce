@@ -28,7 +28,7 @@
                 </a>
             </li>
         }
-        @if (Model.WishlistEnabled)
+        @*@if (Model.WishlistEnabled)
         {
             <li>
                 <a href="@Url.RouteUrl("Wishlist")" class="ico-wishlist">
@@ -36,7 +36,7 @@
                     <span class="wishlist-qty">@T("Wishlist.HeaderQuantity", Model.WishlistItems)</span>
                 </a>
             </li>
-        }
+        }*@
         @if (Model.ShoppingCartEnabled)
         {
             <li id="topcartlink">
@@ -48,7 +48,7 @@
         }
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.HeaderLinksAfter })
     </ul>
-    @if (Model.AllowPrivateMessages && !string.IsNullOrEmpty(Model.AlertMessage))
+    @*@if (Model.AllowPrivateMessages && !string.IsNullOrEmpty(Model.AlertMessage))
     {
         //new private message notification
         <script asp-location="Footer">
@@ -56,7 +56,7 @@
                 displayPopupNotification('@Html.Raw(JavaScriptEncoder.Default.Encode(Model.AlertMessage))', 'success', false);
             });
         </script>
-    }
+    }*@
     @if (Model.ShoppingCartEnabled)
     {
         <script asp-location="Footer">

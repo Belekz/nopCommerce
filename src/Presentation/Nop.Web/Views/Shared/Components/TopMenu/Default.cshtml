@@ -1,4 +1,6 @@
-﻿@model TopMenuModel
+﻿@inject Nop.Core.IWebHelper webHelper
+@model TopMenuModel
+
 <ul class="top-menu notmobile">
     @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.HeaderMenuBefore })
     @if (Model.DisplayHomepageMenuItem)
@@ -47,6 +49,37 @@
     {
         <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
     }
+
+    @* QUIMS EDIT *@
+
+    @if (Model.IsAuthenticated)
+    {
+        <li><a href="@Url.RouteUrl("CustomerInfo")" class="ico-account">@T("Account.MyAccount")@*@Model.CustomerName*@</a></li>
+        <li><a href="@Url.RouteUrl("Logout")" class="ico-logout">@T("Account.Logout")</a></li>
+    }
+    else
+    {
+        var returnUrl = Context.Request.Query.TryGetValue("returnUrl", out var url) && !StringValues.IsNullOrEmpty(url)
+            ? url.ToString()
+            : webHelper.GetRawUrl(Context.Request);
+
+        <li><a href="@Url.RouteUrl("Register", new { returnUrl })" class="ico-register">@T("Account.Register")</a></li>
+        <li><a href="@Url.RouteUrl("Login", new { returnUrl })" class="ico-login">@T("Account.Login")</a></li>
+    }
+
+    @if (Model.ShoppingCartEnabled)
+    {
+        <li id="topcartlink">
+            <a href="@Url.RouteUrl("ShoppingCart")" class="ico-cart">
+                <span class="cart-label">@T("ShoppingCart")</span>
+                <span class="cart-qty">@T("ShoppingCart.HeaderQuantity", Model.ShoppingCartItems)</span>
+            </a>
+        </li>
+    }
+
+    @* QUIMS EDIT *@
+
+
     @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.HeaderMenuAfter })
 </ul>
 @{
@@ -55,7 +88,7 @@
     var responsiveMenuTitle = Model.HasOnlyCategories ? T("Categories") : T("Menu");
 
     @*<div class="menu-toggle">@responsiveMenuTitle</div>*@
-    <div class="menu-toggle"><i class="fas fa-bars"></i></div>                                                           // QUIMS EDIT // 
+    <div class="menu-toggle"><i class="fas fa-bars"></i></div> // QUIMS EDIT //
 
     <ul class="top-menu mobile">
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.MobHeaderMenuBefore })
