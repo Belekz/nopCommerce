@@ -102,7 +102,7 @@ namespace Nop.Web.Controllers
         }
 
         //available even when a store is closed
-        [CheckAccessClosedStore(true)]
+        //[CheckAccessClosedStore(true)]
         //available even when navigation is not allowed
         [CheckAccessPublicStore(true)]
         public virtual IActionResult SetLanguage(int langid, string returnUrl = "")
@@ -114,6 +114,9 @@ namespace Nop.Web.Controllers
             //home page
             if (string.IsNullOrEmpty(returnUrl))
                 returnUrl = Url.RouteUrl("Homepage");
+
+            //change url to newproducts page [Quims Edit]
+            returnUrl = Url.RouteUrl("terrariums");
 
             //language part in URL
             if (_localizationSettings.SeoFriendlyUrlsForLanguagesEnabled)
