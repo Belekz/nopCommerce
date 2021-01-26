@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nop.Core.Configuration;
@@ -58,8 +59,19 @@ namespace Nop.Web
         /// <param name="application">Builder for configuring an application's request pipeline</param>
         public void Configure(IApplicationBuilder application)
         {
+            application.UseRouting();
+            application.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGet("babe", async context =>
+                {
+                    await context.Response.WriteAsync("iloveyou <3");
+                });
+            });
+
             application.ConfigureRequestPipeline();
             application.StartEngine();
+
+            
         }
     }
 }

@@ -4,30 +4,10 @@
 @inject IWorkContext workContext;
 <div class="footer">
 
-    @*  QUIMS EDIT*@
+    <div class="footer-upper">
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @*<div class="footer-upper">
         <div class="footer-block information">
             <div class="title">
                 <strong>@T("Footer.Information")</strong>
@@ -47,7 +27,12 @@
                 }
             </ul>
         </div>
-        <div class="footer-block customer-service">
+
+        @* Quims edit *@
+
+
+
+        @*<div class="footer-block customer-service">
             <div class="title">
                 <strong>@T("Footer.CustomerService")</strong>
             </div>
@@ -89,7 +74,12 @@
                     <li><a href="@Url.RouteUrl("CheckGiftCardBalance")">@T("CheckGiftCardBalance")</a></li>
                 }
             </ul>
-        </div>
+        </div>*@
+
+
+
+        @* Quims edit *@
+
         <div class="footer-block my-account">
             <div class="title">
                 <strong>@T("Footer.MyAccount")</strong>
@@ -125,6 +115,9 @@
                 }
             </ul>
         </div>
+
+
+
         <div class="footer-block follow-us">
             <div class="social">
                 <div class="title">
@@ -134,8 +127,7 @@
             </div>
             @await Component.InvokeAsync("NewsletterBox")
         </div>
-    </div>*@
-
+    </div>
 
     <div class="footer-lower">
         <div class="footer-info">

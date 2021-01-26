@@ -805,7 +805,7 @@ label, label + * {
 
 .eu-cookie-bar-notification {
   position: fixed;
-  top: 92.5%;                                                                                                                                    /* QUIMS EDIT */
+  bottom: 0;                                                                                                                                    /* QUIMS EDIT */
   left: 0;                                                                                                                                   /* QUIMS EDIT */
   z-index: 1050;
   width: 100%;                                                                                                                                   /* QUIMS EDIT */
@@ -915,9 +915,10 @@ label, label + * {
   position: relative;
   z-index: 10;
   width: 95%;
-  height: 300px;                                                                                                                     /* QUIMS EDIT */
+  height: 350px;                                                                                                                     /* QUIMS EDIT */
   margin: auto;
   text-align: center;
+  display: none;                                                                                                                      /* QUIMS EDIT */
 }
 
 .header-upper {
@@ -1141,8 +1142,12 @@ label, label + * {
 /*********** INTRO ***********/                                                                                                                /*QUIMS EDIT*/
 
 .Intro {
-  position: relative;
-  opacity: 0.85;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 0.75;
+  background: url("../images/intro.jpg") no-repeat center fixed;
+  background-size: cover;
 }
 
 .IntroHeader{
@@ -1154,14 +1159,36 @@ label, label + * {
 }
 
 .IntroImg {
-  background-image: url("../images/intro.jpg");
-  height: 1100px;
-  width: 100%;
-  /* Create the parallax scrolling effect */
-  background-attachment: fixed;
-  background-position: bottom;
-  background-repeat: no-repeat;
+  background: url("../images/intro.jpg") no-repeat center fixed;
   background-size: cover;
+}
+
+.intro-language-name {
+  text-align: center;
+  color: whitesmoke;
+  font: normal 30px Arial, Helvetica, sans-serif;
+}
+
+.intro-language-selector img {
+  height: 400px;
+  opacity: 0.7;
+  border-radius: 8px;
+}
+
+.intro-language-item {
+  float: left;
+  height: 500px;
+  margin-right: 20px;
+}
+
+.intro-language-item :hover {
+  opacity: 0.9;
+}
+
+.intro-language-selector{
+    top: 35%;
+    position: absolute;
+    left: 16%;
 }
 
 .SmallIntroImg {
@@ -7020,8 +7047,8 @@ pre {
   /*** MOBILE COOKIE BANNER ***/
 
   .eu-cookie-bar-notification {
-    top: 80%;
-    height: 150px;
+    top: 85%;                                                                      /* QUIMS EDIT */
+    height: 100%;                                                              /* QUIMS EDIT */
   }
 
 
@@ -7314,7 +7341,7 @@ pre {
 
   /*** COOKIE BANNER ***/
   .eu-cookie-bar-notification{
-      height: 150px;
+      /*height: 150px;*/                                                                 /* QUIMS EDIT */
   }
 
 }
@@ -8185,7 +8212,7 @@ pre {
   }
 
   .language-list {
-    text-align: left;
+    text-align: right;                                                                                                              /* QUIMS EDIT */
   }
 
   .header-links-wrapper {

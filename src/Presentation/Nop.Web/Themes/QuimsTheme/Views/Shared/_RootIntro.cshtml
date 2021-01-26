@@ -3,14 +3,12 @@
 
 }
 
-
 @* QUIMS EDIT *@
 
 <div class="header-menu IntroHeader">
     @*Catogery menu*@
     @await Component.InvokeAsync("TopMenu")
 </div>
-
 
 @* Quims edit *@
 
@@ -20,51 +18,10 @@
 
         <div class="IntroImg"></div>
 
-        <div class="IntroTextOne text-center">
-
-            <div class="IntroStoryImg"></div>
-
-            <div class="IntroStoryText">
-
-                <h3>
-
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce pharetra lacus id ligula cursus, et sodales quam aliquam. Duis eu diam id sem aliquet ornare. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer quis nibh volutpat, accumsan nisi vel, accumsan ipsum. Aliquam nisi massa, ornare in quam et, condimentum ornare sem. Donec lectus risus, lacinia sed eros in, pharetra pretium magna. In dignissim lectus et ornare tincidunt. Fusce sed massa dignissim, porttitor turpis et, consequat felis. Ut lacinia iaculis quam vel pellentesque. Nunc aliquet, lectus eget dictum sagittis, elit nisi lacinia nulla, sed ornare velit leo accumsan ligula.Suspendisse ultrices condimentum ligula, a volutpat libero egestas vel. Morbi neque orci, venenatis et nisi sit amet, convallis ullamcorper ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel tellus sed urna pellentesque laoreet vitae eget ipsum. Nulla fermentum, neque vitae volutpat lacinia, sapien nibh ultrices tellus, nec vehicula velit magna sed dolor. Cras hendrerit odio at est ultrices faucibus. Cras libero nisi, molestie non tellus vel, finibus placerat lacus. In eu tellus lectus. Phasellus imperdiet tincidunt est, eu tempor mi dapibus sit amet.
-
-                </h3>
-            </div>
-
-        </div>
-
     </div>
 
-    @*<div class="IntroTwo">
+    @await Component.InvokeAsync("LanguageSelectorIntro")
 
-            <div class="IntroImg"></div>
-
-            <div class="IntroTextTwo text-center">
-                <h3>Available with own ecosystem</h3>
-            </div>
-        </div>
-        <div class="IntroImg">
-
-            <div class="IntroImg"></div>
-
-            <div class="IntroTextThree text-center">
-                <h3>Custom concept design</h3>
-            </div>
-        </div>*@
-
-     <a href="/medium">  
-        <div class="IntroFour">
-
-            <div class="IntroImg"></div>
-
-            <div class="IntroTextFour text-center">
-                <p1>Quims</p1>
-            </div>
-        </div>
-
-    </a>
 
 </div>
 
@@ -74,11 +31,11 @@
 @await Html.PartialAsync("_Notifications")
 @await Html.PartialAsync("_JavaScriptDisabledWarning")
 @await Html.PartialAsync("_OldInternetExplorerWarning")
+
+
 <div class="master-wrapper-page">
 
     @await Component.InvokeAsync("AdminHeaderLinks")
-
-    @*@await Html.PartialAsync("_Header")*@
 
     <script asp-location="Footer">
         var localized_data = {
@@ -87,33 +44,11 @@
         AjaxCart.init(false, '.header-links .cart-qty', '.header-links .wishlist-qty', '#flyout-cart', localized_data);
     </script>
 
-    @* QUIMS EDIT *@
 
-    @*<div class="master-wrapper-content">
-        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ContentBefore })
-
-        @if (IsSectionDefined("Breadcrumb"))
-        {
-            @RenderSection("Breadcrumb")
-        }
-        <div class="master-column-wrapper">
-            @RenderBody()
-        </div>
-        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ContentAfter })
-    </div>*@
 
     <div class="IntroEmpty">    @RenderBody()  </div>
 
 
-
-    @* QUIMS EDIT *@
-
-
-    @* Quims edit *@
-    @*@await Html.PartialAsync("_Header")*@
-    @* Quims edit *@
-
-    @*@await Component.InvokeAsync("Footer")*@
 </div>
 @await Component.InvokeAsync("EuCookieLaw")
 @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.BodyEndHtmlTagBefore })

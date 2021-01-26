@@ -7,7 +7,7 @@
 @await Html.PartialAsync("_OldInternetExplorerWarning")
 <div class="master-wrapper-page">
     @await Component.InvokeAsync("AdminHeaderLinks")
-    @*@await Html.PartialAsync("_Header")*@
+    @await Html.PartialAsync("_Header")
     <script asp-location="Footer">
         var localized_data = {
             AjaxCartFailure: "@T("AjaxCart.Failure")"
@@ -19,6 +19,9 @@
 
     <div class="SmallIntro">
         <div class="SmallIntroImg"></div>
+
+        @await Component.InvokeAsync("LanguageSelector")
+
         <div class="SmallText" text-center>quims</div>
     </div>
 
@@ -39,10 +42,6 @@
         </div>
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ContentAfter })
     </div>
-
-    @* QUIMS EDIT *@
-    @await Html.PartialAsync("_Header")
-    @* QUIMS EDIT *@
 
     @await Component.InvokeAsync("Footer")
 </div>

@@ -43,6 +43,7 @@
     }
     else
     {
+
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.LeftSideColumnBefore })
         @await Component.InvokeAsync("CategoryNavigation", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId })
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.LeftSideColumnAfterCategoryNavigation })
@@ -52,6 +53,11 @@
         @await Component.InvokeAsync("PopularProductTags")
         @await Component.InvokeAsync("PollBlock", new { systemKeyword = "LeftColumnPoll" })
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.LeftSideColumnAfter })
+
+        // QUIMS EDIT
+        @await Component.InvokeAsync("ShoppingCartQuims")
+        @*@await Component.InvokeAsync("FlyoutShoppingCart")*@
+        // QUIMS EDIT
     }
 </div>
 <div class="center-2">
