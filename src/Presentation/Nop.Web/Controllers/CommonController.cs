@@ -110,18 +110,21 @@ namespace Nop.Web.Controllers
             var language = _languageService.GetLanguageById(langid);
             if (!language?.Published ?? false)
                 language = _workContext.WorkingLanguage;
+
+            // QUIMS EDIT//
             var nederlandsRoute = "/BE/";
             var englishRoute = "/EN/";
+            var homeRoute = Url.RouteUrl("Homepage");
+            // QUIMS EDIT // 
 
             //home page
             if (string.IsNullOrEmpty(returnUrl))
                 returnUrl = Url.RouteUrl("Homepage");
 
-
             // QUIMS EDIT // 
 
             //change url to newproducts page                                               
-            if (returnUrl == nederlandsRoute || returnUrl == englishRoute)
+            if (returnUrl == nederlandsRoute || returnUrl == englishRoute || returnUrl == homeRoute)
             {
                 returnUrl = Url.RouteUrl("newproducts");
             }
