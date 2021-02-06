@@ -5,6 +5,7 @@
 @await Html.PartialAsync("_Notifications")
 @await Html.PartialAsync("_JavaScriptDisabledWarning")
 @await Html.PartialAsync("_OldInternetExplorerWarning")
+
 <div class="master-wrapper-page">
     @await Component.InvokeAsync("AdminHeaderLinks")
     @await Html.PartialAsync("_Header")
@@ -15,21 +16,23 @@
         AjaxCart.init(false, '.header-links .cart-qty', '.header-links .wishlist-qty', '#flyout-cart', localized_data);
     </script>
 
-    @* QUIMS EDIT *@
-
-    <div class="SmallIntro">
-        <div class="SmallIntroImg"></div>
-
-        @await Component.InvokeAsync("LanguageSelector")
-
-        <div class="SmallText" text-center>quims</div>
-    </div>
-
-    @* QUIMS EDIT *@
+    @*Quims edit*@
 
     <div class="header-menu">
+
+        <div class="TitleQuims">
+            <div class="SmallText">quims</div>
+            <div class="LanguageTitle"> @await Component.InvokeAsync("LanguageSelector")</div>
+        </div>
+
         @await Component.InvokeAsync("TopMenu")
+
+        <div class="SmallIntroImg"></div>
+
     </div>
+
+    @*Quims edit*@
+
     <div class="master-wrapper-content">
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ContentBefore })
 

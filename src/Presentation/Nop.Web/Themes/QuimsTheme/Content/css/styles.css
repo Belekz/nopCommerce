@@ -957,6 +957,7 @@ label, label + * {
 .language-list {
   max-width: 100%;
   font-size: 0;
+  text-align: right;
 }
 
 .language-list li {
@@ -1143,6 +1144,7 @@ label, label + * {
 
 .Intro {
   position: absolute;
+  top: 0%;
   height: 100%;
   width: 100%;
   opacity: 0.75;
@@ -1176,9 +1178,10 @@ label, label + * {
 }
 
 .intro-language-item {
-  float: left;
+  /*float: left;*/
   height: 500px;
-  margin-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .intro-language-item :hover {
@@ -1188,7 +1191,21 @@ label, label + * {
 .intro-language-selector{
     top: 35%;
     position: absolute;
-    left: 16%;
+    /*left: 16%;*/
+    width: 100%;
+}
+
+.intro-language-list{
+    display: flex; 
+}
+
+.TitleQuims {
+  margin-bottom: 3%;
+}
+
+.LanguageTitle{
+    float: left;
+    width: 10%;
 }
 
 .SmallIntroImg {
@@ -1201,21 +1218,26 @@ label, label + * {
 }
 
 .SmallText {
-  position: absolute;
-  top: 150px;
-  color: #fff;
-  padding-top: 15px;
-  padding-left: 100px;
-  padding-right: 100px;
-  padding-bottom: 15px;
-  font: 30px Calligraphic Scripts;
-  background-color: rgba(255, 255, 255, 0.5);
+  color: black;
+  font: normal 30px Arial, Helvetica, sans-serif;
   letter-spacing: 25px;
   text-transform: uppercase;
-  left: 35%;
-/*  border-bottom-left-radius: 50px;
-  border-top-right-radius: 50px;*/
-  overflow: hidden;
+  text-align: center;
+  width: 100%;
+  opacity: 0.7;
+  padding-left: 10%;
+}
+
+.IntroSmallText {
+  width: 100%;
+  position: absolute;
+  top: 15%;
+  color: black;
+  font: normal 50px Arial, Helvetica, sans-serif;
+  letter-spacing: 25px;
+  text-transform: uppercase;
+  opacity: 0.5;
+  text-align: center;
 }
 
 .IntroStoryImg {
@@ -1321,9 +1343,13 @@ label, label + * {
     transition: 1s;
   }
 
+.top-menu {
+  margin-bottom: 1%;                                                                        /* Quims edit */
+}
+
   /*********** FOOTER ***********/
   .footer {
-    background-color: transparent; /* Quims edit */
+    /*background-color: #d4d4d4;*/                                                                        /* Quims edit */
     text-align: center;
   }
 
@@ -1331,6 +1357,7 @@ label, label + * {
   width: 95%;
   margin: auto;
   border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;                                                                           /*  QUIMS EDIT */
   overflow: hidden;
   padding: 40px 0;
   font-size: 0;
@@ -1388,7 +1415,7 @@ label, label + * {
 
 .follow-us .social ul {
   margin: 0 0 30px;
-  border-bottom: 1px solid #ddd;
+  /*border-bottom: 1px solid #ddd;*/                                                         /* QUIMS EDIT */
   padding: 0 0 30px;
   font-size: 0;
 }
@@ -1529,20 +1556,25 @@ label, label + * {
   position: relative;
   margin: 0 0 10px;
   border-bottom: 1px solid #ddd;
-  background: #f6f6f6 url('../images/toggle-gray.png') right 14px no-repeat;
+  /*background: #f6f6f6 url('../images/toggle-gray.png') right 14px no-repeat;*/              /* QUIMS EDIT */
   padding: 12px 30px 12px 10px;
   font-size: 20px;
   color: #444;
-  cursor: pointer;
+  /*cursor: pointer;*/
 }
 
 .block .title strong {
   font-weight: normal;
 }
 
+.listboxQuims {
+  display: block;
+  padding: 10px 5px;
+}
+
 .block .listbox {
-  display: none;
-  border-bottom: 1px solid #ddd;
+  display: block;
+  /*border-bottom: 1px solid #ddd;*/                                                  /* QUIMS EDIT */
   padding: 10px 5px;
 }
 
@@ -1580,7 +1612,7 @@ label, label + * {
 }
 
 .block a.product-picture {
-  display: none;
+  /*display: none;*/
 }
 
 .block a.product-picture:before {
@@ -1788,7 +1820,7 @@ label, label + * {
 .product-selectors {
   margin: 0 0 20px;
   border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  /*border-bottom: 1px solid #ddd;*/                                                    /* QUIMS EDIT */
   padding: 20px 0;
 }
 
@@ -6767,7 +6799,6 @@ pre {
   }
 }
 
-
 /* SMART PHONE */
 @media all and (max-width: 1000px) {
 
@@ -6783,22 +6814,32 @@ pre {
 
   /*** QUIMS INTRO ***/
 
+  .IntroSmallText {
+    top: 5%;
+    letter-spacing: 15px;
+  }
+
   .SmallIntroImg {
     background-image: url(../images/intro.jpg);
-    height: 400px;
+    height: 300px;
     width: 100%;
-    background-position-y: -0px;
+    background-position-y: 30px;
     background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .SmallTextResponsive{
+      color: black;
+      font: normal 30px Arial, Helvetica, sans-serif;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      text-align: center;
+      width: 100%;
+      opacity: 0.5;
   }
 
   .SmallText {
-    left: 15%;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .SmallText {
-    left: 15%;
+    display: none;
   }
 
   .IntroTextFour {
@@ -6832,6 +6873,42 @@ pre {
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
+  }
+
+  .TitleQuims {
+    display: none;
+  }
+
+  .MenuResponsive {
+    float: left;
+    width: 20%;
+  }
+
+  .SmallTextResponsive {
+    float: left;
+    width: 60%;
+  }
+
+  .LanguageResponsive {
+    float: left;
+    width: 20%;
+  }
+
+  .intro-language-selector img{
+      height: 200px;
+      width: 320px;
+  }
+
+  .intro-language-list {
+    display: grid;
+  }
+
+  .intro-language-item{
+      height: 0%;
+  }
+
+  .intro-language-selector {
+    top: 20%;
   }
 
   /*** GLOBAL TABLES ***/
@@ -6938,27 +7015,40 @@ pre {
 
 
   .header-menu {
-    position: absolute;                                                                                                                      /* QUIMS EDIT */
+    position: relative;                                                                                                                      /* QUIMS EDIT */
     z-index: 1;
     width: 100%;                                                                                                                        /*   QUIMS EDIT */
     max-width: 100%;
     margin: 0 auto 40px;
-    opacity: 0.85;                                                                                                                            /* QUIMS EDIT */
+    opacity: 0.9;                                                                                                                            /* QUIMS EDIT */
   }
 
+/*   QUIMS EDIT */
 
   .menu-toggle {
-    background: transparent;                                                          /*   QUIMS EDIT */
+    background: white;        
+    position: fixed;
+    z-index: 99;
     padding: 15px;
     font-size: 15px;
     font-weight: bold;
     color: #888;
     text-transform: uppercase;
     cursor: pointer;
+    margin-bottom: 10%;        
+    width: 100%;
   }
 
   .top-menu {
     display: none;
+    background-color: white;
+    position: fixed;
+    z-index: 98; 
+    width: 100%; 
+  }
+
+  .top-menu-firstRow{
+      margin-top: 20% !important;
   }
 
   .top-menu > li {
@@ -7044,10 +7134,35 @@ pre {
     text-align: center;
   }
 
+  /*** FOOTER ***/
+
+
+  .footer-block {
+    width: 85%;
+  }
+
+  .footer .title {
+    display: none;
+  }
+
+  .social {
+    border-top: 1px solid #ddd;
+    display: unset;
+  }
+
+  .footer .list {
+    float: left;
+    display: block;
+  }
+
+  .newsletter-email input[type="text"] {
+    width: 240px;
+  }
+
   /*** MOBILE COOKIE BANNER ***/
 
   .eu-cookie-bar-notification {
-    top: 85%;                                                                      /* QUIMS EDIT */
+    top: 75%;                                                                      /* QUIMS EDIT */
     height: 100%;                                                              /* QUIMS EDIT */
   }
 
@@ -7086,7 +7201,7 @@ pre {
     background-image: url(../images/intro.jpg);
     height: 800px;
     width: 100%;
-    background-position-y: -0px;
+    background-position-y: 10px;
     background-size: cover;
   }
 
@@ -7099,18 +7214,42 @@ pre {
 
   .SmallIntroImg {
     background-image: url(../images/intro.jpg);
-    height: 350px;
+    height: 300px;
     width: 100%;
-    background-position-y: -150px;
+    background-position-y: -20px;
     background-size: cover;
+    background-repeat: no-repeat;
   }
 
-  .SmallText{
-      left: 25%;
+  .IntroSmallText {
+    top: 5%;
   }
 
-  .IntroTextOne{
-      top: 60%;
+  .TitleQuims {
+    display: none;
+  }
+
+  .MenuResponsive {
+    float: left;
+    width: 20%;
+  }
+
+  .SmallTextResponsive {
+    float: left;
+    width: 60%;
+  }
+
+  .LanguageResponsive {
+    float: left;
+    width: 20%;
+  }
+
+  .LanguageTitle{
+      display: none;
+  }
+
+  .IntroTextOne {
+    top: 60%;
   }
 
   .IntroStoryText {
@@ -7129,7 +7268,13 @@ pre {
     background-attachment: inherit;
   }
 
+  .intro-language-item{
+      height: 300px;
+  }
 
+  .intro-language-selector img {
+    height: 250px;
+  }
 
   /*** GLOBAL ***/
 
@@ -7189,6 +7334,20 @@ pre {
 
   .footer-block {
     width: 85%;
+  }
+
+  .footer .title{
+      display: none;
+  }
+
+  .social {
+    border-top: 1px solid #ddd;
+    display: unset;
+  }
+
+  .footer .list {
+    float: left;
+    display: block;
   }
 
   .newsletter-email input[type="text"] {
@@ -7258,7 +7417,6 @@ pre {
     width: auto;
     margin: 0 1px 2px;
   }
-
 
   /*** WISHLIST ***/
 
@@ -7339,9 +7497,11 @@ pre {
     padding: 25px;
   }
 
-  /*** COOKIE BANNER ***/
-  .eu-cookie-bar-notification{
-      /*height: 150px;*/                                                                 /* QUIMS EDIT */
+  /*** MOBILE COOKIE BANNER ***/
+
+  .eu-cookie-bar-notification {
+    top: 85%;                                                                                 /* QUIMS EDIT */
+    height: 100%;                                                                             /* QUIMS EDIT */
   }
 
 }
@@ -7403,15 +7563,33 @@ pre {
 
   /*** HEADER ***/
 
-
   .header-selectors-wrapper > div {
     width: 20%;
+  }
+
+  .header-menu{
+      text-align: center;
+  }
+
+  .header-left {
+    float: left;
+    width: 90%;
+  }
+
+  .header-left li{
+      display: inline;
+      margin: 5px;
+  }
+
+  .header-right {
+    float: left;
+    width: 10%;
   }
 
   /*** FOOTER ***/
 
 
-  .footer-block {
+  /*.footer-block {
     display: inline-block;
     width: 25.33333%;
     margin: 0 4%;
@@ -7427,8 +7605,8 @@ pre {
   }
 
   .footer-block .list {
-    display: block !important; /* prevents toggle display:none on resize */
-    background: none;
+    display: block !important;*/ /* prevents toggle display:none on resize */
+    /*background: none;
     padding: 0;
   }
 
@@ -7446,6 +7624,37 @@ pre {
     margin: 25px auto 0;
   }
 
+  .social {
+    border-top: 1px solid #ddd;
+    display: unset;
+  }
+
+  .footer .list {
+    float: left;
+    display: block;
+  }*/
+
+
+  /*** FOOTER ***/
+
+
+  .footer-block {
+    width: 85%;
+  }
+
+  .footer .title {
+    display: none;
+  }
+
+  .social {
+    border-top: 1px solid #ddd;
+    display: unset;
+  }
+
+  .footer .list {
+    float: left;
+    display: block;
+  }
 
   /*** CATEGORY ***/
 
@@ -8050,7 +8259,7 @@ pre {
 }
 
 /* DESKTOP 1 */
-@media all and (min-width: 1001px) {
+@media all and (min-width: 1101px) {
 
   /*** QUIMS CLOSED ***/
 
@@ -8064,8 +8273,33 @@ pre {
 
   /*** QUIMS INTRO ***/
 
+  .TitleQuims {
+    display: block;
+  }
+
   .SmallText {
-    left: 35%;
+    float: left;
+    width: 90%;
+  }
+
+  .SmallTextResponsive {
+    display: none;
+  }
+
+  .MenuResponsive {
+      display: none;
+  }
+
+  .LanguageResponsive {
+    display: none;
+  }
+
+  .LanguageTitle {
+    display: block;
+  }
+
+  .intro-language-selector {
+    display: block;
   }
 
   .IntroTextFour {
@@ -8082,10 +8316,28 @@ pre {
     float: left;
   }
 
+  .SmallIntroImg {
+    background-image: url("../images/intro.jpg");
+    height: 300px;
+    width: 100%;
+    background-position-y: -230px;
+    background-size: cover;
+    opacity: 0.7;
+    background-repeat: no-repeat;
+  }
+
   .IntroStoryText {
     float: left;
     padding: 100px;
     width: 65%;
+  }
+
+  .intro-language-selector img{
+      height: 400px;
+  }
+
+  .eu-cookie-bar-notification{
+      top: 93%; 
   }
 
   /*** GLOBAL STYLES ***/
@@ -8388,7 +8640,7 @@ pre {
 
 
   .header-menu {
-    /*position: relative;*/                                                                                                   /* QUIMS EDIT */
+    position: relative;                                                                                                    /*QUIMS EDIT*/ 
     z-index: 5;
     width: 980px;
     margin: 0 auto 30px;
@@ -8414,7 +8666,7 @@ pre {
 
   .header-menu > ul > li {
     display: inline-block;
-    border-left: 1px solid #ddd;
+    /*border-left: 1px solid #ddd;*/
     padding: 0 15px;
     vertical-align: middle;
   }
@@ -9015,6 +9267,10 @@ pre {
     margin: 10px 0;
     vertical-align: middle;
   }
+
+  .social {
+    border-top: 0px solid #ddd;
+  }
 }
 
 /* DESKTOP 2 */
@@ -9033,8 +9289,8 @@ pre {
 
   /*** QUIMS INTRO ***/
 
-  .SmallText {
-    left: 35%;
+  .SmallTextResponsive {
+    display: none;
   }
 
   .IntroTextFour {
