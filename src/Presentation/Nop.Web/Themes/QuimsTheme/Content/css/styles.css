@@ -1588,19 +1588,20 @@ label, label + * {
   padding: 5px 0;
   font-size: 16px;
   color: #444;
-  -webkit-transition: all 0.1s ease;
-  transition: all 0.1s ease;
+  vertical-align: middle;
+  /*-webkit-transition: all 0.1s ease;*/
+  /*transition: all 0.1s ease;*/
 }
 
-.block .list a:before {
-  content: "";
-  position: absolute;
+/*.block .list a:before {*/
+  /*content: "";*/
+  /*position: absolute;
   top: 12px;
   left: -15px;
   width: 5px;
   height: 5px;
   background-color: #ddd;
-}
+}*/
 
 .block .list .active > a {
   color: #28a745;
@@ -6765,7 +6766,7 @@ pre {
 
 /* MEDIA  */
 
-
+/* (max 769) */
 
 @media all and (max-width: 769px) {
 
@@ -6799,8 +6800,8 @@ pre {
   }
 }
 
-/* SMART PHONE */
-@media all and (max-width: 1000px) {
+/* SMART PHONE (max 1000) */
+@media all and (max-width: 1300px) {
 
   /*** QUIMS CLOSED ***/
 
@@ -7190,8 +7191,7 @@ pre {
 
 }
 
-
-/* TABLET  */
+/* TABLET (min 481) */ 
 @media all and (min-width: 481px) {
 
 
@@ -7506,7 +7506,7 @@ pre {
 
 }
 
-/* SMART PHONE LANDSCAPE */
+/* SMART PHONE LANDSCAPE (min769) */
 @media all and (min-width: 769px) {
 
   /*** QUIMS CLOSED ***/
@@ -8258,8 +8258,8 @@ pre {
   }
 }
 
-/* DESKTOP 1 */
-@media all and (min-width: 1101px) {
+/* DESKTOP 1 (min 1200) */
+@media all and (min-width: 1300px) {
 
   /*** QUIMS CLOSED ***/
 
@@ -8317,13 +8317,8 @@ pre {
   }
 
   .SmallIntroImg {
-    background-image: url("../images/intro.jpg");
     height: 300px;
-    width: 100%;
-    background-position-y: -230px;
-    background-size: cover;
-    opacity: 0.7;
-    background-repeat: no-repeat;
+    background-position-y: -50px;
   }
 
   .IntroStoryText {
@@ -9273,7 +9268,7 @@ pre {
   }
 }
 
-/* DESKTOP 2 */
+/* DESKTOP 2 (min 1367) */
 @media all and (min-width: 1367px) {
 
 
@@ -9311,6 +9306,11 @@ pre {
     float: left;
     margin-left: 0px;
     margin-top: 0%;
+  }
+
+  .SmallIntroImg {
+    height: 300px;
+    background-position-y: -320px;
   }
 
   .IntroStoryText {
