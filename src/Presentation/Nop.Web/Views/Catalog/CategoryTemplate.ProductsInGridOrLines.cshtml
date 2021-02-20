@@ -152,6 +152,22 @@
                 </div>
             </div>
         }
+
+        @*QUIMS EDIT*@
+
+        else
+        {
+            if (Model.SubCategories.Count == 0)
+            {
+                <div class="title">
+                    <strong>@T("Products.SoldOut")</strong>
+                </div>
+            }
+
+        }
+
+        @*QUIMS EDIT*@
+
         @{
             var pager = Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber");
         }

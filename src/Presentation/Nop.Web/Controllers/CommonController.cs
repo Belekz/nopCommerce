@@ -112,8 +112,8 @@ namespace Nop.Web.Controllers
                 language = _workContext.WorkingLanguage;
 
             // QUIMS EDIT//
-            var nederlandsRoute = "/BE/";
-            var englishRoute = "/EN/";
+            var nederlandsRoute = "/be/";
+            var englishRoute = "/en/";
             var homeRoute = Url.RouteUrl("Homepage");
             // QUIMS EDIT // 
 
@@ -124,7 +124,8 @@ namespace Nop.Web.Controllers
             // QUIMS EDIT // 
 
             //change url to newproducts page                                               
-            if (returnUrl == nederlandsRoute || returnUrl == englishRoute || returnUrl == homeRoute)
+            if ((returnUrl == nederlandsRoute) || (returnUrl == englishRoute) || (returnUrl == nederlandsRoute.ToUpper()) || (returnUrl == englishRoute.ToUpper())
+                || (returnUrl == homeRoute))
             {
                 returnUrl = Url.RouteUrl("newproducts");
             }

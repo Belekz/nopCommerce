@@ -38,6 +38,20 @@
 
     <Content Include="Plugins\bin\placeholder.txt" CopyToPublishDirectory="PreserveNewest" />
 
+    <Content Include="Themes\QuimsThemeTwo\Views\Common\ContactUs.cshtml" />
+
+    <Content Include="Themes\QuimsThemeTwo\Views\Common\ContactVendor.cshtml" />
+
+    <Content Include="Themes\QuimsThemeTwo\Views\Common\PageNotFound.cshtml" />
+
+    <Content Include="Themes\QuimsThemeTwo\Views\Common\Sitemap.cshtml" />
+
+    <Content Include="Themes\QuimsThemeTwo\Views\Common\StoreClosed.cshtml" />
+
+    <Content Include="Themes\QuimsThemeTwo\Views\Shared\_ColumnsClosed.cshtml" />
+
+    <Content Include="Themes\QuimsThemeTwo\Views\Shared\_HeaderClosed.cshtml" />
+
     <Content Include="Themes\QuimsTheme\Views\Common\ContactUs.cshtml" />
 
     <Content Include="Themes\QuimsTheme\Views\Common\ContactVendor.cshtml" />
@@ -58,9 +72,75 @@
 
     <!-- We copy the \Logs directory -->
     <Content Include="Logs\**" CopyToPublishDirectory="PreserveNewest" />
+    <Content Remove="Themes\QuimsThemeTwo\Content\images\IntroStory.jpg" />
+    <Content Remove="Themes\QuimsThemeTwo\preview.jpg" />
+    <Content Remove="Themes\QuimsThemeTwo\Views\preview.jpg" />
     <Content Remove="Themes\QuimsTheme\Content\images\IntroStory.jpg" />
     <Content Remove="Themes\QuimsTheme\preview.jpg" />
     <Content Remove="Themes\QuimsTheme\Views\preview.jpg" />
+    <None Remove="Themes\QuimsThemeTwo\Content\css\print.css" />
+    <None Remove="Themes\QuimsThemeTwo\Content\css\styles.css" />
+    <None Remove="Themes\QuimsThemeTwo\Content\css\styles.rtl.css" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\ajax-loader-small.gif" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\back-button.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\calendar-next.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\calendar-prev.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\Capture.PNG" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\close.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\compare-button.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\details.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\discontinued-product-icon.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\download-button.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\edit.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\edit_.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\email-button.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\first.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\ie_warning.jpg" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\intro.jpg" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\last.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\loading.gif" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\logo.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\menu-icon.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\move.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\new.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\next.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\pointer.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\prev.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\preview.jpg" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\rating1.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\rating2.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\remove.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\remove_.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\reply.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\retry.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\return.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\rss.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\shipping.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\shopping-bag.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\social-sprite.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\subscribe-button.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\toggle-black.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\toggle-gray.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\toggle-white.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\topic-type1.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\topic-type2.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\topic-type3.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\view-grid.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\view-list.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\vote-down-selected.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\vote-down.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\vote-up-selected.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\vote-up.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\watch.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\wishlist-button-push.png" />
+    <None Remove="Themes\QuimsThemeTwo\Content\images\wishlist-button.png" />
+    <None Remove="Themes\QuimsThemeTwo\Views\Common\ContactUs.cshtml" />
+    <None Remove="Themes\QuimsThemeTwo\Views\Common\ContactVendor.cshtml" />
+    <None Remove="Themes\QuimsThemeTwo\Views\Common\PageNotFound.cshtml" />
+    <None Remove="Themes\QuimsThemeTwo\Views\Common\Sitemap.cshtml" />
+    <None Remove="Themes\QuimsThemeTwo\Views\Common\StoreClosed.cshtml" />
+    <None Remove="Themes\QuimsThemeTwo\Views\Shared\_ColumnsClosed.cshtml" />
+    <None Remove="Themes\QuimsThemeTwo\Views\Shared\_HeaderClosed.cshtml" />
     <None Remove="Themes\QuimsTheme\Content\css\print.css" />
     <None Remove="Themes\QuimsTheme\Content\css\styles.css" />
     <None Remove="Themes\QuimsTheme\Content\css\styles.rtl.css" />
@@ -172,6 +252,34 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Themes\QuimsThemeTwo\Views\Common\ContactUs.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsThemeTwo\Views\Common\ContactVendor.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsThemeTwo\Views\Common\PageNotFound.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsThemeTwo\Views\Common\Sitemap.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsThemeTwo\Views\Common\StoreClosed.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsThemeTwo\Views\Shared\_ColumnsClosed.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\QuimsThemeTwo\Views\Shared\_HeaderClosed.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="Themes\QuimsTheme\Content\images\ie_warning.jpg">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
