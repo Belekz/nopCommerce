@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Payments",
+  "FriendlyName": "Mollie by Quims.be",
+  "SystemName": "Mollie",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.40" ],
+  "Author": "Quims.be",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Payments.MollieByQuims.dll",
+  "Description": "Plugin for Mollie, created by Quims"
+}
