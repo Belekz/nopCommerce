@@ -1,0 +1,14 @@
+{
+  "Group": "Widgets",
+  "FriendlyName": "Widget Test",
+  "SystemName": "Widgets.HelloWorld",
+  "Version": "1.0",
+  "SupportedVersions": [ "4.40" ],
+  "Author": "Quims",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.HelloWorld.dll",
+  "Description": "This plugin is a test",
+  "LimitedToStores": "",
+  "LimitedToCustomerRoles": "",
+  "DependsOnSystemNames": ""
+}
