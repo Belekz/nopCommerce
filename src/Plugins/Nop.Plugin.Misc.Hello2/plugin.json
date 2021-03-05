@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Misc",
+  "FriendlyName": "Hello2",
+  "SystemName": "Hello2",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.40" ],
+  "Author": "PDW",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Misc.Hello2.dll",
+  "Description": "Test plugin 2"
+}
