@@ -4,17 +4,12 @@ using System;
 
 namespace Nop.Plugin.Payments.MollieByQuims.Components
 {
-    [ViewComponent(Name = "Custom")]
+    [ViewComponent(Name = "MollieByQuims")]
     public class CustomViewComponent : NopViewComponent
     {
-        public CustomViewComponent()
-        {
-
-        }
-
         public IViewComponentResult Invoke(int productId)
         {
-            throw new NotImplementedException();
+            return View("~/Plugins/Payments.MollieByQuims/Views/PaymentInfo.cshtml");
         }
     }
 }
