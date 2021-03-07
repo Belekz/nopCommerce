@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Payment methods",
+  "FriendlyName": "Manual Mollie",
+  "SystemName": "Payments.ManualMollie",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.40" ],
+  "Author": "Quims",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Payments.ManualMollie.dll",
+  "Description": "Test Plugin for Mollie by Quims.be"
+}
