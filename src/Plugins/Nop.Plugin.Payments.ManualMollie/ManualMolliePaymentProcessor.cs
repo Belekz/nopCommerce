@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Mollie.Api.Client;
 using Mollie.Api.Client.Abstract;
 using Mollie.Api.Models;
+using Mollie.Api.Models.Order;
+using Mollie.Api.Models.Payment;
 using Mollie.Api.Models.Payment.Request;
 using Mollie.Api.Models.Payment.Response;
 using Nop.Core;
@@ -74,33 +76,18 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <param name="postProcessPaymentRequest">Payment info required for an order processing</param>
         public void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
         {
-            
+            string total = string.Format("{0:0.00}", postProcessPaymentRequest.Order.OrderSubtotalInclTax);
+
             IPaymentClient paymentClient = new PaymentClient("test_BsMnA5gypddAmp7guP9mAtexVVaC4b");
             PaymentRequest paymentRequest = new PaymentRequest()
             {
-                //Amount = new Amount(Currency.EUR, 100.00m),
-                Amount = new Amount(Currency.EUR, postProcessPaymentRequest.Order.OrderSubTotalDiscountInclTax),
-                //Description = "Test payment of the example project",
+                Amount = new Amount(Currency.EUR, total),
                 Description = $"Quims Beta - ID: {postProcessPaymentRequest.Order.OrderGuid.ToString()}",
-                //RedirectUrl = "http://google.com"
                 RedirectUrl = "https://localhost:44396/checkout/completed/"
             };
 
-
-            //PaymentResponse paymentResponse = paymentClient.CreatePaymentAsync(paymentRequest).GetAwaiter().GetResult();
-            //PaymentResponse paymentResponse = await paymentClient.CreatePaymentAsync(paymentRequest);
-            //PaymentResponse paymentResponse = await paymentClient.CreatePaymentAsync(paymentRequest).ConfigureAwait(false);
-
             PaymentResponse paymentResponse = paymentClient.CreatePaymentAsync(paymentRequest).GetAwaiter().GetResult();
-
             _httpContextAccessor.HttpContext.Response.Redirect(paymentResponse.Links.Checkout.Href);
-
-            //if (paymentResponse.Links.Checkout.Href.Length > 5)
-            //{
-            //    _httpContextAccessor.HttpContext.Response.Redirect(paymentResponse.Links.Checkout.Href);
-                
-            //}
-
 
             return;
         } 
