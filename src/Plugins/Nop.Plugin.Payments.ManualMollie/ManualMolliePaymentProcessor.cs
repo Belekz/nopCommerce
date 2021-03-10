@@ -29,6 +29,7 @@ namespace Nop.Plugin.Payments.ManualMollie
         private readonly ILocalizationService _localizationService;
         private readonly IPaymentService _paymentService;
         private readonly ISettingService _settingService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebHelper _webHelper;
         private readonly ManualMolliePaymentSettings _manualMolliePaymentSettings;
 
@@ -40,6 +41,7 @@ namespace Nop.Plugin.Payments.ManualMollie
             IPaymentService paymentService,
             ISettingService settingService,
             IWebHelper webHelper,
+            IHttpContextAccessor httpContextAccessor,
             ManualMolliePaymentSettings manualMolliePaymentSettings)
         {
             _localizationService = localizationService;
@@ -47,6 +49,7 @@ namespace Nop.Plugin.Payments.ManualMollie
             _settingService = settingService;
             _webHelper = webHelper;
             _manualMolliePaymentSettings = manualMolliePaymentSettings;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion
@@ -60,37 +63,18 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <returns>Process payment result</returns>
         public ProcessPaymentResult ProcessPayment(ProcessPaymentRequest processPaymentRequest)
         {
-            var result = new ProcessPaymentResult
-            {
-                AllowStoringCreditCardNumber = true
-            };
-            switch (_manualMolliePaymentSettings.TransactMode)
-            {
-                case TransactMode.Pending:
-                    result.NewPaymentStatus = PaymentStatus.Pending;
-                    break;
-                case TransactMode.Authorize:
-                    result.NewPaymentStatus = PaymentStatus.Authorized;
-                    break;
-                case TransactMode.AuthorizeAndCapture:
-                    result.NewPaymentStatus = PaymentStatus.Paid;
-                    break;
-                default:
-                    result.AddError("Not supported transaction type");
-                    break;
-            }
 
-            return result;
+            return new ProcessPaymentResult();
 
-            //return new ProcessPaymentResult();
         }
 
         /// <summary>
         /// Post process payment (used by payment gateways that require redirecting to a third-party URL)
         /// </summary>
         /// <param name="postProcessPaymentRequest">Payment info required for an order processing</param>
-        public async void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
+        public void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
         {
+            
             IPaymentClient paymentClient = new PaymentClient("test_BsMnA5gypddAmp7guP9mAtexVVaC4b");
             PaymentRequest paymentRequest = new PaymentRequest()
             {
@@ -102,11 +86,24 @@ namespace Nop.Plugin.Payments.ManualMollie
                 RedirectUrl = "https://localhost:44396/checkout/completed/"
             };
 
-            PaymentResponse paymentResponse = await paymentClient.CreatePaymentAsync(paymentRequest);
 
-            //_httpContextAccessor.HttpContext.Response.Redirect(paymentResponse.Links.Checkout.Href);
+            //PaymentResponse paymentResponse = paymentClient.CreatePaymentAsync(paymentRequest).GetAwaiter().GetResult();
+            //PaymentResponse paymentResponse = await paymentClient.CreatePaymentAsync(paymentRequest);
+            //PaymentResponse paymentResponse = await paymentClient.CreatePaymentAsync(paymentRequest).ConfigureAwait(false);
+
+            PaymentResponse paymentResponse = paymentClient.CreatePaymentAsync(paymentRequest).GetAwaiter().GetResult();
+
+            _httpContextAccessor.HttpContext.Response.Redirect(paymentResponse.Links.Checkout.Href);
+
+            //if (paymentResponse.Links.Checkout.Href.Length > 5)
+            //{
+            //    _httpContextAccessor.HttpContext.Response.Redirect(paymentResponse.Links.Checkout.Href);
+                
+            //}
+
+
             return;
-        }
+        } 
 
         /// <summary>
         /// Returns a value indicating whether payment method should be hidden during checkout
@@ -168,27 +165,29 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <returns>Process payment result</returns>
         public ProcessPaymentResult ProcessRecurringPayment(ProcessPaymentRequest processPaymentRequest)
         {
-            var result = new ProcessPaymentResult
-            {
-                AllowStoringCreditCardNumber = true
-            };
-            switch (_manualMolliePaymentSettings.TransactMode)
-            {
-                case TransactMode.Pending:
-                    result.NewPaymentStatus = PaymentStatus.Pending;
-                    break;
-                case TransactMode.Authorize:
-                    result.NewPaymentStatus = PaymentStatus.Authorized;
-                    break;
-                case TransactMode.AuthorizeAndCapture:
-                    result.NewPaymentStatus = PaymentStatus.Paid;
-                    break;
-                default:
-                    result.AddError("Not supported transaction type");
-                    break;
-            }
+            //var result = new ProcessPaymentResult
+            //{
+            //    AllowStoringCreditCardNumber = true
+            //};
+            //switch (_manualMolliePaymentSettings.TransactMode)
+            //{
+            //    case TransactMode.Pending:
+            //        result.NewPaymentStatus = PaymentStatus.Pending;
+            //        break;
+            //    case TransactMode.Authorize:
+            //        result.NewPaymentStatus = PaymentStatus.Authorized;
+            //        break;
+            //    case TransactMode.AuthorizeAndCapture:
+            //        result.NewPaymentStatus = PaymentStatus.Paid;
+            //        break;
+            //    default:
+            //        result.AddError("Not supported transaction type");
+            //        break;
+            //}
 
-            return result;
+            //return result;
+
+            return new ProcessPaymentResult { Errors = new[] { "Recurring payment not supported" } };
         }
 
         /// <summary>
@@ -198,8 +197,10 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <returns>Result</returns>
         public CancelRecurringPaymentResult CancelRecurringPayment(CancelRecurringPaymentRequest cancelPaymentRequest)
         {
-            //always success
-            return new CancelRecurringPaymentResult();
+            ////always success
+            //return new CancelRecurringPaymentResult();
+
+            return new CancelRecurringPaymentResult { Errors = new[] { "Recurring payment not supported" } };
         }
 
         /// <summary>
@@ -209,11 +210,21 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <returns>Result</returns>
         public bool CanRePostProcessPayment(Order order)
         {
+            //if (order == null)
+            //    throw new ArgumentNullException(nameof(order));
+
+            ////it's not a redirection payment method. So we always return false
+            //return false;
+
             if (order == null)
                 throw new ArgumentNullException(nameof(order));
 
-            //it's not a redirection payment method. So we always return false
-            return false;
+            //let's ensure that at least 5 seconds passed after order is placed
+            //P.S. there's no any particular reason for that. we just do it
+            if ((DateTime.UtcNow - order.CreatedOnUtc).TotalSeconds < 5)
+                return false;
+
+            return true;
         }
 
         /// <summary>
@@ -223,23 +234,25 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <returns>List of validating errors</returns>
         public IList<string> ValidatePaymentForm(IFormCollection form)
         {
-            var warnings = new List<string>();
+            //var warnings = new List<string>();
 
-            //validate
-            var validator = new PaymentInfoValidator(_localizationService);
-            var model = new PaymentInfoModel
-            {
-                CardholderName = form["CardholderName"],
-                CardNumber = form["CardNumber"],
-                CardCode = form["CardCode"],
-                ExpireMonth = form["ExpireMonth"],
-                ExpireYear = form["ExpireYear"]
-            };
-            var validationResult = validator.Validate(model);
-            if (!validationResult.IsValid)
-                warnings.AddRange(validationResult.Errors.Select(error => error.ErrorMessage));
+            ////validate
+            //var validator = new PaymentInfoValidator(_localizationService);
+            //var model = new PaymentInfoModel
+            //{
+            //    CardholderName = form["CardholderName"],
+            //    CardNumber = form["CardNumber"],
+            //    CardCode = form["CardCode"],
+            //    ExpireMonth = form["ExpireMonth"],
+            //    ExpireYear = form["ExpireYear"]
+            //};
+            //var validationResult = validator.Validate(model);
+            //if (!validationResult.IsValid)
+            //    warnings.AddRange(validationResult.Errors.Select(error => error.ErrorMessage));
 
-            return warnings;
+            //return warnings;
+
+            return new List<string>();
         }
 
         /// <summary>
@@ -249,15 +262,17 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <returns>Payment info holder</returns>
         public ProcessPaymentRequest GetPaymentInfo(IFormCollection form)
         {
-            return new ProcessPaymentRequest
-            {
-                CreditCardType = form["CreditCardType"],
-                CreditCardName = form["CardholderName"],
-                CreditCardNumber = form["CardNumber"],
-                CreditCardExpireMonth = int.Parse(form["ExpireMonth"]),
-                CreditCardExpireYear = int.Parse(form["ExpireYear"]),
-                CreditCardCvv2 = form["CardCode"]
-            };
+            //return new ProcessPaymentRequest
+            //{
+            //    CreditCardType = form["CreditCardType"],
+            //    CreditCardName = form["CardholderName"],
+            //    CreditCardNumber = form["CardNumber"],
+            //    CreditCardExpireMonth = int.Parse(form["ExpireMonth"]),
+            //    CreditCardExpireYear = int.Parse(form["ExpireYear"]),
+            //    CreditCardCvv2 = form["CardCode"]
+            //};
+
+            return new ProcessPaymentRequest();
         }
 
         /// <summary>
@@ -346,12 +361,14 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <summary>
         /// Gets a recurring payment type of payment method
         /// </summary>
-        public RecurringPaymentType RecurringPaymentType => RecurringPaymentType.Manual;
+        //public RecurringPaymentType RecurringPaymentType => RecurringPaymentType.Manual;
+        public RecurringPaymentType RecurringPaymentType => RecurringPaymentType.NotSupported;
 
         /// <summary>
         /// Gets a payment method type
         /// </summary>
-        public PaymentMethodType PaymentMethodType => PaymentMethodType.Standard;
+        //public PaymentMethodType PaymentMethodType => PaymentMethodType.Standard;
+        public PaymentMethodType PaymentMethodType => PaymentMethodType.Redirection;
 
         /// <summary>
         /// Gets a value indicating whether we should display a payment information page for this plugin
