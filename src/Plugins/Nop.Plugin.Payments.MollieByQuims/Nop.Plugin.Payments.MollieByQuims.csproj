@@ -15,7 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="mollie 100x53.png" />
 	  <None Remove="plugin.json" />
     <None Remove="Areas\Admin\Views\_ViewImports.cshtml" />
     <None Remove="Views\Buttons.cshtml" />
@@ -63,10 +62,17 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Extensions\" />
     <Folder Include="Factories\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Mollie.Api" Version="2.1.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="mollie 100x53.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <!-- This target execute after "Build" target -->

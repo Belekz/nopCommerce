@@ -1,7 +1,7 @@
 ﻿{
-  "Group": "Payments",
+  "Group": "Payment methods",
   "FriendlyName": "Mollie by Quims.be",
-  "SystemName": "Mollie",
+  "SystemName": "Payments.Mollie",
   "Version": "1.00",
   "SupportedVersions": [ "4.40" ],
   "Author": "Quims.be",

@@ -90,6 +90,35 @@ namespace Nop.Plugin.Payments.MollieByQuims
         #region Methods
 
         /// <summary>
+        /// Install the plugin
+        /// </summary>
+        public override void Install()
+        {
+            ////settings
+            //_settingService.SaveSetting(new MollieByQuimsPaymentSettings
+            //{
+            //    UseSandbox = true
+            //});
+
+            base.Install();
+        }
+
+        /// <summary>
+        /// Uninstall the plugin
+        /// </summary>
+        public override void Uninstall()
+        {
+            //settings
+            //_settingService.DeleteSetting<PayPalStandardPaymentSettings>();
+
+            //locales
+            //_localizationService.DeleteLocaleResources("Plugins.Payments.PayPalStandard");
+
+            base.Uninstall();
+        }
+
+
+        /// <summary>
         /// Validate payment form
         /// </summary>
         /// <param name="form">The parsed form values</param>
