@@ -8,6 +8,7 @@ using Nop.Plugin.Misc.HelloMollie.Models;
 
 namespace Nop.Plugin.Misc.HelloMollie.Components
 {
+
     [ViewComponent(Name = "HelloMollieWidget")]
     public class ExampleWidgetViewComponent : NopViewComponent
     {
@@ -18,6 +19,8 @@ namespace Nop.Plugin.Misc.HelloMollie.Components
             //return Content("Hello Mollie");
             return View("~/Plugins/Misc.HelloMollie/Views/Create.cshtml", NewPayment);
         }
+
+        
     }
 
 }
