@@ -1,11 +1,20 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Mollie.Api.Client;
+using Mollie.Api.Client.Abstract;
+using Mollie.Api.Models.Payment;
+using Mollie.Api.Models.Payment.Response;
 using Nop.Core;
 using Nop.Plugin.Payments.ManualMollie.Models;
 using Nop.Services;
+using Nop.Services.Common;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
+using Nop.Services.Orders;
+using Nop.Services.Payments;
 using Nop.Services.Security;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
@@ -13,9 +22,7 @@ using Nop.Web.Framework.Mvc.Filters;
 
 namespace Nop.Plugin.Payments.ManualMollie.Controllers
 {
-    [AuthorizeAdmin]
-    [Area(AreaNames.Admin)]
-    [AutoValidateAntiforgeryToken]
+
     public class PaymentManualMollieController : BasePaymentController
     {
         #region Fields
@@ -25,6 +32,9 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
         private readonly IPermissionService _permissionService;
         private readonly ISettingService _settingService;
         private readonly IStoreContext _storeContext;
+        private readonly IOrderProcessingService _orderProcessingService;
+        private readonly IOrderService _orderService;
+        private readonly IGenericAttributeService _genericAttributeService;
 
         #endregion
 
@@ -34,6 +44,9 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
             INotificationService notificationService,
             IPermissionService permissionService,
             ISettingService settingService,
+            IOrderProcessingService orderProcessingService,
+            IOrderService orderService,
+            IGenericAttributeService genericAttributeService,
             IStoreContext storeContext)
         {
             _localizationService = localizationService;
@@ -41,11 +54,18 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
             _permissionService = permissionService;
             _settingService = settingService;
             _storeContext = storeContext;
+            _orderProcessingService = orderProcessingService;
+            _orderService = orderService;
+            _genericAttributeService = genericAttributeService;
         }
 
         #endregion
 
         #region Methods
+
+        [AuthorizeAdmin]
+        [Area(AreaNames.Admin)]
+        [AutoValidateAntiforgeryToken]
 
         public IActionResult Configure()
         {
@@ -75,6 +95,10 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
         }
 
         [HttpPost]
+        [AuthorizeAdmin]
+        [Area(AreaNames.Admin)]
+        [AutoValidateAntiforgeryToken]
+
         public IActionResult Configure(ConfigurationModel model)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManagePaymentMethods))
@@ -106,6 +130,74 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
             _notificationService.SuccessNotification(_localizationService.GetResource("Admin.Plugins.Saved"));
 
             return Configure();
+        }
+
+        public async Task<IActionResult> Verify()
+        {
+
+            // TO DO 
+
+            // 2: make client string setting
+            // 3: ...
+
+
+            // Open client
+            IPaymentClient paymentClient = new PaymentClient("test_BsMnA5gypddAmp7guP9mAtexVVaC4b");
+
+            // Get first identiefer from repository
+            var identifier = Repository.Identifiers.ToArray()[0];
+
+            // Set time out count
+            int timeout = 0;
+
+            // Check if not more than one orders are being processed at the same time (this should never happen) 
+            if (Repository.Identifiers.Count() > 1)
+            {
+                foreach (var id in Repository.Identifiers.ToArray())
+                {
+                    id.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Cancelled;
+                    _orderService.UpdateOrder(id.OrderInfo);
+                }
+
+                Repository.Reset();
+                return View("~/Plugins/Payments.ManualMollie/Views/Verify.cshtml");
+            }
+
+            // Get payment status from Mollie
+            PaymentResponse result = await paymentClient.GetPaymentAsync(identifier.MollieInfo.Id);
+
+            // Process status Mollie with Nop order
+            while (result.Status != Mollie.Api.Models.Payment.PaymentStatus.Paid)
+            {
+                result = await paymentClient.GetPaymentAsync(identifier.MollieInfo.Id);
+                timeout++;
+
+                // Time out
+                if (timeout == 10)
+                {
+                    identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Cancelled;
+                    _orderService.UpdateOrder(identifier.OrderInfo);
+                    Repository.Reset();
+                    return View("~/Plugins/Payments.ManualMollie/Views/Verify.cshtml");
+                }
+            }
+
+            // Redirect to complete or failed page
+            if (result.Status == Mollie.Api.Models.Payment.PaymentStatus.Paid)
+            {
+                identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Pending;
+                identifier.OrderInfo.PaymentStatus = Core.Domain.Payments.PaymentStatus.Paid;
+                _orderService.UpdateOrder(identifier.OrderInfo);
+                Repository.Reset();
+                return Redirect("https://localhost:44396/checkout/completed"); 
+            }
+            else
+            {
+                identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Cancelled;
+                _orderService.UpdateOrder(identifier.OrderInfo);
+                Repository.Reset();
+                return View("~/Plugins/Payments.ManualMollie/Views/Verify.cshtml");
+            }
         }
 
         #endregion

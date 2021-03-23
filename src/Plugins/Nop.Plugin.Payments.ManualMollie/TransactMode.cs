@@ -19,6 +19,10 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <summary>
         /// Authorize and capture
         /// </summary>
-        AuthorizeAndCapture= 2
+        AuthorizeAndCapture= 2,
+
+        
+
+
     }
 }

@@ -14,6 +14,7 @@ using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Plugin.Payments.ManualMollie.Models;
 using Nop.Plugin.Payments.ManualMollie.Validators;
+using Nop.Services.Common;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Payments;
@@ -34,6 +35,7 @@ namespace Nop.Plugin.Payments.ManualMollie
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebHelper _webHelper;
         private readonly ManualMolliePaymentSettings _manualMolliePaymentSettings;
+        private readonly IGenericAttributeService _genericAttributeService;
 
         #endregion
 
@@ -44,7 +46,8 @@ namespace Nop.Plugin.Payments.ManualMollie
             ISettingService settingService,
             IWebHelper webHelper,
             IHttpContextAccessor httpContextAccessor,
-            ManualMolliePaymentSettings manualMolliePaymentSettings)
+            IGenericAttributeService genericAttributeService,
+        ManualMolliePaymentSettings manualMolliePaymentSettings)
         {
             _localizationService = localizationService;
             _paymentService = paymentService;
@@ -52,9 +55,11 @@ namespace Nop.Plugin.Payments.ManualMollie
             _webHelper = webHelper;
             _manualMolliePaymentSettings = manualMolliePaymentSettings;
             _httpContextAccessor = httpContextAccessor;
+            _genericAttributeService = genericAttributeService;
         }
 
         #endregion
+
 
         #region Methods
 
@@ -83,10 +88,18 @@ namespace Nop.Plugin.Payments.ManualMollie
             {
                 Amount = new Amount(Currency.EUR, total),
                 Description = $"Quims Beta - ID: {postProcessPaymentRequest.Order.OrderGuid.ToString()}",
-                RedirectUrl = "https://localhost:44396/checkout/completed/"
+                RedirectUrl = "https://localhost:44396/PaymentManualMollie/Verify"
             };
 
             PaymentResponse paymentResponse = paymentClient.CreatePaymentAsync(paymentRequest).GetAwaiter().GetResult();
+
+            // Write info to repository 
+            Identifier identifier = new Identifier();
+            identifier.MollieInfo = paymentResponse;
+            identifier.OrderInfo = postProcessPaymentRequest.Order;
+            Repository.AddInfo(identifier);
+
+            // Redirect to Mollie
             _httpContextAccessor.HttpContext.Response.Redirect(paymentResponse.Links.Checkout.Href);
 
             return;
@@ -360,7 +373,7 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <summary>
         /// Gets a value indicating whether we should display a payment information page for this plugin
         /// </summary>
-        public bool SkipPaymentInfo => false;
+        public bool SkipPaymentInfo => true;
 
         /// <summary>
         /// Gets a payment method description that will be displayed on checkout pages in the public store
