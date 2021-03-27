@@ -36,6 +36,7 @@ namespace Nop.Plugin.Payments.ManualMollie
         private readonly IWebHelper _webHelper;
         private readonly ManualMolliePaymentSettings _manualMolliePaymentSettings;
         private readonly IGenericAttributeService _genericAttributeService;
+        private readonly IStoreContext _storeContext;
 
         #endregion
 
@@ -47,7 +48,8 @@ namespace Nop.Plugin.Payments.ManualMollie
             IWebHelper webHelper,
             IHttpContextAccessor httpContextAccessor,
             IGenericAttributeService genericAttributeService,
-        ManualMolliePaymentSettings manualMolliePaymentSettings)
+            IStoreContext storeContext,
+            ManualMolliePaymentSettings manualMolliePaymentSettings)
         {
             _localizationService = localizationService;
             _paymentService = paymentService;
@@ -56,6 +58,7 @@ namespace Nop.Plugin.Payments.ManualMollie
             _manualMolliePaymentSettings = manualMolliePaymentSettings;
             _httpContextAccessor = httpContextAccessor;
             _genericAttributeService = genericAttributeService;
+            _storeContext = storeContext;
         }
 
         #endregion
@@ -82,13 +85,14 @@ namespace Nop.Plugin.Payments.ManualMollie
         public void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
         {
             string total = string.Format("{0:0.00}", postProcessPaymentRequest.Order.OrderSubtotalInclTax);
+            string url = _manualMolliePaymentSettings.SiteURL + "PaymentManualMollie/Verify";
 
-            IPaymentClient paymentClient = new PaymentClient("test_BsMnA5gypddAmp7guP9mAtexVVaC4b");
+            IPaymentClient paymentClient = new PaymentClient(_manualMolliePaymentSettings.ApiKey);
             PaymentRequest paymentRequest = new PaymentRequest()
             {
                 Amount = new Amount(Currency.EUR, total),
-                Description = $"Quims Beta - ID: {postProcessPaymentRequest.Order.OrderGuid.ToString()}",
-                RedirectUrl = "https://localhost:44396/PaymentManualMollie/Verify"
+                Description = $"{_storeContext.CurrentStore.Name} - ID: {postProcessPaymentRequest.Order.Id.ToString()}",
+                RedirectUrl = url
             };
 
             PaymentResponse paymentResponse = paymentClient.CreatePaymentAsync(paymentRequest).GetAwaiter().GetResult();
@@ -124,8 +128,9 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <returns>Additional handling fee</returns>
         public decimal GetAdditionalHandlingFee(IList<ShoppingCartItem> cart)
         {
+            // No fee 
             return _paymentService.CalculateAdditionalFee(cart,
-                _manualMolliePaymentSettings.AdditionalFee, _manualMolliePaymentSettings.AdditionalFeePercentage);
+                0, false);
         }
 
         /// <summary>
@@ -300,7 +305,7 @@ namespace Nop.Plugin.Payments.ManualMollie
             //settings
             var settings = new ManualMolliePaymentSettings
             {
-                TransactMode = TransactMode.Pending
+                // nothing
             };
             _settingService.SaveSetting(settings);
 

@@ -78,17 +78,20 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
 
             var model = new ConfigurationModel
             {
-                TransactModeId = Convert.ToInt32(manualPaymentSettings.TransactMode),
-                AdditionalFee = manualPaymentSettings.AdditionalFee,
-                AdditionalFeePercentage = manualPaymentSettings.AdditionalFeePercentage,
-                TransactModeValues = manualPaymentSettings.TransactMode.ToSelectList(),
+                ApiKey = manualPaymentSettings.ApiKey,
+                SiteURL = manualPaymentSettings.SiteURL,
                 ActiveStoreScopeConfiguration = storeScope
             };
             if (storeScope > 0)
             {
-                model.TransactModeId_OverrideForStore = _settingService.SettingExists(manualPaymentSettings, x => x.TransactMode, storeScope);
-                model.AdditionalFee_OverrideForStore = _settingService.SettingExists(manualPaymentSettings, x => x.AdditionalFee, storeScope);
-                model.AdditionalFeePercentage_OverrideForStore = _settingService.SettingExists(manualPaymentSettings, x => x.AdditionalFeePercentage, storeScope);
+                model.Api_OverrideForStore = _settingService.SettingExists(manualPaymentSettings, x => x.ApiKey, storeScope);
+                model.SiteURL_OverrideForStore = _settingService.SettingExists(manualPaymentSettings, x => x.SiteURL, storeScope);
+            }
+
+            // When left empty, fill in default URL
+            if (model.SiteURL == "")
+            {
+                model.SiteURL = _storeContext.CurrentStore.Url;
             }
 
             return View("~/Plugins/Payments.ManualMollie/Views/Configure.cshtml", model);
@@ -112,18 +115,16 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
             var manualMolliePaymentSettings = _settingService.LoadSetting<ManualMolliePaymentSettings>(storeScope);
 
             //save settings
-            manualMolliePaymentSettings.TransactMode = (TransactMode)model.TransactModeId;
-            manualMolliePaymentSettings.AdditionalFee = model.AdditionalFee;
-            manualMolliePaymentSettings.AdditionalFeePercentage = model.AdditionalFeePercentage;
+            manualMolliePaymentSettings.ApiKey = model.ApiKey;
+            manualMolliePaymentSettings.SiteURL = model.SiteURL;
 
             /* We do not clear cache after each setting update.
              * This behavior can increase performance because cached settings will not be cleared 
              * and loaded from database after each update */
 
-            _settingService.SaveSettingOverridablePerStore(manualMolliePaymentSettings, x => x.TransactMode, model.TransactModeId_OverrideForStore, storeScope, false);
-            _settingService.SaveSettingOverridablePerStore(manualMolliePaymentSettings, x => x.AdditionalFee, model.AdditionalFee_OverrideForStore, storeScope, false);
-            _settingService.SaveSettingOverridablePerStore(manualMolliePaymentSettings, x => x.AdditionalFeePercentage, model.AdditionalFeePercentage_OverrideForStore, storeScope, false);
-            
+            _settingService.SaveSettingOverridablePerStore(manualMolliePaymentSettings, x => x.ApiKey, model.Api_OverrideForStore, storeScope, false);
+            _settingService.SaveSettingOverridablePerStore(manualMolliePaymentSettings, x => x.SiteURL, model.SiteURL_OverrideForStore, storeScope, false);
+
             //now clear settings cache
             _settingService.ClearCache();
 
@@ -137,30 +138,44 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
 
             // TO DO 
 
-            // 2: make client string setting
-            // 3: ...
+            // 1:  make sure when no base url is present, client gets no error prompted 
 
+            //load settings for a chosen store scope
+            var storeScope = _storeContext.ActiveStoreScopeConfiguration;
+            var manualMolliePaymentSettings = _settingService.LoadSetting<ManualMolliePaymentSettings>(storeScope);
 
             // Open client
-            IPaymentClient paymentClient = new PaymentClient("test_BsMnA5gypddAmp7guP9mAtexVVaC4b");
-
-            // Get first identiefer from repository
-            var identifier = Repository.Identifiers.ToArray()[0];
+            IPaymentClient paymentClient = new PaymentClient(manualMolliePaymentSettings.ApiKey);
 
             // Set time out count
             int timeout = 0;
 
-            // Check if not more than one orders are being processed at the same time (this should never happen) 
-            if (Repository.Identifiers.Count() > 1)
+            // Count number of repositories
+            int numberOfParallelPayments = Repository.Identifiers.Count();
+
+            // Get first identiefer from repository
+            var identifier = Repository.Identifiers.ToArray()[0];
+
+            // Make empty object for result
+            PaymentResponse id1 = paymentClient.GetPaymentAsync(identifier.MollieInfo.Id).GetAwaiter().GetResult();
+            PaymentResponse id2 = new PaymentResponse();
+
+            // Check if not more than one orders are being processed at the same time
+            if (numberOfParallelPayments > 1)
             {
+                // Assign order to the last payed order
                 foreach (var id in Repository.Identifiers.ToArray())
                 {
-                    id.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Cancelled;
-                    _orderService.UpdateOrder(id.OrderInfo);
-                }
+                    id2 = await paymentClient.GetPaymentAsync(id.MollieInfo.Id);
+                    int compare = DateTime.Compare(Convert.ToDateTime(id1.PaidAt), Convert.ToDateTime(id2.PaidAt));
 
-                Repository.Reset();
-                return View("~/Plugins/Payments.ManualMollie/Views/Verify.cshtml");
+                    if (compare >0)
+                    {
+                        identifier = id;
+                    }
+                }
+                
+
             }
 
             // Get payment status from Mollie
@@ -177,7 +192,13 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
                 {
                     identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Cancelled;
                     _orderService.UpdateOrder(identifier.OrderInfo);
-                    Repository.Reset();
+
+                    // Clean up repository if only one ID was stored
+                    if (Repository.Identifiers.Count() == 1)
+                    {
+                        Repository.Reset();
+                    }
+
                     return View("~/Plugins/Payments.ManualMollie/Views/Verify.cshtml");
                 }
             }
@@ -188,14 +209,27 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
                 identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Pending;
                 identifier.OrderInfo.PaymentStatus = Core.Domain.Payments.PaymentStatus.Paid;
                 _orderService.UpdateOrder(identifier.OrderInfo);
-                Repository.Reset();
-                return Redirect("https://localhost:44396/checkout/completed"); 
+
+                // Clean up repository if only one ID was stored
+                if (Repository.Identifiers.Count() == 1)
+                {
+                    Repository.Reset();
+                }
+
+                string url = manualMolliePaymentSettings.SiteURL + "checkout/completed";
+                return Redirect(url);
             }
             else
             {
                 identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Cancelled;
                 _orderService.UpdateOrder(identifier.OrderInfo);
-                Repository.Reset();
+
+                // Clean up repository if only one ID was stored
+                if (Repository.Identifiers.Count() == 1)
+                {
+                    Repository.Reset();
+                }
+
                 return View("~/Plugins/Payments.ManualMollie/Views/Verify.cshtml");
             }
         }

@@ -8,18 +8,13 @@ namespace Nop.Plugin.Payments.ManualMollie
     public class ManualMolliePaymentSettings : ISettings
     {
         /// <summary>
-        /// Gets or sets payment transaction mode
+        /// Gets or sets Mollie API Key (test key or live key)
         /// </summary>
-        public TransactMode TransactMode { get; set; }
+        public string ApiKey { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to "additional fee" is specified as percentage. true - percentage, false - fixed value.
+        /// Gets or sets site URL
         /// </summary>
-        public bool AdditionalFeePercentage { get; set; }
-
-        /// <summary>
-        /// Gets or sets an additional fee
-        /// </summary>
-        public decimal AdditionalFee { get; set; }
+        public string SiteURL { get; set; }
     }
 }

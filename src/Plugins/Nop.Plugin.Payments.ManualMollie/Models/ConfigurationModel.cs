@@ -8,17 +8,14 @@ namespace Nop.Plugin.Payments.ManualMollie.Models
     {
         public int ActiveStoreScopeConfiguration { get; set; }
 
-        [NopResourceDisplayName("Plugins.Payments.ManualMollie.Fields.AdditionalFeePercentage")]
-        public bool AdditionalFeePercentage { get; set; }
-        public bool AdditionalFeePercentage_OverrideForStore { get; set; }
+        [NopResourceDisplayName("Plugins.Payments.ManualMollie.Fields.ApiKey")]
 
-        [NopResourceDisplayName("Plugins.Payments.ManualMollie.Fields.AdditionalFee")]
-        public decimal AdditionalFee { get; set; }
-        public bool AdditionalFee_OverrideForStore { get; set; }
+        public string ApiKey { get; set; }
+        public bool Api_OverrideForStore { get; set; }
 
-        public int TransactModeId { get; set; }
-        [NopResourceDisplayName("Plugins.Payments.ManualMollie.Fields.TransactMode")]
-        public SelectList TransactModeValues { get; set; }
-        public bool TransactModeId_OverrideForStore { get; set; }
+        [NopResourceDisplayName("Plugins.Payments.ManualMollie.Fields.SiteURL")]
+
+        public string SiteURL { get; set; }
+        public bool SiteURL_OverrideForStore { get; set; }
     }
 }
