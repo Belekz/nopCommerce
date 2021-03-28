@@ -85,6 +85,7 @@ namespace Nop.Plugin.Payments.ManualMollie
         public void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
         {
             string total = string.Format("{0:0.00}", postProcessPaymentRequest.Order.OrderSubtotalInclTax);
+            total = total.Replace(",", "."); // Bug fix for use of comma 
             string url = _manualMolliePaymentSettings.SiteURL + "PaymentManualMollie/Verify";
 
             IPaymentClient paymentClient = new PaymentClient(_manualMolliePaymentSettings.ApiKey);

@@ -169,7 +169,7 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
                     id2 = await paymentClient.GetPaymentAsync(id.MollieInfo.Id);
                     int compare = DateTime.Compare(Convert.ToDateTime(id1.PaidAt), Convert.ToDateTime(id2.PaidAt));
 
-                    if (compare >0)
+                    if (compare <0)
                     {
                         identifier = id;
                     }
@@ -196,7 +196,7 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
                     // Clean up repository if only one ID was stored
                     if (Repository.Identifiers.Count() == 1)
                     {
-                        Repository.Reset();
+                        //Repository.Reset();
                     }
 
                     return View("~/Plugins/Payments.ManualMollie/Views/Verify.cshtml");
@@ -213,7 +213,7 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
                 // Clean up repository if only one ID was stored
                 if (Repository.Identifiers.Count() == 1)
                 {
-                    Repository.Reset();
+                    //Repository.Reset();
                 }
 
                 string url = manualMolliePaymentSettings.SiteURL + "checkout/completed";
@@ -227,7 +227,7 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
                 // Clean up repository if only one ID was stored
                 if (Repository.Identifiers.Count() == 1)
                 {
-                    Repository.Reset();
+                    //Repository.Reset();
                 }
 
                 return View("~/Plugins/Payments.ManualMollie/Views/Verify.cshtml");
