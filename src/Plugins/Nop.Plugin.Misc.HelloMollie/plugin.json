@@ -1,11 +1,11 @@
 ﻿{
   "Group": "Misc",
-  "FriendlyName": "HelloMollie",
-  "SystemName": "HelloMollie",
+  "FriendlyName": "HelloMollieForNop",
+  "SystemName": "HelloMollieForNop",
   "Version": "1.00",
   "SupportedVersions": [ "4.40" ],
   "Author": "PDW",
   "DisplayOrder": 1,
-  "FileName": "Nop.Plugin.Misc.HelloMollie.dll",
-  "Description": "Test plugin Mollie"
+  "FileName": "Nop.Plugin.Misc.HelloMollieForNop.dll",
+  "Description": "Test plugin MollieForNop"
 }

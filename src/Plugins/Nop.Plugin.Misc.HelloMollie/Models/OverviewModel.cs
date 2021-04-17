@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Mollie.Api.Models;
+using MollieForNop.Api.Models;
 
-namespace Nop.Plugin.Misc.HelloMollie.Models
+namespace Nop.Plugin.Misc.HelloMollieForNop.Models
 {
     public class OverviewModel<T> where T : IResponseObject {
         public List<T> Items { get; set; }

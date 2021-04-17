@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-	  <OutputPath>..\..\Presentation\Nop.Web\Plugins\Misc.HelloMollie</OutputPath>
+	  <OutputPath>..\..\Presentation\Nop.Web\Plugins\Misc.HelloMollieForNop</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
     <!--Set this parameter to true to get the dlls copied from the NuGet cache to the output of your project.
     You need to set this parameter to true if your plugin has a nuget package 
@@ -65,7 +65,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="HelloMollie.cs">
+    <Compile Update="HelloMollieForNop.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Services\Payment\IPaymentOverviewClient.cs">

@@ -1,6 +1,6 @@
-﻿using Mollie.Api.Models.Url;
+﻿using MollieForNop.Api.Models.Url;
 
-namespace Nop.Plugin.Misc.HelloMollie.Models
+namespace Nop.Plugin.Misc.HelloMollieForNop.Models
 {
     public class OverviewNavigationLinksModel {
         public UrlLink Previous { get; set; }

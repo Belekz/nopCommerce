@@ -7,7 +7,7 @@ using Nop.Services.Cms;
 using Nop.Services.Payments;
 using Nop.Services.Plugins;
 
-namespace Nop.Plugin.Misc.HelloMollie
+namespace Nop.Plugin.Misc.HelloMollieForNop
 {
     public class HelloWorldPlugin : BasePlugin, /*IPaymentMethod,*/ IWidgetPlugin
     {
@@ -25,7 +25,7 @@ namespace Nop.Plugin.Misc.HelloMollie
         /// <returns>View component name</returns>
         public string GetWidgetViewComponentName(string widgetZone)
         {
-            return "HelloMollieWidget";
+            return "HelloMollieForNopWidget";
         }
 
         /// <summary>

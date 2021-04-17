@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Mollie.Api.Models;
+using MollieForNop.Api.Models;
 
-namespace Nop.Plugin.Misc.HelloMollie.Models
+namespace Nop.Plugin.Misc.HelloMollieForNop.Models
 { 
     public class CreatePaymentModel {
         public decimal Amount { get; set; }

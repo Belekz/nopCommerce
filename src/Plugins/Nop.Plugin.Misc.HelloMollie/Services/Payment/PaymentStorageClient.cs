@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using Mollie.Api.Client.Abstract;
-using Mollie.Api.Models.Payment.Request;
-using Mollie.WebApplicationCoreExample.Models;
+using MollieForNop.Api.Client.Abstract;
+using MollieForNop.Api.Models.Payment.Request;
+using MollieForNop.WebApplicationCoreExample.Models;
 
-namespace Mollie.WebApplicationCoreExample.Services.Payment {
+namespace MollieForNop.WebApplicationCoreExample.Services.Payment {
     public class PaymentStorageClient : IPaymentStorageClient {
         private readonly IPaymentClient _paymentClient;
         private readonly IMapper _mapper;

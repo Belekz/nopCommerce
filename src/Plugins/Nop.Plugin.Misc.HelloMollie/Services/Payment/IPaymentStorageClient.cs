@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Mollie.WebApplicationCoreExample.Models;
+using MollieForNop.WebApplicationCoreExample.Models;
 
-namespace Mollie.WebApplicationCoreExample.Services.Payment {
+namespace MollieForNop.WebApplicationCoreExample.Services.Payment {
     public interface IPaymentStorageClient {
         Task Create(CreatePaymentModel model);
     }

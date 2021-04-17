@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Mollie.Api.Models.Payment.Response;
-using Mollie.WebApplicationCoreExample.Models;
+using MollieForNop.Api.Models.Payment.Response;
+using MollieForNop.WebApplicationCoreExample.Models;
 
-namespace Mollie.WebApplicationCoreExample.Services.Payment {
+namespace MollieForNop.WebApplicationCoreExample.Services.Payment {
     public interface IPaymentOverviewClient {
         Task<OverviewModel<PaymentResponse>> GetList();
         Task<OverviewModel<PaymentResponse>> GetListByUrl(string url);
