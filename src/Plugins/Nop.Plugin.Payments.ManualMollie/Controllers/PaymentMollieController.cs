@@ -7,7 +7,7 @@ using Mollie.Api.Client.Abstract;
 using Mollie.Api.Models.Payment;
 using Mollie.Api.Models.Payment.Response;
 using Nop.Core;
-using Nop.Plugin.Payments.ManualMollie.Models;
+using Nop.Plugin.Payments.MollieForNop.Models;
 using Nop.Services;
 using Nop.Services.Common;
 using Nop.Services.Configuration;
@@ -20,10 +20,10 @@ using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Mvc.Filters;
 
-namespace Nop.Plugin.Payments.ManualMollie.Controllers
+namespace Nop.Plugin.Payments.MollieForNop.Controllers
 {
 
-    public class PaymentManualMollieController : BasePaymentController
+    public class PaymentMollieForNopController : BasePaymentController
     {
         #region Fields
         
@@ -40,7 +40,7 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
 
         #region Ctor
 
-        public PaymentManualMollieController(ILocalizationService localizationService,
+        public PaymentMollieForNopController(ILocalizationService localizationService,
             INotificationService notificationService,
             IPermissionService permissionService,
             ISettingService settingService,
@@ -74,7 +74,7 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
 
             //load settings for a chosen store scope
             var storeScope = _storeContext.ActiveStoreScopeConfiguration;
-            var manualPaymentSettings = _settingService.LoadSetting<ManualMolliePaymentSettings>(storeScope);
+            var manualPaymentSettings = _settingService.LoadSetting<MollieForNopPaymentSettings>(storeScope);
 
             var model = new ConfigurationModel
             {
@@ -94,7 +94,7 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
                 model.SiteURL = _storeContext.CurrentStore.Url;
             }
 
-            return View("~/Plugins/Payments.ManualMollie/Views/Configure.cshtml", model);
+            return View("~/Plugins/Payments.MollieForNop/Views/Configure.cshtml", model);
         }
 
         [HttpPost]
@@ -112,18 +112,18 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
 
             //load settings for a chosen store scope
             var storeScope = _storeContext.ActiveStoreScopeConfiguration;
-            var manualMolliePaymentSettings = _settingService.LoadSetting<ManualMolliePaymentSettings>(storeScope);
+            var MollieForNopPaymentSettings = _settingService.LoadSetting<MollieForNopPaymentSettings>(storeScope);
 
             //save settings
-            manualMolliePaymentSettings.ApiKey = model.ApiKey;
-            manualMolliePaymentSettings.SiteURL = model.SiteURL;
+            MollieForNopPaymentSettings.ApiKey = model.ApiKey;
+            MollieForNopPaymentSettings.SiteURL = model.SiteURL;
 
             /* We do not clear cache after each setting update.
              * This behavior can increase performance because cached settings will not be cleared 
              * and loaded from database after each update */
 
-            _settingService.SaveSettingOverridablePerStore(manualMolliePaymentSettings, x => x.ApiKey, model.Api_OverrideForStore, storeScope, false);
-            _settingService.SaveSettingOverridablePerStore(manualMolliePaymentSettings, x => x.SiteURL, model.SiteURL_OverrideForStore, storeScope, false);
+            _settingService.SaveSettingOverridablePerStore(MollieForNopPaymentSettings, x => x.ApiKey, model.Api_OverrideForStore, storeScope, false);
+            _settingService.SaveSettingOverridablePerStore(MollieForNopPaymentSettings, x => x.SiteURL, model.SiteURL_OverrideForStore, storeScope, false);
 
             //now clear settings cache
             _settingService.ClearCache();
@@ -142,13 +142,14 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
 
             //load settings for a chosen store scope
             var storeScope = _storeContext.ActiveStoreScopeConfiguration;
-            var manualMolliePaymentSettings = _settingService.LoadSetting<ManualMolliePaymentSettings>(storeScope);
+            var MollieForNopPaymentSettings = _settingService.LoadSetting<MollieForNopPaymentSettings>(storeScope);
 
             // Open client
-            IPaymentClient paymentClient = new PaymentClient(manualMolliePaymentSettings.ApiKey);
+            IPaymentClient paymentClient = new PaymentClient(MollieForNopPaymentSettings.ApiKey);
 
             // Set time out count
             int timeout = 0;
+            int compare = 999; 
 
             // Count number of repositories
             int numberOfParallelPayments = Repository.Identifiers.Count();
@@ -157,49 +158,54 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
             var identifier = Repository.Identifiers.ToArray()[0];
 
             // Make empty object for result
-            PaymentResponse id1 = paymentClient.GetPaymentAsync(identifier.MollieInfo.Id).GetAwaiter().GetResult();
-            PaymentResponse id2 = new PaymentResponse();
+            Identifier id2 = new Identifier();
 
             // Check if not more than one orders are being processed at the same time
             if (numberOfParallelPayments > 1)
             {
                 // Assign order to the last payed order
-                foreach (var id in Repository.Identifiers.ToArray())
+                foreach (var i in Repository.Identifiers.ToArray())
                 {
-                    id2 = await paymentClient.GetPaymentAsync(id.MollieInfo.Id);
-                    int compare = DateTime.Compare(Convert.ToDateTime(id1.PaidAt), Convert.ToDateTime(id2.PaidAt));
-
-                    if (compare <0)
+                    if (i.MollieForNopInfo.Id != null)
                     {
-                        identifier = id;
+                        id2 = i;
+                        id2.MollieForNopInfo = await paymentClient.GetPaymentAsync(i.MollieForNopInfo.Id);
+
+                        compare = DateTime.Compare(Convert.ToDateTime(identifier.MollieForNopInfo.PaidAt), Convert.ToDateTime(id2.MollieForNopInfo.PaidAt));
+
+                        if (compare == -1)
+                        {
+                            identifier = i;
+                        }
+
                     }
+                    
                 }
                 
-
             }
 
-            // Get payment status from Mollie
-            PaymentResponse result = await paymentClient.GetPaymentAsync(identifier.MollieInfo.Id);
+            // Get payment status from MollieForNop
+            PaymentResponse result = identifier.MollieForNopInfo;
 
-            // Process status Mollie with Nop order
+            // Process status MollieForNop with Nop order
             while (result.Status != Mollie.Api.Models.Payment.PaymentStatus.Paid)
             {
-                result = await paymentClient.GetPaymentAsync(identifier.MollieInfo.Id);
+                result = await paymentClient.GetPaymentAsync(identifier.MollieForNopInfo.Id);
                 timeout++;
 
                 // Time out
                 if (timeout == 10)
                 {
+                    // Cancel order
                     identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Cancelled;
                     _orderService.UpdateOrder(identifier.OrderInfo);
 
-                    // Clean up repository if only one ID was stored
-                    if (Repository.Identifiers.Count() == 1)
-                    {
-                        //Repository.Reset();
-                    }
+                    // Remove ID from the repository 
+                    Repository.Remove(identifier);
 
-                    return View("~/Plugins/Payments.ManualMollie/Views/Verify.cshtml");
+                    // Redirect to overview page
+                    string url = MollieForNopPaymentSettings.SiteURL + "orderdetails/" + identifier.OrderInfo.Id;
+                    return Redirect(url);
                 }
             }
 
@@ -210,30 +216,27 @@ namespace Nop.Plugin.Payments.ManualMollie.Controllers
                 identifier.OrderInfo.PaymentStatus = Core.Domain.Payments.PaymentStatus.Paid;
                 _orderService.UpdateOrder(identifier.OrderInfo);
 
-                // Clean up repository if only one ID was stored
-                if (Repository.Identifiers.Count() == 1)
-                {
-                    //Repository.Reset();
-                }
+                // Remove ID from the repository 
+                Repository.Remove(identifier);
 
-                string url = manualMolliePaymentSettings.SiteURL + "checkout/completed";
+                string url = MollieForNopPaymentSettings.SiteURL + "checkout/completed";
                 return Redirect(url);
             }
             else
             {
+                // Cancel order
                 identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Cancelled;
                 _orderService.UpdateOrder(identifier.OrderInfo);
 
-                // Clean up repository if only one ID was stored
-                if (Repository.Identifiers.Count() == 1)
-                {
-                    //Repository.Reset();
-                }
+                // Remove ID from the repository 
+                Repository.Remove(identifier);
 
-                return View("~/Plugins/Payments.ManualMollie/Views/Verify.cshtml");
+                // Redirect to overview page
+                string url = MollieForNopPaymentSettings.SiteURL + "orderdetails/" + identifier.OrderInfo.Id;
+                return Redirect(url);
             }
         }
-
+         
         #endregion
     }
 }

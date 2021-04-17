@@ -1,11 +1,11 @@
 ﻿{
   "Group": "Payment methods",
-  "FriendlyName": "Manual Mollie",
-  "SystemName": "Payments.ManualMollie",
+  "FriendlyName": "Mollie For Nopcommerce",
+  "SystemName": "Payments.MollieForNop",
   "Version": "1.00",
   "SupportedVersions": [ "4.40" ],
-  "Author": "Quims",
+  "Author": "Pieter De Witte",
   "DisplayOrder": 1,
-  "FileName": "Nop.Plugin.Payments.ManualMollie.dll",
-  "Description": "Test Plugin for Mollie by Quims.be"
+  "FileName": "Nop.Plugin.Payments.MollieForNop.dll",
+  "Description": "Mollie For Nopcommerce 4.40"
 }

@@ -12,20 +12,20 @@ using Mollie.Api.Models.Payment.Response;
 using Nop.Core;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
-using Nop.Plugin.Payments.ManualMollie.Models;
-using Nop.Plugin.Payments.ManualMollie.Validators;
+using Nop.Plugin.Payments.MollieForNop.Models;
+using Nop.Plugin.Payments.MollieForNop.Validators;
 using Nop.Services.Common;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Payments;
 using Nop.Services.Plugins;
 
-namespace Nop.Plugin.Payments.ManualMollie
+namespace Nop.Plugin.Payments.MollieForNop
 {
     /// <summary>
     /// Manual payment processor
     /// </summary>
-    public class ManualMolliePaymentProcessor : BasePlugin, IPaymentMethod
+    public class MollieForNopPaymentProcessor : BasePlugin, IPaymentMethod
     {
         #region Fields
 
@@ -34,7 +34,7 @@ namespace Nop.Plugin.Payments.ManualMollie
         private readonly ISettingService _settingService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebHelper _webHelper;
-        private readonly ManualMolliePaymentSettings _manualMolliePaymentSettings;
+        private readonly MollieForNopPaymentSettings _MollieForNopPaymentSettings;
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IStoreContext _storeContext;
 
@@ -42,20 +42,20 @@ namespace Nop.Plugin.Payments.ManualMollie
 
         #region Ctor
 
-        public ManualMolliePaymentProcessor(ILocalizationService localizationService,
+        public MollieForNopPaymentProcessor(ILocalizationService localizationService,
             IPaymentService paymentService,
             ISettingService settingService,
             IWebHelper webHelper,
             IHttpContextAccessor httpContextAccessor,
             IGenericAttributeService genericAttributeService,
             IStoreContext storeContext,
-            ManualMolliePaymentSettings manualMolliePaymentSettings)
+            MollieForNopPaymentSettings MollieForNopPaymentSettings)
         {
             _localizationService = localizationService;
             _paymentService = paymentService;
             _settingService = settingService;
             _webHelper = webHelper;
-            _manualMolliePaymentSettings = manualMolliePaymentSettings;
+            _MollieForNopPaymentSettings = MollieForNopPaymentSettings;
             _httpContextAccessor = httpContextAccessor;
             _genericAttributeService = genericAttributeService;
             _storeContext = storeContext;
@@ -86,9 +86,9 @@ namespace Nop.Plugin.Payments.ManualMollie
         {
             string total = string.Format("{0:0.00}", postProcessPaymentRequest.Order.OrderSubtotalInclTax);
             total = total.Replace(",", "."); // Bug fix for use of comma 
-            string url = _manualMolliePaymentSettings.SiteURL + "PaymentManualMollie/Verify";
+            string url = _MollieForNopPaymentSettings.SiteURL + "PaymentMollieForNop/Verify";
 
-            IPaymentClient paymentClient = new PaymentClient(_manualMolliePaymentSettings.ApiKey);
+            IPaymentClient paymentClient = new PaymentClient(_MollieForNopPaymentSettings.ApiKey);
             PaymentRequest paymentRequest = new PaymentRequest()
             {
                 Amount = new Amount(Currency.EUR, total),
@@ -100,11 +100,11 @@ namespace Nop.Plugin.Payments.ManualMollie
 
             // Write info to repository 
             Identifier identifier = new Identifier();
-            identifier.MollieInfo = paymentResponse;
+            identifier.MollieForNopInfo = paymentResponse;
             identifier.OrderInfo = postProcessPaymentRequest.Order;
             Repository.AddInfo(identifier);
 
-            // Redirect to Mollie
+            // Redirect to MollieForNop
             _httpContextAccessor.HttpContext.Response.Redirect(paymentResponse.Links.Checkout.Href);
 
             return;
@@ -175,7 +175,7 @@ namespace Nop.Plugin.Payments.ManualMollie
             //{
             //    AllowStoringCreditCardNumber = true
             //};
-            //switch (_manualMolliePaymentSettings.TransactMode)
+            //switch (_MollieForNopPaymentSettings.TransactMode)
             //{
             //    case TransactMode.Pending:
             //        result.NewPaymentStatus = PaymentStatus.Pending;
@@ -286,7 +286,7 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// </summary>
         public override string GetConfigurationPageUrl()
         {
-            return $"{_webHelper.GetStoreLocation()}Admin/PaymentManualMollie/Configure";
+            return $"{_webHelper.GetStoreLocation()}Admin/PaymentMollieForNop/Configure";
         }
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// <returns>View component name</returns>
         public string GetPublicViewComponentName()
         {
-            return "PaymentManualMollie";
+            return "PaymentMollieForNop";
         }
 
         /// <summary>
@@ -304,23 +304,18 @@ namespace Nop.Plugin.Payments.ManualMollie
         public override void Install()
         {
             //settings
-            var settings = new ManualMolliePaymentSettings
-            {
-                // nothing
-            };
+            var settings = new MollieForNopPaymentSettings { };
             _settingService.SaveSetting(settings);
 
             //locales
             _localizationService.AddLocaleResource(new Dictionary<string, string>
             {
-                ["Plugins.Payments.ManualMollie.Instructions"] = "This payment method stores credit card information in database (it's not sent to any third-party processor). In order to store credit card information, you must be PCI compliant.",
-                ["Plugins.Payments.ManualMollie.Fields.AdditionalFee"] = "Additional fee",
-                ["Plugins.Payments.ManualMollie.Fields.AdditionalFee.Hint"] = "Enter additional fee to charge your customers.",
-                ["Plugins.Payments.ManualMollie.Fields.AdditionalFeePercentage"] = "Additional fee. Use percentage",
-                ["Plugins.Payments.ManualMollie.Fields.AdditionalFeePercentage.Hint"] = "Determines whether to apply a percentage additional fee to the order total. If not enabled, a fixed value is used.",
-                ["Plugins.Payments.ManualMollie.Fields.TransactMode"] = "After checkout mark payment as",
-                ["Plugins.Payments.ManualMollie.Fields.TransactMode.Hint"] = "Specify transaction mode.",
-                ["Plugins.Payments.ManualMollie.PaymentMethodDescription"] = "Pay by credit / debit card"
+                ["Plugins.Payments.MollieForNop.Paymentmethoddescription"] = "Continue your payment via https://www.Mollie.com/",
+                ["Plugins.Payments.MollieForNop.Instructions"] = "Create an account at Mollie.com. Add payment methods to your Mollie account. Enter your Mollie API Key bellow, this can be either a test key or a live key. Next correct the URL when the automatic filled in URL doesn't match your site.",
+                ["Plugins.Payments.MollieForNop.Fields.RedirectionTip"] = "Continue your payment with Mollie",
+                ["Plugins.Payments.MollieForNop.Fields.PaymentHasFailed"] = "Payment via MollieForNop has failed. Please try again.",
+                ["Plugins.Payments.MollieForNop.Fields.ApiKey"] = "Mollie API key:",
+                ["Plugins.Payments.MollieForNop.Fields.SiteURL"] = "Website base URL:",
             });
 
             base.Install();
@@ -332,10 +327,10 @@ namespace Nop.Plugin.Payments.ManualMollie
         public override void Uninstall()
         {
             //settings
-            _settingService.DeleteSetting<ManualMolliePaymentSettings>();
+            _settingService.DeleteSetting<MollieForNopPaymentSettings>();
 
             //locales
-            _localizationService.DeleteLocaleResources("Plugins.Payments.ManualMollie");
+            _localizationService.DeleteLocaleResources("Plugins.Payments.MollieForNop");
 
             base.Uninstall();
         }
@@ -388,7 +383,7 @@ namespace Nop.Plugin.Payments.ManualMollie
         /// return description of this payment method to be display on "payment method" checkout step. good practice is to make it localizable
         /// for example, for a redirection payment method, description may be like this: "You will be redirected to PayPal site to complete the payment"
         /// </remarks>
-        public string PaymentMethodDescription => _localizationService.GetResource("Plugins.Payments.ManualMollie.PaymentMethodDescription");
+        public string PaymentMethodDescription => _localizationService.GetResource("Plugins.Payments.MollieForNop.PaymentMethodDescription");
 
         #endregion
 

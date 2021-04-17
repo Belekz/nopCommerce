@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Routing;
 using Nop.Web.Framework.Mvc.Routing;
 
-namespace Nop.Plugin.Payments.ManualMollie.Infrastructure
+namespace Nop.Plugin.Payments.MollieForNop.Infrastructure
 {
     public partial class RouteProvider : IRouteProvider
     {
@@ -16,8 +16,8 @@ namespace Nop.Plugin.Payments.ManualMollie.Infrastructure
             //endpointRouteBuilder.MapControllerRoute("Plugin.Payments.PayPalStandard.PDTHandler", "Plugins/PaymentPayPalStandard/PDTHandler",
             //     new { controller = "PaymentPayPalStandard", action = "PDTHandler" });
 
-            //endpointRouteBuilder.MapControllerRoute("Plugin.Payments.ManualMollie.webhook", "Plugins/PaymentManualMollie/webhook",
-            //     new { controller = "ManualMolliePaymentProcessor", action = "webhook" });
+            //endpointRouteBuilder.MapControllerRoute("Plugin.Payments.MollieForNop.webhook", "Plugins/PaymentMollieForNop/webhook",
+            //     new { controller = "MollieForNopPaymentProcessor", action = "webhook" });
 
         }
 

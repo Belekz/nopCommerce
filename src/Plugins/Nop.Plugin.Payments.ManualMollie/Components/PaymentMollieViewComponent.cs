@@ -4,13 +4,13 @@ using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Nop.Plugin.Payments.ManualMollie.Models;
+using Nop.Plugin.Payments.MollieForNop.Models;
 using Nop.Web.Framework.Components;
 
-namespace Nop.Plugin.Payments.ManualMollie.Components
+namespace Nop.Plugin.Payments.MollieForNop.Components
 {
-    [ViewComponent(Name = "PaymentManualMollie")]
-    public class PaymentManualMollieViewComponent : NopViewComponent
+    [ViewComponent(Name = "PaymentMollieForNop")]
+    public class PaymentMollieForNopViewComponent : NopViewComponent
     {
         //public IViewComponentResult Invoke()
         //{
@@ -56,12 +56,12 @@ namespace Nop.Plugin.Payments.ManualMollie.Components
         //            selectedYear.Selected = true;
         //    }
 
-        //    return View("~/Plugins/Payments.ManualMollie/Views/PaymentInfo.cshtml", model);
+        //    return View("~/Plugins/Payments.MollieForNop/Views/PaymentInfo.cshtml", model);
         //}
 
         public IViewComponentResult Invoke()
         {
-            return View("~/Plugins/Payments.ManualMollie/Views/PaymentInfo.cshtml");
+            return View("~/Plugins/Payments.MollieForNop/Views/PaymentInfo.cshtml");
         }
     }
 }

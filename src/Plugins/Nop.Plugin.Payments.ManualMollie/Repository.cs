@@ -1,8 +1,8 @@
 ﻿
 using System.Collections.Generic;
-using Nop.Plugin.Payments.ManualMollie.Models;
+using Nop.Plugin.Payments.MollieForNop.Models;
 
-namespace Nop.Plugin.Payments.ManualMollie
+namespace Nop.Plugin.Payments.MollieForNop
 {
 
     public static class Repository
@@ -21,8 +21,10 @@ namespace Nop.Plugin.Payments.ManualMollie
 
         public static void Reset()
         {
-            _identifiers = null;
+            _identifiers.Clear();
         }
+
+        public static void Remove(Identifier id) => _identifiers.RemoveAll(i => i.OrderInfo.Id == id.OrderInfo.Id);
 
     }
 

@@ -1,5 +1,5 @@
 ﻿
-namespace Nop.Plugin.Payments.ManualMollie
+namespace Nop.Plugin.Payments.MollieForNop
 {
     /// <summary>
     /// Represents manual payment processor transaction mode

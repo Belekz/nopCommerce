@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Copyright>Copyright © Nop Solutions, Ltd</Copyright>
-    <Company>Nop Solutions, Ltd</Company>
-    <Authors>Nop Solutions, Ltd</Authors>
+    <Copyright>Copyright © Pieter De Witte</Copyright>
+    <Company></Company>
+    <Authors>Pieter De Witte</Authors>
     <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl>https://www.nopcommerce.com/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/nopSolutions/nopCommerce</RepositoryUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl></RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Payments.ManualMollie</OutputPath>
+    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Payments.MollieForNop</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
     <!--Set this parameter to true to get the dlls copied from the NuGet cache to the output of your project.
     You need to set this parameter to true if your plugin has a nuget package 

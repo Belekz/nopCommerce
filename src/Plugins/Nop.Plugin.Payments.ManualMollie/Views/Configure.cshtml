@@ -1,15 +1,15 @@
-﻿@model Nop.Plugin.Payments.ManualMollie.Models.ConfigurationModel
+﻿@model Nop.Plugin.Payments.MollieForNop.Models.ConfigurationModel
 @{
     Layout = "_ConfigurePlugin";
 }
 
 @await Component.InvokeAsync("StoreScopeConfiguration")
 
-<form asp-controller="PaymentManualMollie" asp-action="Configure" method="post">
+<form asp-controller="PaymentMollieForNop" asp-action="Configure" method="post">
     <div class="panel-group">
         <div class="panel panel-default">
             <div class="panel-body">
-                <p>@T("Plugins.Payments.ManualMollie.Instructions")</p>
+                <p>@T("Plugins.Payments.MollieForNop.Instructions")</p>
 
                 <div class="form-group">
                     <div class="col-md-3">
