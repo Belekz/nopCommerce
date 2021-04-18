@@ -34,12 +34,12 @@
         }
         @{
             var pager = Html.Pager(Model.PageModel).QueryParam("pagenumber");
-            if (!pager.IsEmpty())
+            if (!(await pager.IsEmpty()))
             {
                 <div class="pager">
                     @pager
                 </div>
-            }
+            };
         }
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.SitemapAfter })
     </div>

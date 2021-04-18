@@ -33,13 +33,21 @@
             </div>
         }
         @{
-            var pager = Html.Pager(Model.PageModel).QueryParam("pagenumber");
-            if (!pager.IsEmpty())
-            {
-                <div class="pager">
-                    @pager
-                </div>
-            }
+
+        var pager = Html.Pager(Model.PageModel).QueryParam("pagenumber")
+        // for search page
+        .BooleanParameterName("advs")
+        .BooleanParameterName("isc")
+        .BooleanParameterName("sid")
+        .RenderEmptyParameters(true);
+
+        @if (!await pager.IsEmpty())
+        {
+            <div class="pager">
+                @pager
+            </div>
+        }
+
         }
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.SitemapAfter })
     </div>

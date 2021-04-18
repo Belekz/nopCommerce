@@ -41,7 +41,7 @@
             </div>
 
             <div class="cookieLink">
-                <a href="@Url.RouteUrl("Topic", new { SeName = Html.GetTopicSeName("privacyinfo") })">@T("EUCookieLaw.LearnMore")</a>
+                <a href="@Url.RouteUrl("Topic", new { SeName = await Html.GetTopicSeNameAsync("privacyinfo") })">@T("EUCookieLaw.LearnMore")</a>
             </div>
 
         </div>
