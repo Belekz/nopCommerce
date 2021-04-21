@@ -14,11 +14,12 @@
 
                     @foreach (var lang in Model.AvailableLanguages)
                     {
-                        <li>
-                            <a href="@Url.RouteUrl("ChangeLanguage", new { langid = lang.Id, returnUrl }, webHelper.GetCurrentRequestProtocol())" title="@lang.Name">
-                                <img title='@lang.Name' alt='@lang.Name' @(lang.Id == Model.CurrentLanguageId ? " class=selected" : null)
-                                     src="@Url.Content("~/images/flags/" + @lang.FlagImageFileName) " />
-                            </a>
+                        <li class="intro-language-item">
+                            <h1 class="intro-language-name">@lang.Name</h1>
+                                <a href="@Url.RouteUrl("ChangeLanguage", new { langid = lang.Id, returnUrl }, webHelper.GetCurrentRequestProtocol())" title="@lang.Name">
+                                    <img title='@lang.Name' alt='@lang.Name' @(lang.Id == Model.CurrentLanguageId ? " class=selected" : null)
+                                            src="@Url.Content("~/images/introFlags/" + @lang.FlagImageFileName) " />
+                                </a>
                         </li>
                     }
                 </ul>
