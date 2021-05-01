@@ -2,7 +2,7 @@
   "Group": "Payment methods",
   "FriendlyName": "Mollie For Nopcommerce",
   "SystemName": "Payments.MollieForNop",
-  "Version": "1.00",
+  "Version": "2.00",
   "SupportedVersions": [ "4.40" ],
   "Author": "Pieter De Witte",
   "DisplayOrder": 1,

@@ -11,6 +11,7 @@ using Mollie.Api.Models.Payment.Request;
 using Mollie.Api.Models.Payment.Response;
 using Nop.Core;
 using Nop.Core.Domain.Orders;
+using System.Threading.Tasks;
 using Nop.Core.Domain.Payments;
 using Nop.Plugin.Payments.MollieForNop.Models;
 using Nop.Plugin.Payments.MollieForNop.Validators;
@@ -71,28 +72,28 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// </summary>
         /// <param name="processPaymentRequest">Payment info required for an order processing</param>
         /// <returns>Process payment result</returns>
-        public ProcessPaymentResult ProcessPayment(ProcessPaymentRequest processPaymentRequest)
+        public Task<ProcessPaymentResult> ProcessPaymentAsync(ProcessPaymentRequest processPaymentRequest)
         {
-
-            return new ProcessPaymentResult();
-
+            return Task.FromResult(new ProcessPaymentResult());
         }
 
         /// <summary>
         /// Post process payment (used by payment gateways that require redirecting to a third-party URL)
         /// </summary>
         /// <param name="postProcessPaymentRequest">Payment info required for an order processing</param>
-        public void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
+        public async Task PostProcessPaymentAsync(PostProcessPaymentRequest postProcessPaymentRequest)
         {
             string total = string.Format("{0:0.00}", postProcessPaymentRequest.Order.OrderSubtotalInclTax);
             total = total.Replace(",", "."); // Bug fix for use of comma 
             string url = _MollieForNopPaymentSettings.SiteURL + "PaymentMollieForNop/Verify";
 
+            var store = await _storeContext.GetCurrentStoreAsync();
+
             IPaymentClient paymentClient = new PaymentClient(_MollieForNopPaymentSettings.ApiKey);
             PaymentRequest paymentRequest = new PaymentRequest()
             {
                 Amount = new Amount(Currency.EUR, total),
-                Description = $"{_storeContext.CurrentStore.Name} - ID: {postProcessPaymentRequest.Order.Id.ToString()}",
+                Description = $"{store.Name} - ID: {postProcessPaymentRequest.Order.Id.ToString()}",
                 RedirectUrl = url
             };
 
@@ -108,30 +109,29 @@ namespace Nop.Plugin.Payments.MollieForNop
             _httpContextAccessor.HttpContext.Response.Redirect(paymentResponse.Links.Checkout.Href);
 
             return;
-        } 
+        }
 
         /// <summary>
         /// Returns a value indicating whether payment method should be hidden during checkout
         /// </summary>
         /// <param name="cart">Shopping cart</param>
         /// <returns>true - hide; false - display.</returns>
-        public bool HidePaymentMethod(IList<ShoppingCartItem> cart)
+        public Task<bool> HidePaymentMethodAsync(IList<ShoppingCartItem> cart)
         {
             //you can put any logic here
             //for example, hide this payment method if all products in the cart are downloadable
             //or hide this payment method if current customer is from certain country
-            return false;
+            return Task.FromResult(false);
         }
 
         /// <summary>
         /// Gets additional handling fee
         /// </summary>
         /// <returns>Additional handling fee</returns>
-        public decimal GetAdditionalHandlingFee(IList<ShoppingCartItem> cart)
+        public async Task<decimal> GetAdditionalHandlingFeeAsync(IList<ShoppingCartItem> cart)
         {
             // No fee 
-            return _paymentService.CalculateAdditionalFee(cart,
-                0, false);
+            return await _paymentService.CalculateAdditionalFeeAsync(cart,0, false);
         }
 
         /// <summary>
@@ -139,9 +139,9 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// </summary>
         /// <param name="capturePaymentRequest">Capture payment request</param>
         /// <returns>Capture payment result</returns>
-        public CapturePaymentResult Capture(CapturePaymentRequest capturePaymentRequest)
+        public Task<CapturePaymentResult> CaptureAsync(CapturePaymentRequest capturePaymentRequest)
         {
-            return new CapturePaymentResult { Errors = new[] { "Capture method not supported" } };
+            return Task.FromResult(new CapturePaymentResult { Errors = new[] { "Capture method not supported" } });
         }
 
         /// <summary>
@@ -149,9 +149,9 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// </summary>
         /// <param name="refundPaymentRequest">Request</param>
         /// <returns>Result</returns>
-        public RefundPaymentResult Refund(RefundPaymentRequest refundPaymentRequest)
+        public Task<RefundPaymentResult> RefundAsync(RefundPaymentRequest refundPaymentRequest)
         {
-            return new RefundPaymentResult { Errors = new[] { "Refund method not supported" } };
+            return Task.FromResult(new RefundPaymentResult { Errors = new[] { "Refund method not supported" } });
         }
 
         /// <summary>
@@ -159,9 +159,9 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// </summary>
         /// <param name="voidPaymentRequest">Request</param>
         /// <returns>Result</returns>
-        public VoidPaymentResult Void(VoidPaymentRequest voidPaymentRequest)
+        public Task<VoidPaymentResult> VoidAsync(VoidPaymentRequest voidPaymentRequest)
         {
-            return new VoidPaymentResult { Errors = new[] { "Void method not supported" } };
+            return Task.FromResult(new VoidPaymentResult { Errors = new[] { "Void method not supported" } });
         }
 
         /// <summary>
@@ -169,31 +169,9 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// </summary>
         /// <param name="processPaymentRequest">Payment info required for an order processing</param>
         /// <returns>Process payment result</returns>
-        public ProcessPaymentResult ProcessRecurringPayment(ProcessPaymentRequest processPaymentRequest)
+        public Task<ProcessPaymentResult> ProcessRecurringPaymentAsync(ProcessPaymentRequest processPaymentRequest)
         {
-            //var result = new ProcessPaymentResult
-            //{
-            //    AllowStoringCreditCardNumber = true
-            //};
-            //switch (_MollieForNopPaymentSettings.TransactMode)
-            //{
-            //    case TransactMode.Pending:
-            //        result.NewPaymentStatus = PaymentStatus.Pending;
-            //        break;
-            //    case TransactMode.Authorize:
-            //        result.NewPaymentStatus = PaymentStatus.Authorized;
-            //        break;
-            //    case TransactMode.AuthorizeAndCapture:
-            //        result.NewPaymentStatus = PaymentStatus.Paid;
-            //        break;
-            //    default:
-            //        result.AddError("Not supported transaction type");
-            //        break;
-            //}
-
-            //return result;
-
-            return new ProcessPaymentResult { Errors = new[] { "Recurring payment not supported" } };
+            return Task.FromResult(new ProcessPaymentResult { Errors = new[] { "Recurring payment not supported" } });
         }
 
         /// <summary>
@@ -201,12 +179,9 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// </summary>
         /// <param name="cancelPaymentRequest">Request</param>
         /// <returns>Result</returns>
-        public CancelRecurringPaymentResult CancelRecurringPayment(CancelRecurringPaymentRequest cancelPaymentRequest)
+        public Task<CancelRecurringPaymentResult> CancelRecurringPaymentAsync(CancelRecurringPaymentRequest cancelPaymentRequest)
         {
-            ////always success
-            //return new CancelRecurringPaymentResult();
-
-            return new CancelRecurringPaymentResult { Errors = new[] { "Recurring payment not supported" } };
+            return Task.FromResult(new CancelRecurringPaymentResult { Errors = new[] { "Recurring payment not supported" } });
         }
 
         /// <summary>
@@ -214,23 +189,17 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// </summary>
         /// <param name="order">Order</param>
         /// <returns>Result</returns>
-        public bool CanRePostProcessPayment(Order order)
+        public Task<bool> CanRePostProcessPaymentAsync(Order order)
         {
-            //if (order == null)
-            //    throw new ArgumentNullException(nameof(order));
-
-            ////it's not a redirection payment method. So we always return false
-            //return false;
-
             if (order == null)
                 throw new ArgumentNullException(nameof(order));
 
             //let's ensure that at least 5 seconds passed after order is placed
             //P.S. there's no any particular reason for that. we just do it
             if ((DateTime.UtcNow - order.CreatedOnUtc).TotalSeconds < 5)
-                return false;
+                return Task.FromResult(false);
 
-            return true;
+            return Task.FromResult(true);
         }
 
         /// <summary>
@@ -238,27 +207,9 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// </summary>
         /// <param name="form">The parsed form values</param>
         /// <returns>List of validating errors</returns>
-        public IList<string> ValidatePaymentForm(IFormCollection form)
+        public Task<IList<string>> ValidatePaymentFormAsync(IFormCollection form)
         {
-            //var warnings = new List<string>();
-
-            ////validate
-            //var validator = new PaymentInfoValidator(_localizationService);
-            //var model = new PaymentInfoModel
-            //{
-            //    CardholderName = form["CardholderName"],
-            //    CardNumber = form["CardNumber"],
-            //    CardCode = form["CardCode"],
-            //    ExpireMonth = form["ExpireMonth"],
-            //    ExpireYear = form["ExpireYear"]
-            //};
-            //var validationResult = validator.Validate(model);
-            //if (!validationResult.IsValid)
-            //    warnings.AddRange(validationResult.Errors.Select(error => error.ErrorMessage));
-
-            //return warnings;
-
-            return new List<string>();
+            return Task.FromResult<IList<string>>(new List<string>());
         }
 
         /// <summary>
@@ -266,19 +217,9 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// </summary>
         /// <param name="form">The parsed form values</param>
         /// <returns>Payment info holder</returns>
-        public ProcessPaymentRequest GetPaymentInfo(IFormCollection form)
+        public Task<ProcessPaymentRequest> GetPaymentInfoAsync(IFormCollection form)
         {
-            //return new ProcessPaymentRequest
-            //{
-            //    CreditCardType = form["CreditCardType"],
-            //    CreditCardName = form["CardholderName"],
-            //    CreditCardNumber = form["CardNumber"],
-            //    CreditCardExpireMonth = int.Parse(form["ExpireMonth"]),
-            //    CreditCardExpireYear = int.Parse(form["ExpireYear"]),
-            //    CreditCardCvv2 = form["CardCode"]
-            //};
-
-            return new ProcessPaymentRequest();
+            return Task.FromResult(new ProcessPaymentRequest());
         }
 
         /// <summary>
@@ -301,14 +242,14 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// <summary>
         /// Install the plugin
         /// </summary>
-        public override void Install()
+        public override async Task InstallAsync()
         {
             //settings
             var settings = new MollieForNopPaymentSettings { };
-            _settingService.SaveSetting(settings);
+            await _settingService.SaveSettingAsync(settings);
 
             //locales
-            _localizationService.AddLocaleResource(new Dictionary<string, string>
+            await _localizationService.AddLocaleResourceAsync(new Dictionary<string, string>
             {
                 ["Plugins.Payments.MollieForNop.Paymentmethoddescription"] = "Continue your payment via https://www.Mollie.com/",
                 ["Plugins.Payments.MollieForNop.Instructions"] = "Create an account at Mollie.com. Add payment methods to your Mollie account. Enter your Mollie API Key bellow, this can be either a test key or a live key. Next correct the URL when the automatic filled in URL doesn't match your site.",
@@ -318,21 +259,21 @@ namespace Nop.Plugin.Payments.MollieForNop
                 ["Plugins.Payments.MollieForNop.Fields.SiteURL"] = "Website base URL:",
             });
 
-            base.Install();
+            await base.InstallAsync();
         }
 
         /// <summary>
         /// Uninstall the plugin
         /// </summary>
-        public override void Uninstall()
+        public override async Task UninstallAsync()
         {
             //settings
-            _settingService.DeleteSetting<MollieForNopPaymentSettings>();
+            await _settingService.DeleteSettingAsync<MollieForNopPaymentSettings>();
 
             //locales
-            _localizationService.DeleteLocaleResources("Plugins.Payments.MollieForNop");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.MollieForNop");
 
-            base.Uninstall();
+            await base.UninstallAsync();
         }
 
         #endregion
@@ -383,7 +324,7 @@ namespace Nop.Plugin.Payments.MollieForNop
         /// return description of this payment method to be display on "payment method" checkout step. good practice is to make it localizable
         /// for example, for a redirection payment method, description may be like this: "You will be redirected to PayPal site to complete the payment"
         /// </remarks>
-        public string PaymentMethodDescription => _localizationService.GetResource("Plugins.Payments.MollieForNop.PaymentMethodDescription");
+        public async Task<string> GetPaymentMethodDescriptionAsync() => await _localizationService.GetResourceAsync("Plugins.Payments.MollieForNop.PaymentMethodDescription");
 
         #endregion
 

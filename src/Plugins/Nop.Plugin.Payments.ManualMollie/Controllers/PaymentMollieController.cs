@@ -67,14 +67,14 @@ namespace Nop.Plugin.Payments.MollieForNop.Controllers
         [Area(AreaNames.Admin)]
         [AutoValidateAntiforgeryToken]
 
-        public IActionResult Configure()
+        public async Task<IActionResult> Configure()
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManagePaymentMethods))
+            if (! await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManagePaymentMethods))
                 return AccessDeniedView();
 
             //load settings for a chosen store scope
-            var storeScope = _storeContext.ActiveStoreScopeConfiguration;
-            var manualPaymentSettings = _settingService.LoadSetting<MollieForNopPaymentSettings>(storeScope);
+            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+            var manualPaymentSettings = await _settingService.LoadSettingAsync<MollieForNopPaymentSettings>(storeScope);
 
             var model = new ConfigurationModel
             {
@@ -84,14 +84,15 @@ namespace Nop.Plugin.Payments.MollieForNop.Controllers
             };
             if (storeScope > 0)
             {
-                model.Api_OverrideForStore = _settingService.SettingExists(manualPaymentSettings, x => x.ApiKey, storeScope);
-                model.SiteURL_OverrideForStore = _settingService.SettingExists(manualPaymentSettings, x => x.SiteURL, storeScope);
+                model.Api_OverrideForStore = await _settingService.SettingExistsAsync(manualPaymentSettings, x => x.ApiKey, storeScope);
+                model.SiteURL_OverrideForStore = await _settingService.SettingExistsAsync(manualPaymentSettings, x => x.SiteURL, storeScope);
             }
 
             // When left empty, fill in default URL
             if (model.SiteURL == "")
             {
-                model.SiteURL = _storeContext.CurrentStore.Url;
+                var site = await _storeContext.GetCurrentStoreAsync();
+                model.SiteURL = site.Url;
             }
 
             return View("~/Plugins/Payments.MollieForNop/Views/Configure.cshtml", model);
@@ -102,35 +103,35 @@ namespace Nop.Plugin.Payments.MollieForNop.Controllers
         [Area(AreaNames.Admin)]
         [AutoValidateAntiforgeryToken]
 
-        public IActionResult Configure(ConfigurationModel model)
+        public async Task<IActionResult> Configure(ConfigurationModel model)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManagePaymentMethods))
+            if (! await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManagePaymentMethods))
                 return AccessDeniedView();
 
             if (!ModelState.IsValid)
-                return Configure();
+                return await Configure();
 
             //load settings for a chosen store scope
-            var storeScope = _storeContext.ActiveStoreScopeConfiguration;
-            var MollieForNopPaymentSettings = _settingService.LoadSetting<MollieForNopPaymentSettings>(storeScope);
+            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+            var mollieForNopPaymentSettings = await _settingService.LoadSettingAsync<MollieForNopPaymentSettings>(storeScope);
 
             //save settings
-            MollieForNopPaymentSettings.ApiKey = model.ApiKey;
-            MollieForNopPaymentSettings.SiteURL = model.SiteURL;
+            mollieForNopPaymentSettings.ApiKey = model.ApiKey;
+            mollieForNopPaymentSettings.SiteURL = model.SiteURL;
 
             /* We do not clear cache after each setting update.
              * This behavior can increase performance because cached settings will not be cleared 
              * and loaded from database after each update */
 
-            _settingService.SaveSettingOverridablePerStore(MollieForNopPaymentSettings, x => x.ApiKey, model.Api_OverrideForStore, storeScope, false);
-            _settingService.SaveSettingOverridablePerStore(MollieForNopPaymentSettings, x => x.SiteURL, model.SiteURL_OverrideForStore, storeScope, false);
+            await _settingService.SaveSettingOverridablePerStoreAsync(mollieForNopPaymentSettings, x => x.ApiKey, model.Api_OverrideForStore, storeScope, false);
+            await _settingService.SaveSettingOverridablePerStoreAsync(mollieForNopPaymentSettings, x => x.SiteURL, model.SiteURL_OverrideForStore, storeScope, false);
 
             //now clear settings cache
-            _settingService.ClearCache();
+            await _settingService.ClearCacheAsync();
 
-            _notificationService.SuccessNotification(_localizationService.GetResource("Admin.Plugins.Saved"));
+            _notificationService.SuccessNotification(await _localizationService.GetResourceAsync("Admin.Plugins.Saved"));
 
-            return Configure();
+            return await Configure();
         }
 
         public async Task<IActionResult> Verify()
@@ -141,11 +142,11 @@ namespace Nop.Plugin.Payments.MollieForNop.Controllers
             // 1:  make sure when no base url is present, client gets no error prompted 
 
             //load settings for a chosen store scope
-            var storeScope = _storeContext.ActiveStoreScopeConfiguration;
-            var MollieForNopPaymentSettings = _settingService.LoadSetting<MollieForNopPaymentSettings>(storeScope);
+            var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+            var mollieForNopPaymentSettings = await _settingService.LoadSettingAsync<MollieForNopPaymentSettings>(storeScope);
 
             // Open client
-            IPaymentClient paymentClient = new PaymentClient(MollieForNopPaymentSettings.ApiKey);
+            IPaymentClient paymentClient = new PaymentClient(mollieForNopPaymentSettings.ApiKey);
 
             // Set time out count
             int timeout = 0;
@@ -198,13 +199,13 @@ namespace Nop.Plugin.Payments.MollieForNop.Controllers
                 {
                     // Cancel order
                     identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Cancelled;
-                    _orderService.UpdateOrder(identifier.OrderInfo);
+                    await _orderService.UpdateOrderAsync(identifier.OrderInfo);
 
                     // Remove ID from the repository 
                     Repository.Remove(identifier);
 
                     // Redirect to overview page
-                    string url = MollieForNopPaymentSettings.SiteURL + "orderdetails/" + identifier.OrderInfo.Id;
+                    string url = mollieForNopPaymentSettings.SiteURL + "orderdetails/" + identifier.OrderInfo.Id;
                     return Redirect(url);
                 }
             }
@@ -214,25 +215,25 @@ namespace Nop.Plugin.Payments.MollieForNop.Controllers
             {
                 identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Pending;
                 identifier.OrderInfo.PaymentStatus = Core.Domain.Payments.PaymentStatus.Paid;
-                _orderService.UpdateOrder(identifier.OrderInfo);
+                await _orderService.UpdateOrderAsync(identifier.OrderInfo);
 
                 // Remove ID from the repository 
                 Repository.Remove(identifier);
 
-                string url = MollieForNopPaymentSettings.SiteURL + "checkout/completed";
+                string url = mollieForNopPaymentSettings.SiteURL + "checkout/completed";
                 return Redirect(url);
             }
             else
             {
                 // Cancel order
                 identifier.OrderInfo.OrderStatus = Core.Domain.Orders.OrderStatus.Cancelled;
-                _orderService.UpdateOrder(identifier.OrderInfo);
+                await _orderService.UpdateOrderAsync(identifier.OrderInfo);
 
                 // Remove ID from the repository 
                 Repository.Remove(identifier);
 
                 // Redirect to overview page
-                string url = MollieForNopPaymentSettings.SiteURL + "orderdetails/" + identifier.OrderInfo.Id;
+                string url = mollieForNopPaymentSettings.SiteURL + "orderdetails/" + identifier.OrderInfo.Id;
                 return Redirect(url);
             }
         }

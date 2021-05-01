@@ -5,7 +5,7 @@ using Nop.Web.Framework.Models;
 
 namespace Nop.Plugin.Payments.MollieForNop.Models
 {
-    public class PaymentInfoModel : BaseNopModel
+    public record PaymentInfoModel : BaseNopModel
     {
         public PaymentInfoModel()
         {
