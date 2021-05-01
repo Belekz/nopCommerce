@@ -9,8 +9,6 @@
     }
 }
 
-@await Component.InvokeAsync("Widget", new { widgetZone = "main_column_before" })
 @RenderBody()
-@await Component.InvokeAsync("Widget", new { widgetZone = "main_column_after" })
 
 

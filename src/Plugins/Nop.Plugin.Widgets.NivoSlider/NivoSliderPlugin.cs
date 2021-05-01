@@ -44,7 +44,7 @@ namespace Nop.Plugin.Widgets.NivoSlider
         /// </returns>
         public Task<IList<string>> GetWidgetZonesAsync()
         {
-            return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageTop });
+            return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.MainColumnAfter });
         }
 
         /// <summary>
