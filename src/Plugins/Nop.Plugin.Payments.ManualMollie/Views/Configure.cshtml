@@ -6,12 +6,11 @@
 @await Component.InvokeAsync("StoreScopeConfiguration")
 
 <form asp-controller="PaymentMollieForNop" asp-action="Configure" method="post">
-    <div class="panel-group">
-        <div class="panel panel-default">
-            <div class="panel-body">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
                 <p>@T("Plugins.Payments.MollieForNop.Instructions")</p>
-
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-md-3">
                         <nop-override-store-checkbox asp-for="Api_OverrideForStore" asp-input="ApiKey" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
                         <nop-label asp-for="ApiKey" />
@@ -21,8 +20,7 @@
                         <span asp-validation-for="ApiKey"></span>
                     </div>
                 </div>
-
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-md-3">
                         <nop-override-store-checkbox asp-for="SiteURL_OverrideForStore" asp-input="SiteURL" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
                         <nop-label asp-for="SiteURL" />
@@ -32,8 +30,6 @@
                         <span asp-validation-for="SiteURL"></span>
                     </div>
                 </div>
-                
-
                 <div class="form-group">
                     <div class="col-md-9 col-md-offset-3">
                         <input type="submit" name="save" class="btn bg-primary" value="@T("Admin.Common.Save")" />
