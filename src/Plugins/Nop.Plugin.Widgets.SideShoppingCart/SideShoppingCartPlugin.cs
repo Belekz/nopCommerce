@@ -73,6 +73,11 @@ namespace Nop.Plugin.Widgets.SideShoppingCart
         {
             //settings
             var settings = new SideShoppingCartSettings {};
+
+            // By default settings
+            settings.MaximumShoppingCartItems = 10;
+            settings.ShowProductImagesOnShoppingCart = true;
+
             await _settingService.SaveSettingAsync(settings);
 
             //locales
