@@ -1,4 +1,4 @@
-﻿@model Nop.Plugin.Widgets.SideShoppingCart.Models.PublicInfoModel
+﻿@model MiniShoppingCartModel
 @{
     Layout = "";
 
@@ -7,5 +7,37 @@
     //Html.AddCssFileParts("~/Plugins/Widgets.NivoSlider/Content/nivoslider/themes/custom/custom.css");
 }
 
-<h1>SIDE SHOPPING CART</h1>
-<p>@Model.Item</p>
+@if (Model.TotalProducts > 0)
+{
+
+    <div class="block block-recently-viewed-products">
+
+        <div class="title">
+            <strong>@T("ShoppingCart")</strong>
+        </div>
+
+        <div class="listboxQuims">
+            <ul class="list">
+                @if (Model.TotalProducts > 0)
+                {
+                    @foreach (var p in Model.Items)
+                    {
+
+                        <li class="last">
+                            <a class="product-picture" href="@Url.RouteUrl("Product", new { SeName = p.ProductSeName })"><img src="@p.Picture.ImageUrl" title="@p.Picture.Title" /></a>
+                            <a class="product-name" href="@Url.RouteUrl("Product", new { SeName = p.ProductSeName })">@p.ProductName</a>
+                        </li>
+                    }
+                }
+            </ul>
+
+            <div class="button">
+                <a href="@Url.RouteUrl("ShoppingCart")" class="ico-cart">
+                    <span class="cart-label">@T("Checkout.Button")</span>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+}
