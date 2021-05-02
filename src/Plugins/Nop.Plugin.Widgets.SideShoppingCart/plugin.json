@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Side Shopping Cart",
+  "SystemName": "SideShoppingCart",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.40" ],
+  "Author": "Pieter De Witte",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.SideShoppingCart.dll",
+  "Description": "Displays shopping cart on the right side of the catalog"
+}

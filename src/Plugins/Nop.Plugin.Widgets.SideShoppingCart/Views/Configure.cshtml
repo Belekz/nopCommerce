@@ -1,0 +1,51 @@
+﻿@model Nop.Plugin.Widgets.SideShoppingCart.Models.ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+
+<form asp-controller="WidgetsSideShoppingCart" asp-action="Configure" method="post">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
+                <p>@T("Plugins.Widgets.SideShoppingCart.Instructions")</p>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="MaximumShoppingCartItems_OverrideForStore" asp-input="MaximumShoppingCartItems" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="MaximumShoppingCartItems" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="MaximumShoppingCartItems" />
+                        <span asp-validation-for="MaximumShoppingCartItems"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ShowProductImagesOnShoppingCart_OverrideForStore" asp-input="ShowProductImagesOnShoppingCart" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ShowProductImagesOnShoppingCart" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ShowProductImagesOnShoppingCart" />
+                        <span asp-validation-for="ShowProductImagesOnShoppingCart"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="HideCheckoutButton_OverrideForStore" asp-input="HideCheckoutButton" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="HideCheckoutButton" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="HideCheckoutButton" />
+                        <span asp-validation-for="HideCheckoutButton"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-primary" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
