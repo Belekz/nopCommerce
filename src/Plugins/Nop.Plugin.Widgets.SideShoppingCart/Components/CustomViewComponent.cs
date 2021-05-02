@@ -46,9 +46,22 @@ namespace Nop.Plugin.Widgets.SideShoppingCart.Components
         /// <returns>A task that represents the asynchronous operation</returns>
         public async Task<IViewComponentResult> InvokeAsync(string widgetZone, object additionalData)
         {
-            var sideShoppingCart = await _settingService.LoadSettingAsync<SideShoppingCartSettings>((await _storeContext.GetCurrentStoreAsync()).Id);
+            var sideShoppingCartSettings = await _settingService.LoadSettingAsync<SideShoppingCartSettings>((await _storeContext.GetCurrentStoreAsync()).Id);
+            var shoppingCartModel = await _shoppingCartModelFactory.PrepareMiniShoppingCartModelAsync();
 
-            var model = await _shoppingCartModelFactory.PrepareMiniShoppingCartModelAsync();
+            // Reduce number of items to the maximum set value (remove the last added items)
+            while (shoppingCartModel.Items.Count > sideShoppingCartSettings.MaximumShoppingCartItems)
+            {
+                shoppingCartModel.Items.RemoveAt(0); 
+            }
+
+            var model = new PublicInfoModel
+            {
+                ShoppingCartModel = shoppingCartModel,
+                MaximumShoppingCartItems = sideShoppingCartSettings.MaximumShoppingCartItems,
+                ShowProductImagesOnShoppingCart = sideShoppingCartSettings.ShowProductImagesOnShoppingCart,
+                HideCheckoutButton = sideShoppingCartSettings.HideCheckoutButton
+            };
 
             return View("~/Plugins/Widgets.SideShoppingCart/Views/PublicInfo.cshtml", model);
         }

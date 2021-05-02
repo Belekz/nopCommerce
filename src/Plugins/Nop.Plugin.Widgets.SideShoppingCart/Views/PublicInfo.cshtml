@@ -1,13 +1,10 @@
-﻿@model MiniShoppingCartModel
+﻿@using Nop.Plugin.Widgets.SideShoppingCart.Models
+@model PublicInfoModel
 @{
     Layout = "";
-
-    //Html.AddScriptParts(ResourceLocation.Footer, "~/Plugins/Widgets.NivoSlider/Scripts/jquery.nivo.slider.js");
-    //Html.AddCssFileParts("~/Plugins/Widgets.NivoSlider/Content/nivoslider/nivo-slider.css");
-    //Html.AddCssFileParts("~/Plugins/Widgets.NivoSlider/Content/nivoslider/themes/custom/custom.css");
 }
 
-@if (Model.TotalProducts > 0)
+@if (Model.ShoppingCartModel.TotalProducts > 0)
 {
 
     <div class="block block-recently-viewed-products">
@@ -16,26 +13,33 @@
             <strong>@T("ShoppingCart")</strong>
         </div>
 
-        <div class="listboxQuims">
-            <ul class="list">
-                @if (Model.TotalProducts > 0)
-                {
-                    @foreach (var p in Model.Items)
-                    {
+        <div class="listbox">
 
+            <ul class="list">
+                @if (Model.ShoppingCartModel.TotalProducts > 0)
+                {
+                    @foreach (var p in Model.ShoppingCartModel.Items)
+                    {
                         <li class="last">
-                            <a class="product-picture" href="@Url.RouteUrl("Product", new { SeName = p.ProductSeName })"><img src="@p.Picture.ImageUrl" title="@p.Picture.Title" /></a>
+                            @if (Model.ShowProductImagesOnShoppingCart)
+                            {
+                                <a class="product-picture" href="@Url.RouteUrl("Product", new { SeName = p.ProductSeName })"><img src="@p.Picture.ImageUrl" title="@p.Picture.Title" /></a>
+                            }
+
                             <a class="product-name" href="@Url.RouteUrl("Product", new { SeName = p.ProductSeName })">@p.ProductName</a>
                         </li>
                     }
                 }
             </ul>
 
-            <div class="button">
-                <a href="@Url.RouteUrl("ShoppingCart")" class="ico-cart">
-                    <span class="cart-label">@T("Checkout.Button")</span>
-                </a>
-            </div>
+            @if (!Model.HideCheckoutButton)
+            {
+                <div class="button">
+                    <a href="@Url.RouteUrl("ShoppingCart")" class="ico-cart">
+                        <span class="cart-label">@T("Checkout.Button")</span>
+                    </a>
+                </div>
+            }
 
         </div>
 
