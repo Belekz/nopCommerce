@@ -7,43 +7,43 @@
         <li>
             <a href="@Url.RouteUrl("Category", new { SeName = lineModel.Category.SeName })">
                 @lineModel.Category.Name
-            @if (lineModel.Category.NumberOfProducts.HasValue)
-            {
-                <text> </text>@T("Categories.TotalProducts", lineModel.Category.NumberOfProducts.Value)
-            }
-        </a>
-        @{
-            //subcategories
-            var subCategories = lineModel.ResponsiveMobileMenu ?
-                //responsive (all categories)
-                lineModel.Category.SubCategories :
-                //standard design (only categories with "IncludeInTopMenu")
-                lineModel.Category.SubCategories.Where(x => x.IncludeInTopMenu).ToList();
+                @if (lineModel.Category.NumberOfProducts.HasValue)
+                {
+                    <text> </text>@T("Categories.TotalProducts", lineModel.Category.NumberOfProducts.Value)
+                }
+            </a>
+            @{
+                //subcategories
+                var subCategories = lineModel.ResponsiveMobileMenu ?
+                    //responsive (all categories)
+                    lineModel.Category.SubCategories :
+                    //standard design (only categories with "IncludeInTopMenu")
+                    lineModel.Category.SubCategories.Where(x => x.IncludeInTopMenu).ToList();
 
-            var levelClass = "";
-            if (lineModel.Level == 0)
-            {
-                levelClass = "first-level";
-            }
-            if (subCategories.Count > 0)
-            {
-                <div class="sublist-toggle"></div>
-                <ul class="sublist @levelClass">
-                    @foreach (var subCategory in subCategories)
-                    {
-                        var categoryLineModel = new TopMenuModel.CategoryLineModel
+                var levelClass = "";
+                if (lineModel.Level == 0)
+                {
+                    levelClass = "first-level";
+                }
+                if (subCategories.Count > 0)
+                {
+                    <div class="sublist-toggle"></div>
+                    <ul class="sublist @levelClass">
+                        @foreach (var subCategory in subCategories)
                         {
-                            Category = subCategory,
-                            Level = lineModel.Level + 1,
-                            ResponsiveMobileMenu = lineModel.ResponsiveMobileMenu
-                        };
-                        await CategoryLine(categoryLineModel);
-                    }
-                </ul>
+                            var categoryLineModel = new TopMenuModel.CategoryLineModel
+                            {
+                                Category = subCategory,
+                                Level = lineModel.Level + 1,
+                                ResponsiveMobileMenu = lineModel.ResponsiveMobileMenu
+                            };
+                            await CategoryLine(categoryLineModel);
+                        }
+                    </ul>
+                }
             }
-        }
-    </li>
-}
+        </li>
+    }
 }
 
 <ul class="top-menu notmobile">
@@ -136,88 +136,106 @@
     var rootCategoriesResponsive = Model.Categories.ToList();
     //name it "Categories" if we have only categories. Otherwise, "Menu"
     var responsiveMenuTitle = Model.HasOnlyCategories ? T("Categories") : T("Menu");
-    <div class="menu-toggle">@responsiveMenuTitle</div>
-    <ul class="top-menu mobile">
-        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.MobHeaderMenuBefore })
-        @if (Model.DisplayHomepageMenuItem)
+
+    @* QUIMS EDIT *@
+
+    @*<div class="menu-toggle">@responsiveMenuTitle</div>*@
+
+    <div class="menu-toggle">
+        <div class="MenuResponsive"> <i class="fas fa-bars fa-2x"></i> </div>
+        <div class="SmallTextResponsive" text-center>quims</div>
+        <div class="LanguageResponsive"> @await Component.InvokeAsync("LanguageSelector") </div>
+    </div>
+
+    @* QUIMS EDIT *@
+
+<ul class="top-menu mobile">
+
+    @*QUIMS EDIT*@
+    <li class="top-menu-firstRow"><a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a></li>
+
+    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.MobHeaderMenuBefore })
+
+    @*@if (Model.DisplayHomepageMenuItem)
+    {
+        <li><a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a></li>
+    }*@
+
+    @if (!Model.UseAjaxMenu)
+    {
+        @foreach (var category in rootCategoriesResponsive)
         {
-            <li><a href="@Url.RouteUrl("Homepage")">@T("Homepage")</a></li>
-        }
-        @if (!Model.UseAjaxMenu)
-        {
-            @foreach (var category in rootCategoriesResponsive)
+            var categoryLineModel = new TopMenuModel.CategoryLineModel
             {
-                var categoryLineModel = new TopMenuModel.CategoryLineModel
-                {
-                    Category = category,
-                    ResponsiveMobileMenu = true
-                };
+                Category = category,
+                ResponsiveMobileMenu = true
+            };
 
-                await CategoryLine(categoryLineModel);
-            }
-
-        }
-        @foreach (var topic in Model.Topics)
-        {
-            <li><a href="@Url.RouteUrl("Topic", new { SeName = topic.SeName })">@topic.Name</a></li>
-        }
-        @if (Model.NewProductsEnabled && Model.DisplayNewProductsMenuItem)
-        {
-            <li><a href="@Url.RouteUrl("NewProducts")">@T("Products.NewProducts")</a></li>
-        }
-        @if (Model.DisplayProductSearchMenuItem)
-        {
-            <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a></li>
-        }
-        @if (Model.DisplayCustomerInfoMenuItem)
-        {
-            <li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>
-        }
-        @if (Model.BlogEnabled && Model.DisplayBlogMenuItem)
-        {
-            <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
-        }
-        @if (Model.ForumEnabled && Model.DisplayForumsMenuItem)
-        {
-            <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
+            await CategoryLine(categoryLineModel);
         }
 
-        @* QUIMS EDIT *@
+    }
+    @foreach (var topic in Model.Topics)
+    {
+        <li><a href="@Url.RouteUrl("Topic", new { SeName = topic.SeName })">@topic.Name</a></li>
+    }
+    @if (Model.NewProductsEnabled && Model.DisplayNewProductsMenuItem)
+    {
+        <li><a href="@Url.RouteUrl("NewProducts")">@T("Products.NewProducts")</a></li>
+    }
+    @if (Model.DisplayProductSearchMenuItem)
+    {
+        <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a></li>
+    }
+    @if (Model.DisplayCustomerInfoMenuItem)
+    {
+        <li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>
+    }
+    @if (Model.BlogEnabled && Model.DisplayBlogMenuItem)
+    {
+        <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
+    }
+    @if (Model.ForumEnabled && Model.DisplayForumsMenuItem)
+    {
+        <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
+    }
 
-        @if (Model.ShoppingCartEnabled)
-        {
-            <li @*id="topcartlink"*@>
-                <a href="@Url.RouteUrl("ShoppingCart")" class="ico-cart">
-                    <span class="cart-label">@T("ShoppingCart")</span>
-                    <span class="cart-qty">@T("ShoppingCart.HeaderQuantity", Model.ShoppingCartItems)</span>
-                </a>
-            </li>
-        }
+    @* QUIMS EDIT *@
 
-        @if (Model.IsAuthenticated)
-        {
-            <li><a href="@Url.RouteUrl("CustomerInfo")" class="ico-account">@T("Account.MyAccount")@*@Model.CustomerName*@</a></li>
-            <li><a href="@Url.RouteUrl("Logout")" class="ico-logout">@T("Account.Logout")</a></li>
-        }
-        else
-        {
-            var returnUrl = Context.Request.Query.TryGetValue("returnUrl", out var url) && !StringValues.IsNullOrEmpty(url)
-                ? url.ToString()
-                : webHelper.GetRawUrl(Context.Request);
+    @if (Model.ShoppingCartEnabled)
+    {
+        <li @*id="topcartlink"*@>
+            <a href="@Url.RouteUrl("ShoppingCart")" class="ico-cart">
+                <span class="cart-label">@T("ShoppingCart")</span>
+                <span class="cart-qty">@T("ShoppingCart.HeaderQuantity", Model.ShoppingCartItems)</span>
+            </a>
+        </li>
+    }
 
-            <li><a href="@Url.RouteUrl("Register", new { returnUrl })" class="ico-register">@T("Account.Register")</a></li>
-            <li><a href="@Url.RouteUrl("Login", new { returnUrl })" class="ico-login">@T("Account.Login")</a></li>
-        }
+    @if (Model.IsAuthenticated)
+    {
+        <li><a href="@Url.RouteUrl("CustomerInfo")" class="ico-account">@T("Account.MyAccount")@*@Model.CustomerName*@</a></li>
+        <li><a href="@Url.RouteUrl("Logout")" class="ico-logout">@T("Account.Logout")</a></li>
+    }
+    else
+    {
+        var returnUrl = Context.Request.Query.TryGetValue("returnUrl", out var url) && !StringValues.IsNullOrEmpty(url)
+            ? url.ToString()
+            : webHelper.GetRawUrl(Context.Request);
 
-        @if (Model.DisplayContactUsMenuItem)
-        {
-            <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
-        }
+        <li><a href="@Url.RouteUrl("Register", new { returnUrl })" class="ico-register">@T("Account.Register")</a></li>
+        <li><a href="@Url.RouteUrl("Login", new { returnUrl })" class="ico-login">@T("Account.Login")</a></li>
+    }
 
-        @* QUIMS EDIT *@
+    @if (Model.DisplayContactUsMenuItem)
+    {
+        <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
+    }
 
-        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.MobHeaderMenuAfter })
-    </ul>
+    @* QUIMS EDIT *@
+
+    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.MobHeaderMenuAfter })
+</ul>
 
     @if (Model.UseAjaxMenu)
     {

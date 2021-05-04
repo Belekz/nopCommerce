@@ -2156,8 +2156,7 @@ label, label + * {
 .item-box .add-to-compare-list-button:focus,
 .item-box .add-to-wishlist-button:hover,
 .item-box .add-to-wishlist-button:focus {
-  /*background-color: #ddd;*/                                         /* QUIMS EDIT */
-  background-image: url('../images/wishlist-button-push.png');                        /* QUIMS EDIT */
+  background-color: #ddd;                        
 }
 
 .home-page-category-grid,
@@ -7051,7 +7050,7 @@ pre {
 /*   QUIMS EDIT */
 
   .menu-toggle {
-    background: white;        
+    background: white;
     position: fixed;
     z-index: 99;
     padding: 15px;
@@ -7060,8 +7059,9 @@ pre {
     color: #888;
     text-transform: uppercase;
     cursor: pointer;
-    margin-bottom: 10%;        
+    margin-bottom: 10%;
     width: 100%;
+    box-shadow: 0 2px 5px -2px #888                                                                                                       /* QUIMS EDIT */
   }
 
   .top-menu {
@@ -7738,7 +7738,8 @@ pre {
     margin: 0 5px 20px;
   }
 
-  .product-list .item-box .product-item:after {
+  .product-list .item-box .
+  :after {
     content: "";
     display: block;
     clear: both;
