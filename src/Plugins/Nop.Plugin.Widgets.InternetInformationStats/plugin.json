@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Internet Information Stats",
+  "SystemName": "Widgets.InternetInformationStats",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.40" ],
+  "Author": "Pieter De Witte",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.InternetInformationStats.dll",
+  "Description": "Show stats from the Windows Internet Information Service (IIS) in admin area"
+}

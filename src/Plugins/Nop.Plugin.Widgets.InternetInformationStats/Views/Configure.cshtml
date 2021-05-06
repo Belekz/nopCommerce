@@ -1,0 +1,51 @@
+﻿@model Nop.Plugin.Widgets.InternetInformationStats.Models.ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+
+<form asp-controller="WidgetsInternetInformationStats" asp-action="Configure" method="post">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
+                <p>@T("Plugins.Widgets.InternetInformationStats.Instructions")</p>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="FileLocation_OverrideForStore" asp-input="FileLocation" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="FileLocation" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="FileLocation" />
+                        <span asp-validation-for="FileLocation"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ShowProductImagesOnShoppingCart_OverrideForStore" asp-input="ShowProductImagesOnShoppingCart" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ShowProductImagesOnShoppingCart" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ShowProductImagesOnShoppingCart" />
+                        <span asp-validation-for="ShowProductImagesOnShoppingCart"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="HideCheckoutButton_OverrideForStore" asp-input="HideCheckoutButton" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="HideCheckoutButton" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="HideCheckoutButton" />
+                        <span asp-validation-for="HideCheckoutButton"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-primary" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
