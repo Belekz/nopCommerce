@@ -1345,6 +1345,7 @@ label, label + * {
 
 .top-menu {
   margin-bottom: 1%;                                                                        /* Quims edit */
+  text-align: center;                                                                       /* Quims edit */
 }
 
   /*********** FOOTER ***********/
