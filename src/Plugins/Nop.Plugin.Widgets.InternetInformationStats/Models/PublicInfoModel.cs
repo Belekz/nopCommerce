@@ -5,8 +5,9 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Models
 {
     public record PublicInfoModel : BaseNopModel
     {
-        public int NumberOfVisitorsToday { get; set; }
-        public int NumberOfOnlineVisitors { get; set; }
+        public int VisitorsToday { get; set; }
+        public int VisitorsThisMonth { get; set; }
+        public int OnlineVisitors { get; set; }
         public string Date { get; set; }
     }
 }

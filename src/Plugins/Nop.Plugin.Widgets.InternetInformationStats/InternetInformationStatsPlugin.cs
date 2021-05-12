@@ -83,8 +83,8 @@ namespace Nop.Plugin.Widgets.InternetInformationStats
             //locales
             await _localizationService.AddLocaleResourceAsync(new Dictionary<string, string>
             {
-                ["Plugins.Widgets.InternetInformationStats.Instructions"] = "Shopping cart gets rendered bellow category menu. Please configure following options.",
-                ["Plugins.Widgets.InternetInformationStats.Title"] = "Internet Information (Service) Stats",
+                ["Plugins.Widgets.InternetInformationStats.VisitorsToday"] = "Visitors Today",
+                ["Plugins.Widgets.InternetInformationStats.VisitorsThisMonth"] = "Visitors This Month",
                 ["Plugins.Widgets.InternetInformationStats.Fields.FileLocation"] = "Maximum items to show",
                 ["Plugins.Widgets.InternetInformationStats.Fields.ShowProductImagesOnShoppingCart"] = "Show images",
                 ["Plugins.Widgets.InternetInformationStats.Fields.HideCheckoutButton"] = "Hide check-out button",
