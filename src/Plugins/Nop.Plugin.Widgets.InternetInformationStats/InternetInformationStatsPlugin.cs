@@ -76,7 +76,7 @@ namespace Nop.Plugin.Widgets.InternetInformationStats
 
             // By default settings
             settings.FileLocation = "log-file";
-            settings.ShowProductImagesOnShoppingCart = true;
+            settings.OwnIpAddress = true;
 
             await _settingService.SaveSettingAsync(settings);
 

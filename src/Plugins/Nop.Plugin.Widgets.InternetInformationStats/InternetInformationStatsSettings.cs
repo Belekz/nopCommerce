@@ -13,9 +13,9 @@ namespace Nop.Plugin.Widgets.InternetInformationStats
         public string FileLocation { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to show product image on shopping cart page
+        /// Gets or sets own IP address, to ignore in log files
         /// </summary>
-        public bool ShowProductImagesOnShoppingCart { get; set; }
+        public bool OwnIpAddress { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to hide the check-out button

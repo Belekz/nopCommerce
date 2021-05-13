@@ -16,6 +16,8 @@ using IISLogParser;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using System.IO;
+using System.Net;
 
 namespace Nop.Plugin.Widgets.InternetInformationStats.Components
 {
@@ -47,96 +49,150 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Components
             _customerModelFactory = customerModelFactory;
         }
 
-        // This presumes that weeks start with Monday.
-        // Week 1 is the 1st week of the year with a Thursday in it.
-        public static int GetIso8601WeekOfYear(DateTime time)
-        {
-            // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll 
-            // be the same week# as whatever Thursday, Friday or Saturday are,
-            // and we always get those right
-            DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
-            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
-            {
-                time = time.AddDays(3);
-            }
-
-            // Return the week of our adjusted day
-            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-        }
-
         /// <returns>A task that represents the asynchronous operation</returns>
         public async Task<IViewComponentResult> InvokeAsync(string widgetZone, object additionalData)
         {
+
             var internetInformationStatsSettings = await _settingService.LoadSettingAsync<InternetInformationStatsSettings>((await _storeContext.GetCurrentStoreAsync()).Id);
-
-            var model = new PublicInfoModel
-            {
-                VisitorsToday = 0,
-                OnlineVisitors = 44
-            };
-
-            internetInformationStatsSettings.FileLocation = "C:\\Users\\piete\\Source\\Repos\\NopCommerceMerge\\nopCommerce\\src\\Plugins\\Nop.Plugin.Widgets.InternetInformationStats\\EXAMPLE FILES\\u_ex210505.log";
+            var store = await _storeContext.GetCurrentStoreAsync();
+            PublicInfoModel viewModel = new PublicInfoModel { Data = new StatsModel { Week = new WeekModel() } };
+            string ownIP = null;
             List<IISLogEvent> logs = new List<IISLogEvent>();
             List<IISLogEvent> logsOfToday = new List<IISLogEvent>();
             List<IISLogEvent> uniqueVisitors = new List<IISLogEvent>();
 
-            using (ParserEngine parser = new ParserEngine(internetInformationStatsSettings.FileLocation))
+            #region Get Own IP
+            // Get own IP
+            try
             {
-                while (parser.MissingRecords)
+                if (store.Url.Contains("localhost"))
                 {
-                    logs = parser.ParseLog().ToList();
+                    ownIP = "127.0.0.1";
                 }
-            }
-
-            // DEBUGGING PURPOSES
-            var firstDate = logs[0].DateTimeEvent.Date;
-            // DEBUGGING PURPOSES
-
-            foreach (var l in logs)
-            {
-                // Add when list is empty
-                if (uniqueVisitors.Count == 0)
-                {
-                    uniqueVisitors.Add(l);
-                }
-                // Add unique items
                 else
                 {
-                    foreach(var u in uniqueVisitors)
+                    IPHostEntry hostEntry = Dns.GetHostEntry(store.Url);
+                    ownIP = hostEntry.AddressList[0].ToString();
+                }
+            }
+            catch (Exception)
+            {
+            }
+            #endregion
+
+            try
+            {
+                // Get files from file location & sort on last modified
+                DirectoryInfo info = new DirectoryInfo(internetInformationStatsSettings.FileLocation);
+                FileInfo[] files = info.GetFiles().OrderBy(p => p.LastWriteTime).ToArray();
+                List<string> paths = new List<string>();
+
+                // Filter out the log files
+                foreach(FileInfo f in files)
+                {
+                    if (f.Extension == ".log")
                     {
-                        if (u.cIp == l.cIp)
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            uniqueVisitors.Add(l);
-                            break;
-                        }
+                        paths.Add(f.DirectoryName+"/"+f.Name);
                     }
                 }
 
-            }
+                if (paths.Count == 0)
+                {
+                    viewModel.ErrorMessage = "No .log files found in given directory";
+                }
 
-            foreach (var l in uniqueVisitors)
+                // Read last modified log file
+                using (ParserEngine parser = new ParserEngine(paths.LastOrDefault()))
+                {
+                    while (parser.MissingRecords)
+                    {
+                        logs = parser.ParseLog().ToList();
+                    }
+                }
+
+                // DEBUGGING PURPOSES
+                //var firstDate = logs[0].DateTimeEvent.Date;
+                // DEBUGGING PURPOSES
+
+                foreach (var l in logs)
+                {
+                    // Add when list is empty
+                    if (uniqueVisitors.Count == 0)
+                    {
+                        uniqueVisitors.Add(l);
+                    }
+                    // Add unique items
+                    else
+                    {
+                        for(int u = 0; u < uniqueVisitors.Count; u++ )
+                        {
+                            if (l.cIp == uniqueVisitors[u].cIp)
+                            {
+                                break;
+                            }
+
+                            if (l.cIp == "::1")
+                            {
+                                break;
+                            }
+
+                            if (l.cIp == ownIP)
+                            {
+                                break;
+                            }
+
+                            if (u == uniqueVisitors.Count-1)
+                            {
+                                uniqueVisitors.Add(l);
+                            }
+                        }
+
+                    }
+                }
+
+                foreach (var l in uniqueVisitors)
+                {
+
+                    //Day of week
+                    switch (l.DateTimeEvent.DayOfWeek.ToString())
+                    {
+                        case "Sunday":
+                            viewModel.Data.Week.Sunday++;
+                            break;
+                        case "Monday":
+                            viewModel.Data.Week.Monday++;
+                            break;
+                        case "Tuesday":
+                            viewModel.Data.Week.Tuesday++;
+                            break;
+                        case "Wednesday":
+                            viewModel.Data.Week.Wednesday++;
+                            break;
+                        case "Thursday":
+                            viewModel.Data.Week.Thursday++;
+                            break;
+                        case "Friday":
+                            viewModel.Data.Week.Friday++;
+                            break;
+                        case "Saterday":
+                            viewModel.Data.Week.Saterday++;
+                            break;
+                        default:
+                            viewModel.ErrorMessage = "day of week not found";
+                            break;
+                    }
+                }
+            }
+            catch (Exception error)
             {
-                // Today
-                if (l.DateTimeEvent.Date == firstDate)
+                if (viewModel.ErrorMessage == null)
                 {
-                    model.OnlineVisitors++;
+                    viewModel.ErrorMessage = error.ToString();
                 }
-
-                // This week
-                if (GetIso8601WeekOfYear(l.DateTimeEvent.Date) == GetIso8601WeekOfYear(firstDate))
-                {
-                    model.VisitorsThisMonth++;
-                }
-
-                // write to db 
 
             }
 
-            return View("~/Plugins/Widgets.InternetInformationStats/Views/PublicInfo.cshtml", model);
+            return View("~/Plugins/Widgets.InternetInformationStats/Views/PublicInfo.cshtml", viewModel);
         }
     }
 }
