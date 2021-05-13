@@ -85,6 +85,7 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Components
                 // Get files from file location & sort on last modified
                 DirectoryInfo info = new DirectoryInfo(internetInformationStatsSettings.FileLocation);
                 FileInfo[] files = info.GetFiles().OrderBy(p => p.LastWriteTime).ToArray();
+                List<FileInfo> logFiles = new List<FileInfo>();
                 List<string> paths = new List<string>();
 
                 // Filter out the log files
@@ -92,23 +93,31 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Components
                 {
                     if (f.Extension == ".log")
                     {
-                        paths.Add(f.DirectoryName+"/"+f.Name);
+                        //paths.Add(f.DirectoryName+"/"+f.Name);
+                        logFiles.Add(f);
                     }
                 }
 
-                if (paths.Count == 0)
+                if (logFiles.Count == 0)
                 {
                     viewModel.ErrorMessage = "No .log files found in given directory";
                 }
 
+                // Copy the last modified file
+                logFiles.LastOrDefault().CopyTo(internetInformationStatsSettings.FileLocation + "//IIStats.log");
+
                 // Read last modified log file
-                using (ParserEngine parser = new ParserEngine(paths.LastOrDefault()))
+                using (ParserEngine parser = new ParserEngine(internetInformationStatsSettings.FileLocation + "//IIStats.log"))
                 {
                     while (parser.MissingRecords)
                     {
                         logs = parser.ParseLog().ToList();
                     }
                 }
+
+                // Delete copy of file
+                FileInfo[] copyFiles = info.GetFiles().Where(f => f.Name == "IIStats.log").ToArray();
+                copyFiles[0].Delete();
 
                 // DEBUGGING PURPOSES
                 //var firstDate = logs[0].DateTimeEvent.Date;
