@@ -13,10 +13,10 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Models
         public string FileLocation { get; set; }
         public bool FileLocation_OverrideForStore { get; set; }
 
-        [NopResourceDisplayName("Plugins.Widgets.InternetInformationStats.Fields.ShowProductImagesOnShoppingCart")]
+        [NopResourceDisplayName("Plugins.Widgets.InternetInformationStats.Fields.CultureInfo")]
 
-        public bool ShowProductImagesOnShoppingCart { get; set; }
-        public bool ShowProductImagesOnShoppingCart_OverrideForStore { get; set; }
+        public string CultureInfo { get; set; }
+        public bool CultureInfo_OverrideForStore { get; set; }
 
         [NopResourceDisplayName("Plugins.Widgets.InternetInformationStats.Fields.HideCheckoutButton")]
 

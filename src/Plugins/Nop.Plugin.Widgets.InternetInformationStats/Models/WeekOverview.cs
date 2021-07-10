@@ -12,7 +12,7 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Models
         public int Wednesday { get; set; }
         public int Thursday { get; set; }
         public int Friday { get; set; }
-        public int Saterday { get; set; }
+        public int Saturday { get; set; }
         public int Sunday { get; set; }
 
         // Functions
@@ -32,15 +32,18 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Models
                     return Thursday;
                 case "Friday":
                     return Friday;
-                case "Saterday":
-                    return Saterday;
+                case "Saturday":
+                    return Saturday;
                 default:
                     return 0;
             }
         }
+
+        // todo: seperate data by week number (otherwise all data get counted, or make sure only data from this week is used) 
+
         public int GetVisitorsThisWeek()
         {
-            return Sunday + Monday + Tuesday + Wednesday + Thursday + Friday + Saterday;
+            return Sunday + Monday + Tuesday + Wednesday + Thursday + Friday + Saturday;
         }
     }
 

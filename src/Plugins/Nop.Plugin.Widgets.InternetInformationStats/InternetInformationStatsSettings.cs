@@ -15,7 +15,7 @@ namespace Nop.Plugin.Widgets.InternetInformationStats
         /// <summary>
         /// Gets or sets own IP address, to ignore in log files
         /// </summary>
-        public bool OwnIpAddress { get; set; }
+        public string CultureInfo { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to hide the check-out button

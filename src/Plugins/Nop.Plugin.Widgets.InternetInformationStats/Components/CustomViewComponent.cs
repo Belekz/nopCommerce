@@ -80,6 +80,21 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Components
             }
             #endregion
 
+            #region Calendar
+
+            // Gets the Calendar instance associated with a CultureInfo.
+            CultureInfo myCI = new CultureInfo(internetInformationStatsSettings.CultureInfo);
+            Calendar myCal = myCI.Calendar;
+
+            // Gets the DTFI properties required by GetWeekOfYear.
+            CalendarWeekRule myCWR = myCI.DateTimeFormat.CalendarWeekRule;
+            DayOfWeek myFirstDOW = myCI.DateTimeFormat.FirstDayOfWeek;
+
+            int calendarWeek = myCal.GetWeekOfYear(DateTime.Now, myCWR, myFirstDOW);
+
+
+            #endregion
+
             try
             {
                 // Get files from file location & sort on last modified
@@ -91,36 +106,24 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Components
                 // Filter out the log files
                 foreach(FileInfo f in files)
                 {
-                    if (f.Extension == ".log")
-                    {
-                        //paths.Add(f.DirectoryName+"/"+f.Name);
-                        logFiles.Add(f);
-                    }
+                    if (f.Extension == ".log") logFiles.Add(f);
                 }
 
-                if (logFiles.Count == 0)
-                {
-                    viewModel.ErrorMessage = "No .log files found in given directory";
-                }
+                // Error handling when no .log files are founded
+                if (logFiles.Count == 0) viewModel.ErrorMessage = "No .log files found in given directory";
 
                 // Copy the last modified file
                 logFiles.LastOrDefault().CopyTo(internetInformationStatsSettings.FileLocation + "//IIStats.log");
+                // todo: write used file name to settings so it can be visualised and shown
 
                 // Read last modified log file
                 using (ParserEngine parser = new ParserEngine(internetInformationStatsSettings.FileLocation + "//IIStats.log"))
                 {
-                    while (parser.MissingRecords)
-                    {
-                        logs = parser.ParseLog().ToList();
-                    }
+                    while (parser.MissingRecords) logs = parser.ParseLog().ToList();
                 }
 
-                // Delete copy of file
-                FileInfo[] copyFiles = info.GetFiles().Where(f => f.Name == "IIStats.log").ToArray();
-                copyFiles[0].Delete();
-
                 // DEBUGGING PURPOSES
-                //var firstDate = logs[0].DateTimeEvent.Date;
+                var firstDate = logs[0].DateTimeEvent.Date;
                 // DEBUGGING PURPOSES
 
                 foreach (var l in logs)
@@ -130,25 +133,14 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Components
                     {
                         uniqueVisitors.Add(l);
                     }
-                    // Add unique items
                     else
                     {
-                        for(int u = 0; u < uniqueVisitors.Count; u++ )
+                        // When source IP is not listed in the unique visitor list, add it to the list
+                        for (int u = 0; u < uniqueVisitors.Count; u++ )
                         {
-                            if (l.cIp == uniqueVisitors[u].cIp)
-                            {
-                                break;
-                            }
-
-                            if (l.cIp == "::1")
-                            {
-                                break;
-                            }
-
-                            if (l.cIp == ownIP)
-                            {
-                                break;
-                            }
+                            if (l.cIp == uniqueVisitors[u].cIp) break;
+                            if (l.cIp == "::1") break;
+                            if (l.cIp == ownIP) break;
 
                             if (u == uniqueVisitors.Count-1)
                             {
@@ -162,34 +154,41 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Components
                 foreach (var l in uniqueVisitors)
                 {
 
-                    //Day of week
-                    switch (l.DateTimeEvent.DayOfWeek.ToString())
+                    // Count the days for logs that match the current calendar week number
+                    if (myCal.GetWeekOfYear(l.DateTimeEvent.Date, myCWR, myFirstDOW) == calendarWeek)
                     {
-                        case "Sunday":
-                            viewModel.Data.Week.Sunday++;
-                            break;
-                        case "Monday":
-                            viewModel.Data.Week.Monday++;
-                            break;
-                        case "Tuesday":
-                            viewModel.Data.Week.Tuesday++;
-                            break;
-                        case "Wednesday":
-                            viewModel.Data.Week.Wednesday++;
-                            break;
-                        case "Thursday":
-                            viewModel.Data.Week.Thursday++;
-                            break;
-                        case "Friday":
-                            viewModel.Data.Week.Friday++;
-                            break;
-                        case "Saterday":
-                            viewModel.Data.Week.Saterday++;
-                            break;
-                        default:
-                            viewModel.ErrorMessage = "day of week not found";
-                            break;
+
+                        //Day of week
+                        switch (l.DateTimeEvent.DayOfWeek.ToString())
+                        {
+                            case "Sunday":
+                                viewModel.Data.Week.Sunday++;
+                                break;
+                            case "Monday":
+                                viewModel.Data.Week.Monday++;
+                                break;
+                            case "Tuesday":
+                                viewModel.Data.Week.Tuesday++;
+                                break;
+                            case "Wednesday":
+                                viewModel.Data.Week.Wednesday++;
+                                break;
+                            case "Thursday":
+                                viewModel.Data.Week.Thursday++;
+                                break;
+                            case "Friday":
+                                viewModel.Data.Week.Friday++;
+                                break;
+                            case "Saturday":
+                                viewModel.Data.Week.Saturday++;
+                                break;
+                            default:
+                                viewModel.ErrorMessage = l.DateTimeEvent.DayOfWeek.ToString() + " not found in week";
+                                break;
+                        }
+
                     }
+
                 }
             }
             catch (Exception error)
@@ -199,6 +198,21 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Components
                     viewModel.ErrorMessage = error.ToString();
                 }
 
+            }
+
+            try
+            {
+                // Delete copy of file
+                DirectoryInfo directoryInfo = new DirectoryInfo(internetInformationStatsSettings.FileLocation);
+                FileInfo[] copyFiles = directoryInfo.GetFiles().Where(f => f.Name == "IIStats.log").ToArray();
+                copyFiles[0].Delete();
+            }
+            catch (Exception error)
+            {
+                if (viewModel.ErrorMessage == null)
+                {
+                    viewModel.ErrorMessage = error.ToString();
+                }
             }
 
             return View("~/Plugins/Widgets.InternetInformationStats/Views/PublicInfo.cshtml", viewModel);

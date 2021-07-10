@@ -2,7 +2,7 @@
   "Group": "Widgets",
   "FriendlyName": "Internet Information Stats",
   "SystemName": "Widgets.InternetInformationStats",
-  "Version": "1.00",
+  "Version": "3.00",
   "SupportedVersions": [ "4.40" ],
   "Author": "Pieter De Witte",
   "DisplayOrder": 1,

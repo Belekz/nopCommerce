@@ -52,7 +52,7 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Controllers
             var model = new ConfigurationModel
             {
                 FileLocation = internetInformationStatsSettings.FileLocation,
-                ShowProductImagesOnShoppingCart = internetInformationStatsSettings.OwnIpAddress,
+                CultureInfo = internetInformationStatsSettings.CultureInfo,
                 HideCheckoutButton = internetInformationStatsSettings.HideCheckoutButton,
                 ActiveStoreScopeConfiguration = storeScope
             };
@@ -60,7 +60,7 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Controllers
             if (storeScope > 0)
             {
                 model.FileLocation_OverrideForStore = await _settingService.SettingExistsAsync(internetInformationStatsSettings, x => x.FileLocation, storeScope);
-                model.ShowProductImagesOnShoppingCart_OverrideForStore = await _settingService.SettingExistsAsync(internetInformationStatsSettings, x => x.OwnIpAddress, storeScope);
+                model.CultureInfo_OverrideForStore = await _settingService.SettingExistsAsync(internetInformationStatsSettings, x => x.CultureInfo, storeScope);
                 model.HideCheckoutButton_OverrideForStore = await _settingService.SettingExistsAsync(internetInformationStatsSettings, x => x.HideCheckoutButton, storeScope);
             }
 
@@ -78,14 +78,14 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Controllers
             var internetInformationStatsSettings = await _settingService.LoadSettingAsync<InternetInformationStatsSettings>(storeScope);
 
             internetInformationStatsSettings.FileLocation = model.FileLocation;
-            internetInformationStatsSettings.OwnIpAddress = model.ShowProductImagesOnShoppingCart;
+            internetInformationStatsSettings.CultureInfo = model.CultureInfo;
             internetInformationStatsSettings.HideCheckoutButton = model.HideCheckoutButton;
 
             /* We do not clear cache after each setting update.
              * This behavior can increase performance because cached settings will not be cleared 
              * and loaded from database after each update */
             await _settingService.SaveSettingOverridablePerStoreAsync(internetInformationStatsSettings, x => x.FileLocation, model.FileLocation_OverrideForStore, storeScope, false);
-            await _settingService.SaveSettingOverridablePerStoreAsync(internetInformationStatsSettings, x => x.OwnIpAddress, model.ShowProductImagesOnShoppingCart_OverrideForStore, storeScope, false);
+            await _settingService.SaveSettingOverridablePerStoreAsync(internetInformationStatsSettings, x => x.CultureInfo, model.CultureInfo_OverrideForStore, storeScope, false);
             await _settingService.SaveSettingOverridablePerStoreAsync(internetInformationStatsSettings, x => x.HideCheckoutButton, model.HideCheckoutButton_OverrideForStore, storeScope, false);
 
             //now clear settings cache

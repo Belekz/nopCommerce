@@ -76,7 +76,7 @@ namespace Nop.Plugin.Widgets.InternetInformationStats
 
             // By default settings
             settings.FileLocation = "log-file";
-            settings.OwnIpAddress = true;
+            settings.CultureInfo = "en-US";
 
             await _settingService.SaveSettingAsync(settings);
 
@@ -85,8 +85,8 @@ namespace Nop.Plugin.Widgets.InternetInformationStats
             {
                 ["Plugins.Widgets.InternetInformationStats.VisitorsToday"] = "Visitors Today",
                 ["Plugins.Widgets.InternetInformationStats.VisitorsThisMonth"] = "Visitors This Month",
-                ["Plugins.Widgets.InternetInformationStats.Fields.FileLocation"] = "Maximum items to show",
-                ["Plugins.Widgets.InternetInformationStats.Fields.ShowProductImagesOnShoppingCart"] = "Show images",
+                ["Plugins.Widgets.InternetInformationStats.Fields.FileLocation"] = "Path of the log files",
+                ["Plugins.Widgets.InternetInformationStats.Fields.CultureInfo"] = "Define your culture info (en-US, de-DE, es-ES, nl-BE, ...",
                 ["Plugins.Widgets.InternetInformationStats.Fields.HideCheckoutButton"] = "Hide check-out button",
             });
 
