@@ -11,13 +11,14 @@
 @{
     Html.AppendScriptParts("~/lib_npm/chart.js/Chart.min.js");
 
-    const string prefix = "customer-statistics";
-    const string hideCardAttributeName = "Reports.HideCustomerStatisticsCard";
-    var hideCard = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideCardAttributeName);
+    const string prefix = "IIS-statistics";
+    const string hideCardAttributeName = "Reports.HideIISStatisticsCard";
+    //var hideCard = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideCardAttributeName);
+    var hideCard = false;
 }
 
 @{
-    const string cardId = "nopcommerce-common-statistics-card";
+    const string cardId = "IIS-statistics-card";
 }
 
 <div class="card card-primary card-outline @if(hideCard){<text>collapsed-card</text>}" id="@cardId">
@@ -90,10 +91,10 @@
                         Weekoverview
                     </h3>
                     <div class="card-tools float-right">
-                        <button class="btn btn-xs btn-info btn-flat margin-r-5" @if (hideCard) { <text> disabled="disabled" </text> } data-chart-role="toggle-chart" data-chart-period="year">@T("Admin.Reports.Customers.CustomerStatistics.Year")</button>
-                        <button class="btn btn-xs btn-info btn-flat margin-r-5" @if (hideCard) { <text> disabled="disabled" </text> } data-chart-role="toggle-chart" data-chart-period="month">@T("Admin.Reports.Customers.CustomerStatistics.Month")</button>
+                        @*<button class="btn btn-xs btn-info btn-flat margin-r-5" @if (hideCard) { <text> disabled="disabled" </text> } data-chart-role="toggle-chart" data-chart-period="year">@T("Admin.Reports.Customers.CustomerStatistics.Year")</button>*@
+                        @*<button class="btn btn-xs btn-info btn-flat margin-r-5" @if (hideCard) { <text> disabled="disabled" </text> } data-chart-role="toggle-chart" data-chart-period="month">@T("Admin.Reports.Customers.CustomerStatistics.Month")</button>*@
                         <button class="btn btn-xs btn-info btn-flat" @if (hideCard) { <text> disabled="disabled" </text> } data-chart-role="toggle-chart" data-chart-period="week">@T("Admin.Reports.Customers.CustomerStatistics.Week")</button>
-                        <button class="btn btn-tool margin-l-10" data-card-widget="collapse">
+                        @*<button class="btn btn-tool margin-l-10" data-card-widget="collapse">
                             @if (hideCard)
                             {
                                 <text><i class="fas fa-plus"></i></text>
@@ -102,7 +103,7 @@
                             {
                                 <text><i class="fas fa-minus"></i></text>
                             }
-                        </button>
+                        </button>*@
                     </div>
                 </div>
                 <div class="card-body">
@@ -137,7 +138,7 @@
                     labels: [],
                     datasets: [
                         {
-                            label: "@T("Admin.Reports.Customers.CustomerStatistics")",
+                            label: "Visitors",
                             fillColor: "rgba(60,141,188,0.9)",
                             strokeColor: "rgba(60,141,188,0.8)",
                             pointColor: "#00a65a",
@@ -197,38 +198,14 @@
                 }
             };
 
+            // todo: adjust week days & data according to info culture
             function changeCsPeriod(period) {
-            var csLabels = [];
-            var csData = [];
+            var csLabels = ['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday', 'Sunday'];
 
-            $.ajax({
-                cache: false,
-                type: "GET",
-                url: "@Url.Action("LoadCustomerStatistics", "Customer")",
-                data: {
-                    period: period
-                },
-                success: function (data, textStatus, jqXHR) {
-                    for (var i = 0; i < data.length; i++) {
-                        csLabels.push(data[i].date);
-                        csData.push(data[i].value);
-                    }
+            csConfig.data.labels = csLabels;
+            csConfig.data.datasets[0].data = [@Model.Data.Week.Monday,@Model.Data.Week.Tuesday,@Model.Data.Week.Wednesday, @Model.Data.Week.Thursday, @Model.Data.Week.Friday];
+            csConfig.data.scales = window.IISStatistics = new Chart(document.getElementById("@prefix-chart").getContext("2d"), csConfig);
 
-                    if (!window.customerStatistics) {
-                        csConfig.data.labels = csLabels;
-                        csConfig.data.datasets[0].data = csData;
-                        csConfig.data.scales =
-                        window.customerStatistics = new Chart(document.getElementById("@prefix-chart").getContext("2d"), csConfig);
-                    } else {
-                        window.customerStatistics.config.data.labels = csLabels;
-                        window.customerStatistics.config.data.datasets[0].data = csData;
-                        window.customerStatistics.update();
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    $("#loadCustomerStatisticsAlert").click();
-                }
-            });
         }
 
             $('#@(prefix)-card button[data-chart-role="toggle-chart"]').on('click', function () {
