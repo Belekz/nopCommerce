@@ -59,7 +59,8 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Components
             string ownIP = null;
             List<IISLogEvent> logs = new List<IISLogEvent>();
             List<IISLogEvent> logsOfToday = new List<IISLogEvent>();
-            List<IISLogEvent> uniqueVisitors = new List<IISLogEvent>();
+            List<IISLogEvent> uniqueLogs = new List<IISLogEvent>();
+            List<string> visitorsThisWeek = new List<string>();
 
             #region Get Own IP
             // Get own IP
@@ -129,36 +130,51 @@ namespace Nop.Plugin.Widgets.InternetInformationStats.Components
                 foreach (var l in logs)
                 {
                     // Add when list is empty
-                    if (uniqueVisitors.Count == 0)
+                    if (uniqueLogs.Count == 0)
                     {
-                        uniqueVisitors.Add(l);
+                        uniqueLogs.Add(l);
                     }
                     else
                     {
                         // When source IP is not listed in the unique visitor list, add it to the list
-                        for (int u = 0; u < uniqueVisitors.Count; u++ )
+                        for (int u = 0; u < uniqueLogs.Count; u++ )
                         {
-                            if (l.cIp == uniqueVisitors[u].cIp) break;
+                            // If the IP is known then overwrite the last known log so that the last visit is counted in the stats of today & this week
+                            if (l.cIp == uniqueLogs[u].cIp)
+                            {
+                                uniqueLogs[u] = l;
+                                break;
+                            }
+
                             if (l.cIp == "::1") break;
                             if (l.cIp == ownIP) break;
 
-                            if (u == uniqueVisitors.Count-1)
+                            if (u == uniqueLogs.Count-1)
                             {
-                                uniqueVisitors.Add(l);
+                                uniqueLogs.Add(l);
                             }
                         }
 
                     }
                 }
 
-                foreach (var l in uniqueVisitors)
+                foreach (var l in uniqueLogs)
                 {
 
                     // Count the days for logs that match the current calendar week number
                     if (myCal.GetWeekOfYear(l.DateTimeEvent.Date, myCWR, myFirstDOW) == calendarWeek)
                     {
 
-                        //Day of week
+                        // Logs today
+                        if (l.DateTimeEvent.DayOfWeek == DateTime.Today.DayOfWeek)
+                        {
+                            logsOfToday.Add(l);
+                        }
+
+                        // Visitors this week
+                        visitorsThisWeek.Add(l.cIp);
+
+                        // Day of week
                         switch (l.DateTimeEvent.DayOfWeek.ToString())
                         {
                             case "Sunday":
